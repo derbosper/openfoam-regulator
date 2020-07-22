@@ -30,11 +30,13 @@ divSchemes
 {
     default         none;
     div(phi,U)      Gauss linear;
+    div(phi,T)      Gauss upwind;
 }
 
 laplacianSchemes
 {
     default         Gauss linear orthogonal;
+    laplacian(a,T)  Gauss linear corrected;
 }
 
 interpolationSchemes
