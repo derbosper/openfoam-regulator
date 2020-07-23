@@ -28,7 +28,8 @@ int main(int argc, char *argv[])
     );
 
     scalar avgTemp = getPatchAverage(T, outletPatch);
-    Info << avgTemp << endl;
+
+    Info "Average temperature = " << avgTemp << endl;
     Info<< "Time = " << runTime.timeName() << endl;
 
     return 0;
@@ -41,7 +42,7 @@ scalar getPatchAverage(volScalarField field, const fvPatch& patch)
     for (label cellI = 0; cellI < patch.size(); cellI++)
     {
         cellId = patch.faceCells()[cellI];
-        total += field[cellId];
+        total += field[cellId] / patch.size();
     }
-    return total / patch.size();
+    return total;
 }
