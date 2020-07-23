@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
     scalar avgTemp = getPatchAverage(T, outletPatch);
 
-    Info "Average temperature = " << avgTemp << endl;
+    Info << "Average temperature = " << avgTemp << endl;
     Info<< "Time = " << runTime.timeName() << endl;
 
     return 0;
