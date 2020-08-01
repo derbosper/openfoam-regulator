@@ -1,3 +1,3 @@
-# 02-icoThermalPipe
+# 03-pipeCustomClass
 
-Case 01 with heated wall and additional temperature equation.
+Case 02 with a custom class reading temperature from the "outlet" boundary condition.
