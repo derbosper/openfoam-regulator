@@ -29,8 +29,21 @@ License
 #include "fvPatchFieldMapper.H"
 #include "surfaceFields.H"
 #include "linear.H"
+#include "syncTools.H"
 
 // * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * * //
+
+const double Foam::temperaturePIDControllerFvPatchVectorField::patchAverage
+(
+    const word& fieldName,
+    const fvPatch& patch
+)
+{
+    const fvPatchField<scalar>& field =
+            patch.lookupPatchField<volScalarField, scalar>(fieldName);
+
+    return gSum(field*patch.magSf())/gSum(patch.magSf());
+}
 
 const Foam::surfaceScalarField&
 Foam::temperaturePIDControllerFvPatchVectorField::faceTemperature() const
@@ -69,10 +82,19 @@ temperaturePIDControllerFvPatchVectorField
 :
     fixedValueFvPatchField<vector>(p, iF),
     downstreamName_(word::null),
-    deltaT_(1),
+    targetT_(0),
     TName_("T"),
     phiName_("phi"),
     P_(0),
+    I_(0),
+    D_(0),
+    T_(0),
+    error_(0),
+    errorIntegral_(0),
+    oldT_(0),
+    oldError_(0),
+    oldErrorIntegral_(0),
+    timeIndex_(db().time().timeIndex())
 {}
 
 
@@ -87,10 +109,19 @@ temperaturePIDControllerFvPatchVectorField
 :
     fixedValueFvPatchField<vector>(ptf, p, iF, mapper),
     downstreamName_(ptf.downstreamName_),
-    deltaT_(ptf.deltaT_),
+    targetT_(ptf.targetT_),
     TName_(ptf.TName_),
     phiName_(ptf.phiName_),
     P_(ptf.P_),
+    I_(ptf.I_),
+    D_(ptf.D_),
+    T_(ptf.T_),
+    error_(ptf.error_),
+    errorIntegral_(ptf.errorIntegral_),
+    oldT_(ptf.oldT_),
+    oldError_(ptf.oldError_),
+    oldErrorIntegral_(ptf.oldErrorIntegral_),
+    timeIndex_(ptf.timeIndex_)
 {}
 
 
@@ -104,11 +135,29 @@ temperaturePIDControllerFvPatchVectorField
 :
     fixedValueFvPatchField<vector>(p, iF, dict),
     downstreamName_(dict.lookup("downstream")),
-    deltaT_(dict.get<scalar>("deltaT")),
+    targetT_(dict.get<scalar>("targetT")),
     TName_(dict.lookupOrDefault<word>("T", "T")),
     phiName_(dict.lookupOrDefault<word>("phi", "phi")),
     P_(dict.get<scalar>("P")),
-{}
+    I_(dict.get<scalar>("I")),
+    D_(dict.get<scalar>("D")),
+    T_(0),
+    error_(dict.lookupOrDefault<scalar>("error", 0)),
+    errorIntegral_(dict.lookupOrDefault<scalar>("errorIntegral", 0)),
+    oldT_(0),
+    oldError_(0),
+    oldErrorIntegral_(0),
+    timeIndex_(db().time().timeIndex())
+{
+    // calls the = operator to assign the value to the faces held by this BC
+    // fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
+    
+    // Get the mesh
+    const fvMesh& mesh(patch().boundaryMesh().mesh());
+    const fvPatch& targetPatch = mesh.boundary()[downstreamName_];
+    T_ = patchAverage(TName_, targetPatch);
+    updateCoeffs();
+}
 
 
 Foam::temperaturePIDControllerFvPatchVectorField::
@@ -119,10 +168,19 @@ temperaturePIDControllerFvPatchVectorField
 :
     fixedValueFvPatchField<vector>(ptf),
     downstreamName_(ptf.downstreamName_),
-    deltaT_(ptf.deltaT_),
+    targetT_(ptf.targetT_),
     TName_(ptf.TName_),
     phiName_(ptf.phiName_),
     P_(ptf.P_),
+    I_(ptf.I_),
+    D_(ptf.D_),
+    T_(ptf.T_),
+    error_(ptf.error_),
+    errorIntegral_(ptf.errorIntegral_),
+    oldT_(ptf.oldT_),
+    oldError_(ptf.oldError_),
+    oldErrorIntegral_(ptf.oldErrorIntegral_),
+    timeIndex_(ptf.timeIndex_)
 {}
 
 
@@ -135,10 +193,19 @@ temperaturePIDControllerFvPatchVectorField
 :
     fixedValueFvPatchField<vector>(ptf, iF),
     downstreamName_(ptf.downstreamName_),
-    deltaT_(ptf.deltaT_),
+    targetT_(ptf.targetT_),
     TName_(ptf.TName_),
     phiName_(ptf.phiName_),
     P_(ptf.P_),
+    I_(ptf.I_),
+    D_(ptf.D_),
+    T_(ptf.T_),
+    error_(ptf.error_),
+    errorIntegral_(ptf.errorIntegral_),
+    oldT_(ptf.oldT_),
+    oldError_(ptf.oldError_),
+    oldErrorIntegral_(ptf.oldErrorIntegral_),
+    timeIndex_(ptf.timeIndex_)
 {}
 
 
@@ -151,20 +218,7 @@ void Foam::temperaturePIDControllerFvPatchVectorField::updateCoeffs()
         return;
     }
 
-    // Get the mesh
-    const fvMesh& mesh(patch().boundaryMesh().mesh());
 
-    // Get the time step
-    const scalar deltaT(db().time().deltaTValue());
-
-    // Get the flux field
-    const surfaceScalarField& phi
-    (
-        db().lookupObject<surfaceScalarField>(phiName_)
-    );
-
-    
-    scalar deltaT = deltaT_;
     if (db().foundObject<volScalarField>(TName_))
     {
         Info << "found T " << TName_ << endl;
@@ -188,7 +242,7 @@ void Foam::temperaturePIDControllerFvPatchVectorField::write
 {
     fvPatchField<vector>::write(os);
 
-    os.writeEntry("deltaT", deltaT_);
+    os.writeEntry("targetT", targetT_);
     os.writeEntry("downstream", downstreamName_);
     os.writeEntryIfDifferent<word>("T", "T", TName_);
     os.writeEntry("P", P_);

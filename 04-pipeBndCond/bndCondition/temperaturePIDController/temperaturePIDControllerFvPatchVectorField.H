@@ -61,8 +61,8 @@ class temperaturePIDControllerFvPatchVectorField
         //- Name of the downstream face zone
         const word downstreamName_;
 
-        //- Desired pressure difference between upstream and downstream
-        const scalar deltaT_;
+        //- Desired temperature difference at downstream
+        const scalar targetT_;
 
         //- Name of the temperature field
         const word TName_;
@@ -73,12 +73,45 @@ class temperaturePIDControllerFvPatchVectorField
         //- Proportional gain
         const scalar P_;
 
+        //- Integral gain
+        const scalar I_;
+
+        //- Derivative gain
+        const scalar D_;
+
+        //- Temperature
+        scalar T_;
+
+        //- Error
+        scalar error_;
+
+        //- Error integral w.r.t. time
+        scalar errorIntegral_;
+
+        //- Old temperature
+        scalar oldT_;
+
+        //- Old error
+        scalar oldError_;
+
+        //- Old error integral w.r.t. time
+        scalar oldErrorIntegral_;
+
+        //- Time index of the last update
+        label timeIndex_;
+
 
     // Private member functions
 
         //- Return the pressure interpolated to the faces
         const surfaceScalarField& faceTemperature() const;
 
+        //- Calculate the average on a face zone
+        const scalar patchAverage
+        (
+            const word& fieldName,
+            const fvPatch& patch
+        );
 
 
 public:
