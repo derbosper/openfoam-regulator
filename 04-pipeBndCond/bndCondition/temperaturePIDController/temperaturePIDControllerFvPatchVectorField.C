@@ -150,8 +150,8 @@ temperaturePIDControllerFvPatchVectorField
     timeIndex_(db().time().timeIndex())
 {
     // calls the = operator to assign the value to the faces held by this BC
-    // fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
-    
+    fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
+
     // Get the mesh
     const fvMesh& mesh(patch().boundaryMesh().mesh());
     const fvPatch& targetPatch = mesh.boundary()[downstreamName_];
