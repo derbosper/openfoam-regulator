@@ -65,7 +65,6 @@ Description
 #include "fvCFD.H"
 #include "pisoControl.H"
 
-#include "tempReader.H"
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
@@ -87,9 +86,6 @@ int main(int argc, char *argv[])
     #include "initContinuityErrs.H"
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-    // get outlet from mesh database
-    const fvPatch& outletPatch = mesh.boundary()["outlet"];
-    tempReader reader;
 
     Info<< "\nStarting time loop\n" << endl;
 
@@ -163,7 +159,6 @@ int main(int argc, char *argv[])
             == fvm::laplacian(a, T)
         );
         TEqn.solve();
-        reader.printValues(T, outletPatch);
 
         runTime.write();
 
