@@ -1,7 +1,13 @@
+# Generated mesh
 **/polyMesh
 
+# Generated solution directories, excluding 0
 [0-9]*
 0.[0-9]*
 
 !0
 !0[1-9]-*
+
+# Wmake files
+linux64GccDPInt32Opt
+lnInclude
