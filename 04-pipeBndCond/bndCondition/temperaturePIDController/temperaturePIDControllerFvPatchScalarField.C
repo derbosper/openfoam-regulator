@@ -24,6 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "temperaturePIDControllerFvPatchScalarField.H"
+#include "pressurePIDControlInletVelocityFvPatchVectorField.H"
 #include "volFields.H"
 #include "addToRunTimeSelectionTable.H"
 #include "fvPatchFieldMapper.H"
@@ -218,18 +219,16 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
         return;
     }
 
+    // Get the mesh
+    const fvMesh& mesh(patch().boundaryMesh().mesh());
 
-    if (db().foundObject<volScalarField>(TName_))
-    {
-        Info << "found T " << TName_ << endl;
-    }
-    else
-    {
-        WarningInFunction
-            << "The temperature field name, \"TName\", is \"" << TName_ << "\", "
-            << "but a field of that name was not found." 
-            << endl << endl;
-    }
+    // Get the time step
+    const scalar deltaT(db().time().deltaTValue());
+
+    // Get the temperature field
+    const fvPatch& downstreamPatch = mesh.boundary()[downstreamName_];
+    scalar avg = patchAverage(TName_, downstreamPatch);
+    Info << "Average measured temperature: " << avg << endl;
 
     fixedValueFvPatchField<scalar>::updateCoeffs();
 }
