@@ -1,0 +1,2 @@
+wclean bndCondition/temperaturePIDController/
+wclean solver/icoThermalFoam
