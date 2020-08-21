@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "temperaturePIDControllerFvPatchVectorField.H"
+#include "temperaturePIDControllerFvPatchScalarField.H"
 #include "volFields.H"
 #include "addToRunTimeSelectionTable.H"
 #include "fvPatchFieldMapper.H"
@@ -33,7 +33,7 @@ License
 
 // * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * * //
 
-const double Foam::temperaturePIDControllerFvPatchVectorField::patchAverage
+const Foam::scalar Foam::temperaturePIDControllerFvPatchScalarField::patchAverage
 (
     const word& fieldName,
     const fvPatch& patch
@@ -46,7 +46,7 @@ const double Foam::temperaturePIDControllerFvPatchVectorField::patchAverage
 }
 
 const Foam::surfaceScalarField&
-Foam::temperaturePIDControllerFvPatchVectorField::faceTemperature() const
+Foam::temperaturePIDControllerFvPatchScalarField::faceTemperature() const
 {
     const word TfName(TName_ + "f");
 
@@ -73,14 +73,14 @@ Foam::temperaturePIDControllerFvPatchVectorField::faceTemperature() const
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::temperaturePIDControllerFvPatchVectorField::
-temperaturePIDControllerFvPatchVectorField
+Foam::temperaturePIDControllerFvPatchScalarField::
+temperaturePIDControllerFvPatchScalarField
 (
     const fvPatch& p,
-    const DimensionedField<vector, volMesh>& iF
+    const DimensionedField<scalar, volMesh>& iF
 )
 :
-    fixedValueFvPatchField<vector>(p, iF),
+    fixedValueFvPatchField<scalar>(p, iF),
     downstreamName_(word::null),
     targetT_(0),
     TName_("T"),
@@ -98,16 +98,16 @@ temperaturePIDControllerFvPatchVectorField
 {}
 
 
-Foam::temperaturePIDControllerFvPatchVectorField::
-temperaturePIDControllerFvPatchVectorField
+Foam::temperaturePIDControllerFvPatchScalarField::
+temperaturePIDControllerFvPatchScalarField
 (
-    const temperaturePIDControllerFvPatchVectorField& ptf,
+    const temperaturePIDControllerFvPatchScalarField& ptf,
     const fvPatch& p,
-    const DimensionedField<vector, volMesh>& iF,
+    const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
 )
 :
-    fixedValueFvPatchField<vector>(ptf, p, iF, mapper),
+    fixedValueFvPatchField<scalar>(ptf, p, iF, mapper),
     downstreamName_(ptf.downstreamName_),
     targetT_(ptf.targetT_),
     TName_(ptf.TName_),
@@ -125,15 +125,15 @@ temperaturePIDControllerFvPatchVectorField
 {}
 
 
-Foam::temperaturePIDControllerFvPatchVectorField::
-temperaturePIDControllerFvPatchVectorField
+Foam::temperaturePIDControllerFvPatchScalarField::
+temperaturePIDControllerFvPatchScalarField
 (
     const fvPatch& p,
-    const DimensionedField<vector, volMesh>& iF,
+    const DimensionedField<scalar, volMesh>& iF,
     const dictionary& dict
 )
 :
-    fixedValueFvPatchField<vector>(p, iF, dict),
+    fixedValueFvPatchField<scalar>(p, iF, dict),
     downstreamName_(dict.lookup("downstream")),
     targetT_(dict.get<scalar>("targetT")),
     TName_(dict.lookupOrDefault<word>("T", "T")),
@@ -150,7 +150,7 @@ temperaturePIDControllerFvPatchVectorField
     timeIndex_(db().time().timeIndex())
 {
     // calls the = operator to assign the value to the faces held by this BC
-    fvPatchVectorField::operator=(vectorField("value", dict, p.size()));
+    fvPatchScalarField::operator=(scalarField("value", dict, p.size()));
 
     // Get the mesh
     const fvMesh& mesh(patch().boundaryMesh().mesh());
@@ -160,13 +160,13 @@ temperaturePIDControllerFvPatchVectorField
 }
 
 
-Foam::temperaturePIDControllerFvPatchVectorField::
-temperaturePIDControllerFvPatchVectorField
+Foam::temperaturePIDControllerFvPatchScalarField::
+temperaturePIDControllerFvPatchScalarField
 (
-    const temperaturePIDControllerFvPatchVectorField& ptf
+    const temperaturePIDControllerFvPatchScalarField& ptf
 )
 :
-    fixedValueFvPatchField<vector>(ptf),
+    fixedValueFvPatchField<scalar>(ptf),
     downstreamName_(ptf.downstreamName_),
     targetT_(ptf.targetT_),
     TName_(ptf.TName_),
@@ -184,14 +184,14 @@ temperaturePIDControllerFvPatchVectorField
 {}
 
 
-Foam::temperaturePIDControllerFvPatchVectorField::
-temperaturePIDControllerFvPatchVectorField
+Foam::temperaturePIDControllerFvPatchScalarField::
+temperaturePIDControllerFvPatchScalarField
 (
-    const temperaturePIDControllerFvPatchVectorField& ptf,
-    const DimensionedField<vector, volMesh>& iF
+    const temperaturePIDControllerFvPatchScalarField& ptf,
+    const DimensionedField<scalar, volMesh>& iF
 )
 :
-    fixedValueFvPatchField<vector>(ptf, iF),
+    fixedValueFvPatchField<scalar>(ptf, iF),
     downstreamName_(ptf.downstreamName_),
     targetT_(ptf.targetT_),
     TName_(ptf.TName_),
@@ -211,7 +211,7 @@ temperaturePIDControllerFvPatchVectorField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::temperaturePIDControllerFvPatchVectorField::updateCoeffs()
+void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
 {
     if (updated())
     {
@@ -231,16 +231,16 @@ void Foam::temperaturePIDControllerFvPatchVectorField::updateCoeffs()
             << endl << endl;
     }
 
-    fixedValueFvPatchField<vector>::updateCoeffs();
+    fixedValueFvPatchField<scalar>::updateCoeffs();
 }
 
 
-void Foam::temperaturePIDControllerFvPatchVectorField::write
+void Foam::temperaturePIDControllerFvPatchScalarField::write
 (
     Ostream& os
 ) const
 {
-    fvPatchField<vector>::write(os);
+    fvPatchField<scalar>::write(os);
 
     os.writeEntry("targetT", targetT_);
     os.writeEntry("downstream", downstreamName_);
@@ -257,8 +257,8 @@ namespace Foam
 {
    makePatchTypeField
    (
-       fvPatchVectorField,
-       temperaturePIDControllerFvPatchVectorField
+       fvPatchScalarField,
+       temperaturePIDControllerFvPatchScalarField
    );
 }
 

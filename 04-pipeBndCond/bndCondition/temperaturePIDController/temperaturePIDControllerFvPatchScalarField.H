@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::temperaturePIDControllerFvPatchVectorField
+    Foam::temperaturePIDControllerFvPatchScalarField
 
 Group
     grpInletBoundaryConditions
@@ -34,12 +34,12 @@ SeeAlso
     Foam::fixedValueFvPatchField
 
 SourceFiles
-    temperaturePIDControllerFvPatchVectorField.C
+    temperaturePIDControllerFvPatchScalarField.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef temperaturePIDControllerFvPatchVectorField_H
-#define temperaturePIDControllerFvPatchVectorField_H
+#ifndef temperaturePIDControllerFvPatchScalarField_H
+#define temperaturePIDControllerFvPatchScalarField_H
 
 #include "fixedValueFvPatchFields.H"
 #include "Switch.H"
@@ -49,12 +49,12 @@ SourceFiles
 namespace Foam
 {
 /*---------------------------------------------------------------------------*\
-     Class temperaturePIDControllerFvPatchVectorField Declaration
+     Class temperaturePIDControllerFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class temperaturePIDControllerFvPatchVectorField
+class temperaturePIDControllerFvPatchScalarField
 :
-    public fixedValueFvPatchVectorField
+    public fixedValueFvPatchScalarField
 {
     // Private data
 
@@ -123,69 +123,62 @@ public:
    // Constructors
 
         //- Construct from patch and internal field
-        temperaturePIDControllerFvPatchVectorField
+        temperaturePIDControllerFvPatchScalarField
         (
             const fvPatch&,
-            const DimensionedField<vector, volMesh>&
+            const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        temperaturePIDControllerFvPatchVectorField
+        temperaturePIDControllerFvPatchScalarField
         (
             const fvPatch&,
-            const DimensionedField<vector, volMesh>&,
+            const DimensionedField<scalar, volMesh>&,
             const dictionary&
         );
 
         //- Construct by mapping given
-        //  flowRateInletVelocityFvPatchVectorField
+        //  flowRateInletVelocityFvPatchScalarField
         //  onto a new patch
-        temperaturePIDControllerFvPatchVectorField
+        temperaturePIDControllerFvPatchScalarField
         (
-            const temperaturePIDControllerFvPatchVectorField&,
+            const temperaturePIDControllerFvPatchScalarField&,
             const fvPatch&,
-            const DimensionedField<vector, volMesh>&,
+            const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Construct as copy
-        temperaturePIDControllerFvPatchVectorField
+        temperaturePIDControllerFvPatchScalarField
         (
-            const temperaturePIDControllerFvPatchVectorField&
+            const temperaturePIDControllerFvPatchScalarField&
         );
 
         //- Construct and return a clone
-        virtual tmp<fvPatchVectorField> clone() const
+        virtual tmp<fvPatchScalarField> clone() const
         {
-            return tmp<fvPatchVectorField>
+            return tmp<fvPatchScalarField>
             (
-                new temperaturePIDControllerFvPatchVectorField
-                (
-                    *this
-                )
+                new temperaturePIDControllerFvPatchScalarField ( *this )
             );
         }
 
         //- Construct as copy setting internal field reference
-        temperaturePIDControllerFvPatchVectorField
+        temperaturePIDControllerFvPatchScalarField
         (
-            const temperaturePIDControllerFvPatchVectorField&,
-            const DimensionedField<vector, volMesh>&
+            const temperaturePIDControllerFvPatchScalarField&,
+            const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct and return a clone setting internal field reference
-        virtual tmp<fvPatchVectorField> clone
+        virtual tmp<fvPatchScalarField> clone
         (
-            const DimensionedField<vector, volMesh>& iF
+            const DimensionedField<scalar, volMesh>& iF
         ) const
         {
-            return tmp<fvPatchVectorField>
+            return tmp<fvPatchScalarField>
             (
-                new temperaturePIDControllerFvPatchVectorField
-                (
-                    *this,
-                    iF
-                )
+                new temperaturePIDControllerFvPatchScalarField ( *this, iF )
             );
         }
 
