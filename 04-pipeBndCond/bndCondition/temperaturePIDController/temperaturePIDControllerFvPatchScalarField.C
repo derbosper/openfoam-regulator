@@ -226,7 +226,7 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
     const scalar deltaT(db().time().deltaTValue());
 
     // Get the temperature field
-    const fvPatch& downstreamPatch = mesh.boundary()[downstreamName_];
+    const fvPatch& downstreamPatch = patch().boundaryMesh()[downstreamName_];
     scalar avg = patchAverage(TName_, downstreamPatch);
     Info << "Average measured temperature: " << avg << endl;
 
