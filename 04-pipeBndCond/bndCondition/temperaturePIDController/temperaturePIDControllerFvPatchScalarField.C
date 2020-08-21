@@ -142,23 +142,14 @@ temperaturePIDControllerFvPatchScalarField
     P_(dict.get<scalar>("P")),
     I_(dict.get<scalar>("I")),
     D_(dict.get<scalar>("D")),
-    T_(0),
+    T_(0.),
     error_(dict.lookupOrDefault<scalar>("error", 0)),
     errorIntegral_(dict.lookupOrDefault<scalar>("errorIntegral", 0)),
     oldT_(0),
     oldError_(0),
     oldErrorIntegral_(0),
     timeIndex_(db().time().timeIndex())
-{
-    // calls the = operator to assign the value to the faces held by this BC
-    fvPatchScalarField::operator=(scalarField("value", dict, p.size()));
-
-    // Get the mesh
-    const fvMesh& mesh(patch().boundaryMesh().mesh());
-    const fvPatch& targetPatch = mesh.boundary()[downstreamName_];
-    T_ = patchAverage(TName_, targetPatch);
-    updateCoeffs();
-}
+{}
 
 
 Foam::temperaturePIDControllerFvPatchScalarField::
@@ -225,10 +216,19 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
     // Get the time step
     const scalar deltaT(db().time().deltaTValue());
 
-    // Get the temperature field
+    // Get the downstream temperature field
     const fvPatch& downstreamPatch = patch().boundaryMesh()[downstreamName_];
-    scalar avg = patchAverage(TName_, downstreamPatch);
-    Info << "Average measured temperature: " << avg << endl;
+    const scalar downstreamAvg = patchAverage(TName_, downstreamPatch);
+    Info << "Measured temperature: " << downstreamAvg << endl;
+
+    // Get this temperature field
+    const fvPatch& thisPatch = patch().boundaryMesh()[patch().name()];
+    const scalar thisAvg = patchAverage(TName_, thisPatch);
+    Info << "Wall temperature " << thisAvg << endl;
+
+    // This is wrong but assings value OK
+    error_ = targetT_ - thisAvg;
+    operator==(thisAvg + error_);
 
     fixedValueFvPatchField<scalar>::updateCoeffs();
 }
