@@ -46,32 +46,6 @@ const Foam::scalar Foam::temperaturePIDControllerFvPatchScalarField::patchAverag
     return gSum(field*patch.magSf())/gSum(patch.magSf());
 }
 
-const Foam::surfaceScalarField&
-Foam::temperaturePIDControllerFvPatchScalarField::faceTemperature() const
-{
-    const word TfName(TName_ + "f");
-
-    const volScalarField& T = db().lookupObject<volScalarField>(TName_);
-
-    surfaceScalarField* TfPtr = db().getObjectPtr<surfaceScalarField>(TfName);
-
-    if (!TfPtr)
-    {
-        TfPtr = new surfaceScalarField(TfName, linearInterpolate(T));
-        TfPtr->store();
-    }
-
-    surfaceScalarField& Tf = *TfPtr;
-
-    if (!Tf.upToDate(T))
-    {
-        Tf = linearInterpolate(T);
-    }
-
-    return Tf;
-}
-
-
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 Foam::temperaturePIDControllerFvPatchScalarField::
@@ -92,9 +66,7 @@ temperaturePIDControllerFvPatchScalarField
     T_(0),
     error_(0),
     errorIntegral_(0),
-    oldT_(0),
     oldError_(0),
-    oldErrorIntegral_(0),
     timeIndex_(db().time().timeIndex())
 {}
 
@@ -119,9 +91,7 @@ temperaturePIDControllerFvPatchScalarField
     T_(ptf.T_),
     error_(ptf.error_),
     errorIntegral_(ptf.errorIntegral_),
-    oldT_(ptf.oldT_),
     oldError_(ptf.oldError_),
-    oldErrorIntegral_(ptf.oldErrorIntegral_),
     timeIndex_(ptf.timeIndex_)
 {}
 
@@ -145,9 +115,7 @@ temperaturePIDControllerFvPatchScalarField
     T_(0.),
     error_(dict.lookupOrDefault<scalar>("error", 0)),
     errorIntegral_(dict.lookupOrDefault<scalar>("errorIntegral", 0)),
-    oldT_(0),
     oldError_(0),
-    oldErrorIntegral_(0),
     timeIndex_(db().time().timeIndex())
 {}
 
@@ -169,9 +137,7 @@ temperaturePIDControllerFvPatchScalarField
     T_(ptf.T_),
     error_(ptf.error_),
     errorIntegral_(ptf.errorIntegral_),
-    oldT_(ptf.oldT_),
     oldError_(ptf.oldError_),
-    oldErrorIntegral_(ptf.oldErrorIntegral_),
     timeIndex_(ptf.timeIndex_)
 {}
 
@@ -194,9 +160,7 @@ temperaturePIDControllerFvPatchScalarField
     T_(ptf.T_),
     error_(ptf.error_),
     errorIntegral_(ptf.errorIntegral_),
-    oldT_(ptf.oldT_),
     oldError_(ptf.oldError_),
-    oldErrorIntegral_(ptf.oldErrorIntegral_),
     timeIndex_(ptf.timeIndex_)
 {}
 
@@ -258,7 +222,12 @@ void Foam::temperaturePIDControllerFvPatchScalarField::write
     os.writeEntry("targetT", targetT_);
     os.writeEntry("downstream", downstreamName_);
     os.writeEntryIfDifferent<word>("T", "T", TName_);
+    os.writeEntryIfDifferent<word>("phi", "phi", phiName_);
     os.writeEntry("P", P_);
+    os.writeEntry("I", I_);
+    os.writeEntry("D", D_);
+    os.writeEntry("error", error_);
+    os.writeEntry("errorIntegral", errorIntegral_);
 
     writeEntry("value", os);
 }

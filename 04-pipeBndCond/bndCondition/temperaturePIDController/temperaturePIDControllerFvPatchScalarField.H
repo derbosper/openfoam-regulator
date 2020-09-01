@@ -88,14 +88,8 @@ class temperaturePIDControllerFvPatchScalarField
         //- Error integral w.r.t. time
         scalar errorIntegral_;
 
-        //- Old temperature
-        scalar oldT_;
-
         //- Old error
         scalar oldError_;
-
-        //- Old error integral w.r.t. time
-        scalar oldErrorIntegral_;
 
         //- Time index of the last update
         label timeIndex_;
@@ -103,10 +97,7 @@ class temperaturePIDControllerFvPatchScalarField
 
     // Private member functions
 
-        //- Return the pressure interpolated to the faces
-        const surfaceScalarField& faceTemperature() const;
-
-        //- Calculate the average on a face zone
+        //- Calculate the average on a face patch
         const scalar patchAverage
         (
             const word& fieldName,
