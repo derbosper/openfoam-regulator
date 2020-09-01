@@ -79,6 +79,10 @@ class temperaturePIDControllerFvPatchScalarField
         //- Derivative gain
         const scalar D_;
 
+        //- Controller output signal limits
+        const scalar outputMax_;
+        const scalar outputMin_;
+
         //- Temperature
         scalar T_;
 

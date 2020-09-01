@@ -64,6 +64,8 @@ temperaturePIDControllerFvPatchScalarField
     I_(0),
     D_(0),
     T_(0),
+    outputMax_(1e3),
+    outputMin_(-1e3),
     error_(0),
     errorIntegral_(0),
     oldError_(0),
@@ -89,6 +91,8 @@ temperaturePIDControllerFvPatchScalarField
     I_(ptf.I_),
     D_(ptf.D_),
     T_(ptf.T_),
+    outputMax_(ptf.outputMax_),
+    outputMin_(ptf.outputMin_),
     error_(ptf.error_),
     errorIntegral_(ptf.errorIntegral_),
     oldError_(ptf.oldError_),
@@ -112,6 +116,8 @@ temperaturePIDControllerFvPatchScalarField
     P_(dict.get<scalar>("P")),
     I_(dict.get<scalar>("I")),
     D_(dict.get<scalar>("D")),
+    outputMax_(dict.get<scalar>("outputMax")),
+    outputMin_(dict.get<scalar>("outputMin")),
     T_(0.),
     error_(dict.lookupOrDefault<scalar>("error", 0)),
     errorIntegral_(dict.lookupOrDefault<scalar>("errorIntegral", 0)),
@@ -135,6 +141,8 @@ temperaturePIDControllerFvPatchScalarField
     I_(ptf.I_),
     D_(ptf.D_),
     T_(ptf.T_),
+    outputMax_(ptf.outputMax_),
+    outputMin_(ptf.outputMin_),
     error_(ptf.error_),
     errorIntegral_(ptf.errorIntegral_),
     oldError_(ptf.oldError_),
@@ -158,6 +166,8 @@ temperaturePIDControllerFvPatchScalarField
     I_(ptf.I_),
     D_(ptf.D_),
     T_(ptf.T_),
+    outputMax_(ptf.outputMax_),
+    outputMin_(ptf.outputMin_),
     error_(ptf.error_),
     errorIntegral_(ptf.errorIntegral_),
     oldError_(ptf.oldError_),
@@ -199,14 +209,16 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
 
     // Calculate output signal
     const scalar outputSignal = P_*error_ + I_*errorIntegral_ + D_*errorDifferential;
+    scalar properSignal = max(min(outputSignal, outputMax_), outputMin_);
 
     // Set patch temperature
-    const scalar newTemperature = thisTemp + outputSignal;
-    operator==(newTemperature);
+    operator==(
+        thisTemp + max(min(outputSignal, outputMax_), outputMin_)
+    );
 
     Info << "Measured temperature: " << downstreamTemp << endl;
     Info << "Wall temperature: " << thisTemp << endl;
-    Info << "Output signal: " << outputSignal << endl;
+    Info << "Output signal: " << properSignal << endl;
 
     fixedValueFvPatchField<scalar>::updateCoeffs();
 }
@@ -226,6 +238,7 @@ void Foam::temperaturePIDControllerFvPatchScalarField::write
     os.writeEntry("P", P_);
     os.writeEntry("I", I_);
     os.writeEntry("D", D_);
+    os.writeEntry("outputMax", outputMax_);
     os.writeEntry("error", error_);
     os.writeEntry("errorIntegral", errorIntegral_);
 

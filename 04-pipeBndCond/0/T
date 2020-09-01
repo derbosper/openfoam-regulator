@@ -42,11 +42,11 @@ boundaryField
         type            temperaturePIDController;
         downstream      outlet;
         targetT         250;
-        T               T;
-        phi             phi;
         P               5;
-        I               0.02;
+        I               0.2;
         D               0.1;
+        outputMin       -30;
+        outputMax       30;
         value           uniform 350;
     }
 
