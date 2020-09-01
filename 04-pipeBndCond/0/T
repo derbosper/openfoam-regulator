@@ -44,9 +44,9 @@ boundaryField
         targetT         250;
         T               T;
         phi             phi;
-        P               0.5;
-        I               0.5;
-        D               0.5;
+        P               5;
+        I               0.02;
+        D               0.1;
         value           uniform 350;
     }
 
