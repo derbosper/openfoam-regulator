@@ -34,11 +34,11 @@ License
 
 // * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * * //
 
-const Foam::scalar Foam::temperaturePIDControllerFvPatchScalarField::patchAverage
+Foam::scalar Foam::temperaturePIDControllerFvPatchScalarField::patchAverage
 (
     const word& fieldName,
     const fvPatch& patch
-)
+) const
 {
     const fvPatchField<scalar>& field =
             patch.lookupPatchField<volScalarField, scalar>(fieldName);
@@ -63,9 +63,9 @@ temperaturePIDControllerFvPatchScalarField
     P_(0),
     I_(0),
     D_(0),
+    outputMax_(0),
+    outputMin_(0),
     T_(0),
-    outputMax_(1e3),
-    outputMin_(-1e3),
     error_(0),
     errorIntegral_(0),
     oldError_(0),
@@ -90,9 +90,9 @@ temperaturePIDControllerFvPatchScalarField
     P_(ptf.P_),
     I_(ptf.I_),
     D_(ptf.D_),
-    T_(ptf.T_),
     outputMax_(ptf.outputMax_),
     outputMin_(ptf.outputMin_),
+    T_(ptf.T_),
     error_(ptf.error_),
     errorIntegral_(ptf.errorIntegral_),
     oldError_(ptf.oldError_),
@@ -140,9 +140,9 @@ temperaturePIDControllerFvPatchScalarField
     P_(ptf.P_),
     I_(ptf.I_),
     D_(ptf.D_),
-    T_(ptf.T_),
     outputMax_(ptf.outputMax_),
     outputMin_(ptf.outputMin_),
+    T_(ptf.T_),
     error_(ptf.error_),
     errorIntegral_(ptf.errorIntegral_),
     oldError_(ptf.oldError_),
@@ -165,9 +165,9 @@ temperaturePIDControllerFvPatchScalarField
     P_(ptf.P_),
     I_(ptf.I_),
     D_(ptf.D_),
-    T_(ptf.T_),
     outputMax_(ptf.outputMax_),
     outputMin_(ptf.outputMin_),
+    T_(ptf.T_),
     error_(ptf.error_),
     errorIntegral_(ptf.errorIntegral_),
     oldError_(ptf.oldError_),
@@ -209,7 +209,6 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
 
     // Calculate output signal
     const scalar outputSignal = P_*error_ + I_*errorIntegral_ + D_*errorDifferential;
-    scalar properSignal = max(min(outputSignal, outputMax_), outputMin_);
 
     // Set patch temperature
     operator==(

@@ -28,7 +28,42 @@ Group
     grpInletBoundaryConditions
 
 Description
-    Test boundary condition
+    This boundary condition tries to maintain a specified temperature of
+    a downstream patch by regulating the temperature of itself.
+    The regulation is done by implementing a PID control algorithm.
+
+    \heading Patch usage
+
+    \table
+        Property    | Description                 | Required | Default value
+        downstream  | downstream patch name       | yes      |
+        targetT     | desired temperature         | yes      |
+        value       | initial value of temperature| yes      |
+        T           | temperature field name      | no       | T
+        phi         | flux field name             | no       | phi
+        P           | proportional gain           | yes      |
+        I           | integral gain               | yes      |
+        D           | differential gain           | yes      |
+        outputMin   | lower output signal limit   | yes      |
+        outputMax   | upper output signal limit   | yes      |
+    \endtable
+
+    Example:
+
+    \verbatim
+    wall
+    {
+        type            temperaturePIDController;
+        value           uniform 350;
+        downstream      outlet;
+        targetT         250;
+        P               5;
+        I               0.2;
+        D               0.1;
+        outputMin       -30;
+        outputMax       30;
+    }
+    \endverbatim
 
 SeeAlso
     Foam::fixedValueFvPatchField

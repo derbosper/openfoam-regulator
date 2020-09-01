@@ -40,6 +40,7 @@ boundaryField
     wall
     {
         type            temperaturePIDController;
+        value           uniform 350;
         downstream      outlet;
         targetT         250;
         P               5;
@@ -47,7 +48,6 @@ boundaryField
         D               0.1;
         outputMin       -30;
         outputMax       30;
-        value           uniform 350;
     }
 
     wedgeFront
