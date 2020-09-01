@@ -210,25 +210,39 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
         return;
     }
 
-    // Get the mesh
-    const fvMesh& mesh(patch().boundaryMesh().mesh());
-
     // Get the time step
     const scalar deltaT(db().time().deltaTValue());
 
+    // Update the old-time quantities
+    if (timeIndex_ != db().time().timeIndex())
+    {
+        timeIndex_ = db().time().timeIndex();
+        oldError_ = error_;
+    }
+
     // Get the downstream temperature field
     const fvPatch& downstreamPatch = patch().boundaryMesh()[downstreamName_];
-    const scalar downstreamAvg = patchAverage(TName_, downstreamPatch);
-    Info << "Measured temperature: " << downstreamAvg << endl;
+    const scalar downstreamTemp = patchAverage(TName_, downstreamPatch);
 
     // Get this temperature field
     const fvPatch& thisPatch = patch().boundaryMesh()[patch().name()];
-    const scalar thisAvg = patchAverage(TName_, thisPatch);
-    Info << "Wall temperature " << thisAvg << endl;
+    const scalar thisTemp = patchAverage(TName_, thisPatch);
 
-    // This is wrong but assings value OK
-    error_ = targetT_ - thisAvg;
-    operator==(thisAvg + error_);
+    // Calculate errors
+    error_ = targetT_ - downstreamTemp;
+    errorIntegral_ += 0.5*(error_ + oldError_)*deltaT;
+    const scalar errorDifferential = (error_ - oldError_) / deltaT;
+
+    // Calculate output signal
+    const scalar outputSignal = P_*error_ + I_*errorIntegral_ + D_*errorDifferential;
+
+    // Set patch temperature
+    const scalar newTemperature = thisTemp + outputSignal;
+    operator==(newTemperature);
+
+    Info << "Measured temperature: " << downstreamTemp << endl;
+    Info << "Wall temperature: " << thisTemp << endl;
+    Info << "Output signal: " << outputSignal << endl;
 
     fixedValueFvPatchField<scalar>::updateCoeffs();
 }
