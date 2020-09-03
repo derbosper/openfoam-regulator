@@ -137,11 +137,11 @@ class temperaturePIDControllerFvPatchScalarField
     // Private member functions
 
         //- Calculate the average on a face patch
-        const scalar patchAverage
+        scalar patchAverage
         (
             const word& fieldName,
             const fvPatch& patch
-        );
+        ) const;
 
 
 public:

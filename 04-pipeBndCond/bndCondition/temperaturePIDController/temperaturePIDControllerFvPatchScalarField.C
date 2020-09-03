@@ -217,7 +217,7 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
 
     Info << "Measured temperature: " << downstreamTemp << endl;
     Info << "Wall temperature: " << thisTemp << endl;
-    Info << "Output signal: " << properSignal << endl;
+    Info << "Output signal: " << max(min(outputSignal, outputMax_), outputMin_) << endl;
 
     fixedValueFvPatchField<scalar>::updateCoeffs();
 }
