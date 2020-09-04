@@ -1,4 +1,0 @@
-tempReader.C
-icoThermalFoam.C
-
-EXE = $(FOAM_APPBIN)/icoThermalFoam
