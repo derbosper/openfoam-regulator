@@ -59,7 +59,6 @@ temperaturePIDControllerFvPatchScalarField
     downstreamName_(word::null),
     targetT_(0),
     TName_("T"),
-    phiName_("phi"),
     P_(0),
     I_(0),
     D_(0),
@@ -86,7 +85,6 @@ temperaturePIDControllerFvPatchScalarField
     downstreamName_(ptf.downstreamName_),
     targetT_(ptf.targetT_),
     TName_(ptf.TName_),
-    phiName_(ptf.phiName_),
     P_(ptf.P_),
     I_(ptf.I_),
     D_(ptf.D_),
@@ -112,7 +110,6 @@ temperaturePIDControllerFvPatchScalarField
     downstreamName_(dict.lookup("downstream")),
     targetT_(dict.get<scalar>("targetT")),
     TName_(dict.lookupOrDefault<word>("T", "T")),
-    phiName_(dict.lookupOrDefault<word>("phi", "phi")),
     P_(dict.get<scalar>("P")),
     I_(dict.get<scalar>("I")),
     D_(dict.get<scalar>("D")),
@@ -136,7 +133,6 @@ temperaturePIDControllerFvPatchScalarField
     downstreamName_(ptf.downstreamName_),
     targetT_(ptf.targetT_),
     TName_(ptf.TName_),
-    phiName_(ptf.phiName_),
     P_(ptf.P_),
     I_(ptf.I_),
     D_(ptf.D_),
@@ -161,7 +157,6 @@ temperaturePIDControllerFvPatchScalarField
     downstreamName_(ptf.downstreamName_),
     targetT_(ptf.targetT_),
     TName_(ptf.TName_),
-    phiName_(ptf.phiName_),
     P_(ptf.P_),
     I_(ptf.I_),
     D_(ptf.D_),
@@ -233,7 +228,6 @@ void Foam::temperaturePIDControllerFvPatchScalarField::write
     os.writeEntry("targetT", targetT_);
     os.writeEntry("downstream", downstreamName_);
     os.writeEntryIfDifferent<word>("T", "T", TName_);
-    os.writeEntryIfDifferent<word>("phi", "phi", phiName_);
     os.writeEntry("P", P_);
     os.writeEntry("I", I_);
     os.writeEntry("D", D_);

@@ -102,9 +102,6 @@ class temperaturePIDControllerFvPatchScalarField
         //- Name of the temperature field
         const word TName_;
 
-        //- Name of the flux field
-        const word phiName_;
-
         //- Proportional gain
         const scalar P_;
 
