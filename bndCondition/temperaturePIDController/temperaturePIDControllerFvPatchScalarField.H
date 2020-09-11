@@ -40,7 +40,6 @@ Description
         targetT     | desired temperature         | yes      |
         value       | initial value of temperature| yes      |
         T           | temperature field name      | no       | T
-        phi         | flux field name             | no       | phi
         P           | proportional gain           | yes      |
         I           | integral gain               | yes      |
         D           | differential gain           | yes      |
