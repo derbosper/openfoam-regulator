@@ -15,7 +15,7 @@ lnInclude
 # IDE stuff
 .idea
 .vscode
-*.creator
+*.creator*
 openfoam-regulator.config
 openfoam-regulator.includes
 openfoam-regulator.files
