@@ -11,3 +11,7 @@
 # Wmake files
 linux64GccDPInt32Opt
 lnInclude
+
+# IDE stuff
+.idea
+.vscode
