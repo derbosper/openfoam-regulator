@@ -1,12 +1,10 @@
 #include "regulatorLibrary.H"
-#include <stdio.h>
 
 Regulator::Regulator(const fvMesh &mesh) : mesh_(mesh)
 {
-    std::cout << "Initialized!!!" << std::endl;
-    /*     // Get access to a custom dictionary
+    // Get access to a custom dictionary
     dictionary regulationDict;
-    const word dictName("regulationProperties");
+    const word dictName("regulatorProperties");
 
     // Create and input-output object - this holds the path to the dict and its name
     IOobject dictIO(
@@ -18,7 +16,7 @@ Regulator::Regulator(const fvMesh &mesh) : mesh_(mesh)
 
     // Check the if the dictionary is present and follows the OF format
     if (!dictIO.typeHeaderOk<dictionary>(true))
-        FatalErrorIn(args.executable()) << "Cannot open specified refinement dictionary "
+        FatalErrorIn("regulatorLibrary.C") << "Cannot open specified refinement dictionary "
                                         << dictName << exit(FatalError);
     else
         Info << "Dictionary OK";
@@ -34,6 +32,6 @@ Regulator::Regulator(const fvMesh &mesh) : mesh_(mesh)
     Info << "someWord: " << someWord;
     // This template method needs to know the type of the variable and can provide
     // a default value if the entry is not found in the dictionary
-    scalar someScalar(customDict.lookupOrDefault<scalar>("someScalar", 1.0));
-    Info << "someScalar: " << someScalar; */
+    scalar someScalar(regulationDict.lookupOrDefault<scalar>("someScalar", 1.0));
+    Info << "someScalar: " << someScalar;
 }
