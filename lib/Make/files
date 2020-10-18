@@ -1,3 +1,0 @@
-Regulator.C
-
-LIB = $(FOAM_USER_LIBBIN)/libRegulator

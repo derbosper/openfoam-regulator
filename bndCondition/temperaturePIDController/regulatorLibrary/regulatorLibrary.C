@@ -1,4 +1,4 @@
-#include "Regulator.H"
+#include "regulatorLibrary.H"
 #include <stdio.h>
 
 Regulator::Regulator(const fvMesh &mesh) : mesh_(mesh)

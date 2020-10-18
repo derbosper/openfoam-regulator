@@ -31,6 +31,7 @@ License
 #include "surfaceFields.H"
 #include "linear.H"
 #include "syncTools.H"
+#include "regulatorLibrary.H"
 
 // * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * * //
 
