@@ -18,19 +18,18 @@ Regulator::Regulator(const fvMesh &mesh) : mesh_(mesh)
         FatalErrorIn("regulatorLibrary.C") << "Cannot open specified refinement dictionary "
                                            << dictName << exit(FatalError);
     else
-        Info << "Dictionary OK";
+        Info << "Dictionary OK" << endl;
 
     // Initialise the dictionary object
     regulatorDict_ = IOdictionary(dictIO);
 
     // Read various pieces of information from the main part of the dictionary
-    regulatorDict_.lookup("fieldName") >> fieldName_;
-    regulatorDict_.lookup("patchName") >> patchName_;
+    fieldName_ = regulatorDict_.getWord("fieldName");
+    patchName_ = regulatorDict_.getWord("patchName");
     targetValue_ = regulatorDict_.getScalar("targetValue");
     P_ = regulatorDict_.getScalar("P");
     I_ = regulatorDict_.getScalar("I");
     D_ = regulatorDict_.getScalar("D");
-
 }
 
 scalar Regulator::read() const
