@@ -12,10 +12,5 @@
 linux64GccDPInt32Opt
 lnInclude
 
-# IDE stuff
-.idea
-.vscode
-*.creator*
-openfoam-regulator.config
-openfoam-regulator.includes
-openfoam-regulator.files
+# Explicitly include vscode config
+!.vscode/*

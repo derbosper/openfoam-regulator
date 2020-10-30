@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/../../openfoam2006/src/OpenFOAM/lnInclude",
+                "${workspaceFolder}/../../openfoam2006/src/finiteVolume/lnInclude"
+            ],
+            "defines": [],
+            "cStandard": "gnu11",
+            "compilerPath": "/usr/bin/gcc",
+            "cppStandard": "c++11"
+        }
+    ],
+    "version": 4
+}
