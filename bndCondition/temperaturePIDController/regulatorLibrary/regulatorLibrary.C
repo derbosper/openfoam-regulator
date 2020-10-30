@@ -1,6 +1,11 @@
 #include "regulatorLibrary.H"
 
-Regulator::Regulator(const fvMesh &mesh) : mesh_(mesh)
+Regulator::Regulator(const fvMesh &mesh):
+    mesh_(mesh),
+    error_(0.), // TODO change initial value to lookupOrDefault("error", 0.)
+    errorIntegral_(0.),  // TODO as above
+    oldError_(0.),
+    timeIndex_(mesh.time().timeIndex())
 {
     // Get access to a custom dictionary
     const word dictName("regulatorProperties");
@@ -32,14 +37,25 @@ Regulator::Regulator(const fvMesh &mesh) : mesh_(mesh)
     D_ = regulatorDict_.getScalar("D");
 }
 
-scalar Regulator::read() const
-{
+scalar Regulator::read()
+{       
+    Info << "Time index: " << mesh_.time().timeIndex() << endl;
     Info << "fieldName: " << fieldName_ << endl;
     Info << "patchName: " << patchName_ << endl;
     Info << "targetValue: " << targetValue_ << endl;
     Info << "P: " << P_ << endl;
     Info << "I: " << I_ << endl;
     Info << "D: " << D_ << endl;
+
+    // Get the time step
+    const scalar deltaT(mesh_.time().deltaTValue());
+
+    // Update the old-time quantities
+    if (timeIndex_ != mesh_.time().timeIndex())
+    {
+        timeIndex_ = mesh_.time().timeIndex();
+        oldError_ = error_;
+    }
 
     return 1.0;
 }

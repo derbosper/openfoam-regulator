@@ -54,8 +54,13 @@ const scalar REG_SIGNAL_MAX = 1.0;
 class Regulator
 {
 private:
+    //- Reference to mesh
     const fvMesh& mesh_;
+
+    //- Dictionary with all regulator settings
     dictionary regulatorDict_;
+
+    //- Properties read from the dictionary
     word fieldName_;
     word patchName_;
     scalar targetValue_;
@@ -63,9 +68,21 @@ private:
     scalar I_;
     scalar D_;
 
+    //- Error
+    scalar error_;
+
+    //- Error integral w.r.t. time
+    scalar errorIntegral_;
+
+    //- Old error
+    scalar oldError_;
+
+    //- Time index of the last update
+    label timeIndex_;
+
 public:
     Regulator(const fvMesh &mesh);
-    scalar read() const;
+    scalar read();
 };
 
 #endif
