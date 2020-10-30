@@ -5,8 +5,13 @@
 
 class Regulator
 {
+private:
+    const fvMesh& mesh_;
+    dictionary regulatorDict_;
+
 public:
     Regulator(const fvMesh &mesh);
-    const fvMesh& mesh_;
+    void read() const;
 };
+
 #endif

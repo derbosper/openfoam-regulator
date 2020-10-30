@@ -182,6 +182,7 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
 
     const fvMesh & mesh_(patch().boundaryMesh().mesh());
     Regulator reg(mesh_);
+    reg.read();
 
     // Get the time step
     const scalar deltaT(db().time().deltaTValue());
