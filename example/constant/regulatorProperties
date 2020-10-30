@@ -15,25 +15,11 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-someWord myWord;
-
-someScalar 0.01;
-
-someBool on;
-
-someList
-(
-    0
-    1
-    2
-);
-
-someHashTable
-(
-    key0 (0 0 0)
-    key1 (1 0 0)
-);
-
-
+fieldName T;
+patchName outlet;
+targetValue 350;
+P 5;
+I 0.2;
+D 0.1;
 
 // ************************************************************************* //

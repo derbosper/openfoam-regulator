@@ -22,19 +22,25 @@ Regulator::Regulator(const fvMesh &mesh) : mesh_(mesh)
 
     // Initialise the dictionary object
     regulatorDict_ = IOdictionary(dictIO);
+
+    // Read various pieces of information from the main part of the dictionary
+    regulatorDict_.lookup("fieldName") >> fieldName_;
+    regulatorDict_.lookup("patchName") >> patchName_;
+    targetValue_ = regulatorDict_.getScalar("targetValue");
+    P_ = regulatorDict_.getScalar("P");
+    I_ = regulatorDict_.getScalar("I");
+    D_ = regulatorDict_.getScalar("D");
+
 }
 
-void Regulator::read() const
+scalar Regulator::read() const
 {
-    // Read various pieces of information from the main part of the dictionary
+    Info << "fieldName: " << fieldName_ << endl;
+    Info << "patchName: " << patchName_ << endl;
+    Info << "targetValue: " << targetValue_ << endl;
+    Info << "P: " << P_ << endl;
+    Info << "I: " << I_ << endl;
+    Info << "D: " << D_ << endl;
 
-    // Lookup which does not need to be told what type of variable we're looking for and
-    // uses the standard C++ stringstream syntax
-    word someWord;
-    regulatorDict_.lookup("someWord") >> someWord;
-    Info << "someWord: " << someWord;
-    // This template method needs to know the type of the variable and can provide
-    // a default value if the entry is not found in the dictionary
-    scalar someScalar(regulatorDict_.lookupOrDefault<scalar>("someScalar", 1.0));
-    Info << "someScalar: " << someScalar;
+    return 1.0;
 }
