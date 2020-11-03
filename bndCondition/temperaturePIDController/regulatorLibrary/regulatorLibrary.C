@@ -54,14 +54,6 @@ Regulator::Regulator(const fvMesh &mesh)
 
 scalar Regulator::read()
 {
-    Info << "Time index: " << mesh_.time().timeIndex() << endl;
-    Info << "regulatedFieldName: " << regulatedFieldName_ << endl;
-    Info << "targetPatchName: " << targetPatchName_ << endl;
-    Info << "targetValue: " << targetValue_ << endl;
-    Info << "P: " << P_ << endl;
-    Info << "I: " << I_ << endl;
-    Info << "D: " << D_ << endl;
-
     // Get the time step
     const scalar deltaT(mesh_.time().deltaTValue());
 
@@ -86,6 +78,16 @@ scalar Regulator::read()
 
     // Return result within defined SIGNAL_MIN and SIGNAL_MAX
     const scalar result = max(min(outputSignal, REG_SIGNAL_MAX), REG_SIGNAL_MIN);
+
+    Info << "Time index: " << mesh_.time().timeIndex() << endl;
+    Info << "regulatedFieldName: " << regulatedFieldName_ << endl;
+    Info << "targetPatchName: " << targetPatchName_ << endl;
+    Info << "targetValue: " << targetValue_ << endl;
+    Info << "P: " << P_ << endl;
+    Info << "I: " << I_ << endl;
+    Info << "D: " << D_ << endl;
+    Info << "Target patch value: " << targetPatchValue << endl;
+    Info << "Error: " << error_ << endl;
 
     return result;
 }

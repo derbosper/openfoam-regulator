@@ -114,7 +114,7 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
     const scalar outputSignal = regulator_.read();
 
     // Set patch temperature
-    operator==(thisTemp + 30*outputSignal);
+    operator==(thisTemp + 10*outputSignal);
 
     Info << "Wall temperature: " << thisTemp << endl;
     Info << "Output signal: " << outputSignal << endl;
