@@ -55,7 +55,7 @@ class Regulator
 {
 private:
     //- Reference to mesh
-    const fvMesh& mesh_;
+    const fvMesh &mesh_;
 
     //- Dictionary with all regulator settings
     dictionary regulatorDict_;
@@ -80,12 +80,16 @@ private:
     //- Time index of the last update
     label timeIndex_;
 
-    //- Calculate face average of a value
-    scalar patchAverage(const word& fieldName, const fvPatch& patch) const;
-
 public:
     Regulator(const fvMesh &mesh);
+
+    const word &fieldName() const { return fieldName_; }
+
+    //- Read output signal from the regulator
     scalar read();
+
+    //- Calculate face average of a value
+    static scalar patchAverage(const word &fieldName, const fvPatch &patch);
 };
 
 #endif

@@ -31,21 +31,7 @@ License
 #include "surfaceFields.H"
 #include "linear.H"
 #include "syncTools.H"
-#include "regulatorLibrary.H"
 
-// * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * * //
-
-Foam::scalar Foam::temperaturePIDControllerFvPatchScalarField::patchAverage
-(
-    const word& fieldName,
-    const fvPatch& patch
-) const
-{
-    const fvPatchField<scalar>& field =
-            patch.lookupPatchField<volScalarField, scalar>(fieldName);
-
-    return gSum(field*patch.magSf())/gSum(patch.magSf());
-}
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
@@ -57,19 +43,7 @@ temperaturePIDControllerFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(p, iF),
-    downstreamName_(word::null),
-    targetT_(0),
-    TName_("T"),
-    P_(0),
-    I_(0),
-    D_(0),
-    outputMax_(0),
-    outputMin_(0),
-    T_(0),
-    error_(0),
-    errorIntegral_(0),
-    oldError_(0),
-    timeIndex_(db().time().timeIndex())
+    regulator_(p.boundaryMesh().mesh())
 {}
 
 
@@ -83,19 +57,7 @@ temperaturePIDControllerFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(ptf, p, iF, mapper),
-    downstreamName_(ptf.downstreamName_),
-    targetT_(ptf.targetT_),
-    TName_(ptf.TName_),
-    P_(ptf.P_),
-    I_(ptf.I_),
-    D_(ptf.D_),
-    outputMax_(ptf.outputMax_),
-    outputMin_(ptf.outputMin_),
-    T_(ptf.T_),
-    error_(ptf.error_),
-    errorIntegral_(ptf.errorIntegral_),
-    oldError_(ptf.oldError_),
-    timeIndex_(ptf.timeIndex_)
+    regulator_(ptf.regulator_)
 {}
 
 
@@ -108,19 +70,7 @@ temperaturePIDControllerFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(p, iF, dict),
-    downstreamName_(dict.lookup("downstream")),
-    targetT_(dict.get<scalar>("targetT")),
-    TName_(dict.lookupOrDefault<word>("T", "T")),
-    P_(dict.get<scalar>("P")),
-    I_(dict.get<scalar>("I")),
-    D_(dict.get<scalar>("D")),
-    outputMax_(dict.get<scalar>("outputMax")),
-    outputMin_(dict.get<scalar>("outputMin")),
-    T_(0.),
-    error_(dict.lookupOrDefault<scalar>("error", 0)),
-    errorIntegral_(dict.lookupOrDefault<scalar>("errorIntegral", 0)),
-    oldError_(0),
-    timeIndex_(db().time().timeIndex())
+    regulator_(p.boundaryMesh().mesh())
 {}
 
 
@@ -131,19 +81,7 @@ temperaturePIDControllerFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(ptf),
-    downstreamName_(ptf.downstreamName_),
-    targetT_(ptf.targetT_),
-    TName_(ptf.TName_),
-    P_(ptf.P_),
-    I_(ptf.I_),
-    D_(ptf.D_),
-    outputMax_(ptf.outputMax_),
-    outputMin_(ptf.outputMin_),
-    T_(ptf.T_),
-    error_(ptf.error_),
-    errorIntegral_(ptf.errorIntegral_),
-    oldError_(ptf.oldError_),
-    timeIndex_(ptf.timeIndex_)
+    regulator_(ptf.regulator_)
 {}
 
 
@@ -155,19 +93,7 @@ temperaturePIDControllerFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(ptf, iF),
-    downstreamName_(ptf.downstreamName_),
-    targetT_(ptf.targetT_),
-    TName_(ptf.TName_),
-    P_(ptf.P_),
-    I_(ptf.I_),
-    D_(ptf.D_),
-    outputMax_(ptf.outputMax_),
-    outputMin_(ptf.outputMin_),
-    T_(ptf.T_),
-    error_(ptf.error_),
-    errorIntegral_(ptf.errorIntegral_),
-    oldError_(ptf.oldError_),
-    timeIndex_(ptf.timeIndex_)
+    regulator_(ptf.regulator_)
 {}
 
 
@@ -180,44 +106,18 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
         return;
     }
 
-    const fvMesh & mesh_(patch().boundaryMesh().mesh());
-    Regulator reg(mesh_);
-    reg.read();
-
-    // Get the time step
-    const scalar deltaT(db().time().deltaTValue());
-
-    // Update the old-time quantities
-    if (timeIndex_ != db().time().timeIndex())
-    {
-        timeIndex_ = db().time().timeIndex();
-        oldError_ = error_;
-    }
-
-    // Get the downstream temperature field
-    const fvPatch& downstreamPatch = patch().boundaryMesh()[downstreamName_];
-    const scalar downstreamTemp = patchAverage(TName_, downstreamPatch);
-
     // Get this temperature field
     const fvPatch& thisPatch = patch().boundaryMesh()[patch().name()];
-    const scalar thisTemp = patchAverage(TName_, thisPatch);
-
-    // Calculate errors
-    error_ = targetT_ - downstreamTemp;
-    errorIntegral_ += 0.5*(error_ + oldError_)*deltaT;
-    const scalar errorDifferential = (error_ - oldError_) / deltaT;
+    const scalar thisTemp = Regulator::patchAverage(regulator_.fieldName(), thisPatch);
 
     // Calculate output signal
-    const scalar outputSignal = P_*error_ + I_*errorIntegral_ + D_*errorDifferential;
+    const scalar outputSignal = regulator_.read();
 
     // Set patch temperature
-    operator==(
-        thisTemp + max(min(outputSignal, outputMax_), outputMin_)
-    );
+    operator==(thisTemp + 30*outputSignal);
 
-    Info << "Measured temperature: " << downstreamTemp << endl;
     Info << "Wall temperature: " << thisTemp << endl;
-    Info << "Output signal: " << max(min(outputSignal, outputMax_), outputMin_) << endl;
+    Info << "Output signal: " << outputSignal << endl;
 
     fixedValueFvPatchField<scalar>::updateCoeffs();
 }
@@ -229,17 +129,6 @@ void Foam::temperaturePIDControllerFvPatchScalarField::write
 ) const
 {
     fvPatchField<scalar>::write(os);
-
-    os.writeEntry("targetT", targetT_);
-    os.writeEntry("downstream", downstreamName_);
-    os.writeEntryIfDifferent<word>("T", "T", TName_);
-    os.writeEntry("P", P_);
-    os.writeEntry("I", I_);
-    os.writeEntry("D", D_);
-    os.writeEntry("outputMax", outputMax_);
-    os.writeEntry("error", error_);
-    os.writeEntry("errorIntegral", errorIntegral_);
-
     writeEntry("value", os);
 }
 

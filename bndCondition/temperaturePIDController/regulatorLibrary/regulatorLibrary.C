@@ -2,7 +2,7 @@
 
 // * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * * //
 
-scalar Regulator::patchAverage(const word &fieldName, const fvPatch &patch) const
+scalar Regulator::patchAverage(const word &fieldName, const fvPatch &patch)
 {
     const fvPatchField<scalar> &field =
         patch.lookupPatchField<volScalarField, scalar>(fieldName);

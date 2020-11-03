@@ -77,6 +77,7 @@ SourceFiles
 
 #include "fixedValueFvPatchFields.H"
 #include "Switch.H"
+#include "regulatorLibrary.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -90,55 +91,7 @@ class temperaturePIDControllerFvPatchScalarField
 :
     public fixedValueFvPatchScalarField
 {
-    // Private data
-
-        //- Name of the downstream face zone
-        const word downstreamName_;
-
-        //- Desired temperature difference at downstream
-        const scalar targetT_;
-
-        //- Name of the temperature field
-        const word TName_;
-
-        //- Proportional gain
-        const scalar P_;
-
-        //- Integral gain
-        const scalar I_;
-
-        //- Derivative gain
-        const scalar D_;
-
-        //- Controller output signal limits
-        const scalar outputMax_;
-        const scalar outputMin_;
-
-        //- Temperature
-        scalar T_;
-
-        //- Error
-        scalar error_;
-
-        //- Error integral w.r.t. time
-        scalar errorIntegral_;
-
-        //- Old error
-        scalar oldError_;
-
-        //- Time index of the last update
-        label timeIndex_;
-
-
-    // Private member functions
-
-        //- Calculate the average on a face patch
-        scalar patchAverage
-        (
-            const word& fieldName,
-            const fvPatch& patch
-        ) const;
-
+    Regulator regulator_;
 
 public:
 
