@@ -80,6 +80,9 @@ private:
     //- Time index of the last update
     label timeIndex_;
 
+    //- Calculate face average of a value
+    scalar patchAverage(const word& fieldName, const fvPatch& patch) const;
+
 public:
     Regulator(const fvMesh &mesh);
     scalar read();
