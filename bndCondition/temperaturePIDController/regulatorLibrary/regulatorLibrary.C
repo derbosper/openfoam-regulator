@@ -16,7 +16,8 @@ Regulator::Regulator(const fvMesh &mesh)
     : mesh_(mesh),
       error_(0.),         // TODO change initial value to lookupOrDefault("error", 0.)
       errorIntegral_(0.), // TODO as above
-      oldError_(0.), timeIndex_(mesh.time().timeIndex())
+      oldError_(0.),
+      timeIndex_(mesh.time().timeIndex())
 {
     // Get access to a custom dictionary
     const word dictName("regulatorProperties");
@@ -41,8 +42,8 @@ Regulator::Regulator(const fvMesh &mesh)
     regulatorDict_ = IOdictionary(dictIO);
 
     // Read various pieces of information from the main part of the dictionary
-    fieldName_ = regulatorDict_.getWord("fieldName");
-    patchName_ = regulatorDict_.getWord("patchName");
+    regulatedFieldName_ = regulatorDict_.getWord("fieldName");
+    targetPatchName_ = regulatorDict_.getWord("patchName");
     targetValue_ = regulatorDict_.getScalar("targetValue");
     P_ = regulatorDict_.getScalar("P");
     I_ = regulatorDict_.getScalar("I");
@@ -54,8 +55,8 @@ Regulator::Regulator(const fvMesh &mesh)
 scalar Regulator::read()
 {
     Info << "Time index: " << mesh_.time().timeIndex() << endl;
-    Info << "fieldName: " << fieldName_ << endl;
-    Info << "patchName: " << patchName_ << endl;
+    Info << "regulatedFieldName: " << regulatedFieldName_ << endl;
+    Info << "targetPatchName: " << targetPatchName_ << endl;
     Info << "targetValue: " << targetValue_ << endl;
     Info << "P: " << P_ << endl;
     Info << "I: " << I_ << endl;
@@ -72,8 +73,8 @@ scalar Regulator::read()
     }
 
     // Get the target patch average field value
-    const fvPatch &targetPatch = mesh_.boundary()[patchName_];
-    const scalar targetPatchValue = patchAverage(fieldName_, targetPatch);
+    const fvPatch &targetPatch = mesh_.boundary()[targetPatchName_];
+    const scalar targetPatchValue = patchAverage(regulatedFieldName_, targetPatch);
 
     // Calculate errors
     error_ = targetValue_ - targetPatchValue;

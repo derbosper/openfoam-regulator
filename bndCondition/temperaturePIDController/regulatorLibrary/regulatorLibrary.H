@@ -54,36 +54,23 @@ const scalar REG_SIGNAL_MAX = 1.0;
 class Regulator
 {
 private:
-    //- Reference to mesh
-    const fvMesh &mesh_;
-
-    //- Dictionary with all regulator settings
-    dictionary regulatorDict_;
-
-    //- Properties read from the dictionary
-    word fieldName_;
-    word patchName_;
-    scalar targetValue_;
-    scalar P_;
-    scalar I_;
-    scalar D_;
-
-    //- Error
-    scalar error_;
-
-    //- Error integral w.r.t. time
-    scalar errorIntegral_;
-
-    //- Old error
-    scalar oldError_;
-
-    //- Time index of the last update
-    label timeIndex_;
+    const fvMesh& mesh_; // Reference to the system mesh
+    dictionary regulatorDict_; // Dictionary with all regulator settings
+    word regulatedFieldName_; // Controlled process variable scalar field 
+    scalar targetValue_; // Reference value used by the control loop
+    word targetPatchName_; // Name of a patch from which the process value is read
+    scalar P_; // Proportional control term
+    scalar I_; // Integral control term
+    scalar D_; // Differential control term
+    scalar error_; // Measured error
+    scalar errorIntegral_; // Error integral w.r.t. time
+    scalar oldError_; // Old error
+    label timeIndex_; // Time index of the last update
 
 public:
     Regulator(const fvMesh &mesh);
 
-    const word &fieldName() const { return fieldName_; }
+    const word &fieldName() const { return regulatedFieldName_; }
 
     //- Read output signal from the regulator
     scalar read();
