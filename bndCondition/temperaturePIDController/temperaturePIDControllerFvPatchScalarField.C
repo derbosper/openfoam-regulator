@@ -43,8 +43,7 @@ temperaturePIDControllerFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(p, iF),
-    regulator_(p.boundaryMesh().mesh()),
-    m_(0)
+    regulator_(p.boundaryMesh().mesh())
 {}
 
 
@@ -58,8 +57,7 @@ temperaturePIDControllerFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(ptf, p, iF, mapper),
-    regulator_(ptf.regulator_),
-    m_(ptf.m_)
+    regulator_(ptf.regulator_)
 {}
 
 
@@ -72,8 +70,7 @@ temperaturePIDControllerFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(p, iF, dict),
-    regulator_(p.boundaryMesh().mesh()),
-    m_(0)
+    regulator_(p.boundaryMesh().mesh())
 {}
 
 
@@ -84,8 +81,7 @@ temperaturePIDControllerFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(ptf),
-    regulator_(ptf.regulator_),
-    m_(ptf.m_)
+    regulator_(ptf.regulator_)
 {}
 
 
@@ -97,8 +93,7 @@ temperaturePIDControllerFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(ptf, iF),
-    regulator_(ptf.regulator_),
-    m_(ptf.m_)
+    regulator_(ptf.regulator_)
 {}
 
 
@@ -118,14 +113,11 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
     // Calculate output signal
     const scalar outputSignal = regulator_.read();
 
-    // Set patch temperature
-    m_ = m_*0.2 + 10*outputSignal;
-    Info << "Wall gain: " << m_ << endl;
-
-    operator==(thisTemp + m_);
+    const scalar controlSignal = 50*round(outputSignal);
+    operator==(350 + controlSignal);
 
     Info << "Wall temperature: " << thisTemp << endl;
-    Info << "Output signal: " << outputSignal << endl;
+    Info << "Control signal: " << controlSignal << endl;
 
     fixedValueFvPatchField<scalar>::updateCoeffs();
 }
