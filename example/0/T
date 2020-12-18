@@ -41,13 +41,6 @@ boundaryField
     {
         type            temperaturePIDController;
         value           uniform 350;
-        downstream      outlet;
-        targetT         250;
-        P               5;
-        I               0.2;
-        D               0.1;
-        outputMin       -30;
-        outputMax       30;
     }
 
     wedgeFront

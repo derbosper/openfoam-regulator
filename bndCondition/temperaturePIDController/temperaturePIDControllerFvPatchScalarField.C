@@ -24,13 +24,8 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "temperaturePIDControllerFvPatchScalarField.H"
-#include "pressurePIDControlInletVelocityFvPatchVectorField.H"
 #include "volFields.H"
 #include "addToRunTimeSelectionTable.H"
-#include "fvPatchFieldMapper.H"
-#include "surfaceFields.H"
-#include "linear.H"
-#include "syncTools.H"
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
