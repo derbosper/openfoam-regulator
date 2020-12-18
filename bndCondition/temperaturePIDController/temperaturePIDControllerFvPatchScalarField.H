@@ -92,6 +92,7 @@ class temperaturePIDControllerFvPatchScalarField
     public fixedValueFvPatchScalarField
 {
     Regulator regulator_;
+    scalar m_; // temperature inertia momentum
 
 public:
 
