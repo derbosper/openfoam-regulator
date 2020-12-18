@@ -66,10 +66,10 @@ scalar Regulator::read()
 
     // Get the target patch average field value
     const fvPatch &targetPatch = mesh_.boundary()[targetPatchName_];
-    const scalar currentTargetPatchValue = patchAverage(regulatedFieldName_, targetPatch);
+    const scalar currentRegulatedPatchValue = patchAverage(regulatedFieldName_, targetPatch);
 
     // Calculate errors
-    error_ = targetValue_ - currentTargetPatchValue;
+    error_ = targetValue_ - currentRegulatedPatchValue;
     errorIntegral_ += 0.5*(error_ + oldError_)*deltaT;
     const scalar errorDifferential = (error_ - oldError_) / deltaT;
 
@@ -87,7 +87,7 @@ scalar Regulator::read()
     Info << "Kp: " << Kp_ << endl;
     Info << "Ti: " << Ti_ << endl;
     Info << "Td: " << Td_ << endl;
-    Info << "currentTargetPatchValue: " << currentTargetPatchValue << endl;
+    Info << "currentRegulatedPatchValue: " << currentRegulatedPatchValue << endl;
     Info << "Error: " << error_ << endl;
 
     return result;
