@@ -36,9 +36,9 @@ Description
         patchName       | name of measurement patch   | yes      |
         fieldName       | measured field name         | yes       |
         targetValue     | desired value               | yes      |
-        P               | proportional gain           | yes      |
-        I               | integral gain               | yes      |
-        D               | differential gain           | yes      |
+        Kp              | proportional gain           | yes      |
+        Ti              | integral gain               | yes      |
+        Td              | differential gain           | yes      |
     \endtable
 
 \*---------------------------------------------------------------------------*/
@@ -59,9 +59,9 @@ private:
     word regulatedFieldName_; // Controlled process variable scalar field 
     scalar targetValue_; // Reference value used by the control loop
     word targetPatchName_; // Name of a patch from which the process value is read
-    scalar P_; // Proportional control term
-    scalar I_; // Integral control term
-    scalar D_; // Differential control term
+    scalar Kp_; // Proportional control term
+    scalar Ti_; // Integral control term
+    scalar Td_; // Differential control term
     scalar error_; // Measured error
     scalar errorIntegral_; // Error integral w.r.t. time
     scalar oldError_; // Old error
