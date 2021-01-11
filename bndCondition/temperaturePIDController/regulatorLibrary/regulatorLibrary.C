@@ -52,6 +52,14 @@ Regulator::Regulator(const fvMesh &mesh)
 
 // * * * * * * * * * * * * Public Member Functions  * * * * * * * * * * * * *//
 
+scalar Regulator::probeTargetPatch() const
+{
+    // Get the target patch average field value
+    const fvPatch &targetPatch = mesh_.boundary()[targetPatchName_];
+    const scalar result = patchAverage(regulatedFieldName_, targetPatch);
+    return result;
+}
+
 scalar Regulator::read()
 {
     // Get the time step
@@ -65,8 +73,7 @@ scalar Regulator::read()
     }
 
     // Get the target patch average field value
-    const fvPatch &targetPatch = mesh_.boundary()[targetPatchName_];
-    const scalar currentRegulatedPatchValue = patchAverage(regulatedFieldName_, targetPatch);
+    const scalar currentRegulatedPatchValue = probeTargetPatch();
 
     // Calculate errors
     error_ = targetValue_ - currentRegulatedPatchValue;

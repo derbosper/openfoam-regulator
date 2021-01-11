@@ -75,6 +75,9 @@ public:
     //- Read output signal from the regulator
     scalar read();
 
+    //- Read value of the regulated field from regulation target patch
+    scalar probeTargetPatch() const;
+
     //- Calculate face average of a value
     static scalar patchAverage(const word &fieldName, const fvPatch &patch);
 };
