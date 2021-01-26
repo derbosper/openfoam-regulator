@@ -101,15 +101,15 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
         return;
     }
 
-    // Get this temperature field
+    // Get temperature of this boundary
     const fvPatch& thisPatch = patch().boundaryMesh()[patch().name()];
     const scalar thisTemp = Regulator::patchAverage(regulator_.fieldName(), thisPatch);
 
     // Calculate output signal
     const scalar outputSignal = regulator_.read();
 
-    const scalar controlSignal = 50*round(outputSignal);
-    operator==(350 + controlSignal);
+    const scalar controlSignal = 50*sign(outputSignal);
+    operator==(thisTemp + controlSignal);
 
     Info << "Wall temperature: " << thisTemp << endl;
     Info << "Control signal: " << controlSignal << endl;
