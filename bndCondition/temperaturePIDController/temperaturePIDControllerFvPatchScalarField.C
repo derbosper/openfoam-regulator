@@ -108,6 +108,9 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
     // Calculate output signal
     const scalar outputSignal = regulator_.read();
 
+    // Adjust the temperature of a wall based on output signal of the regulator
+    // Assume that the temperature change is 50*sign(signal) for the testing
+    // purposes, with no physical meaning
     const scalar controlSignal = 50*sign(outputSignal);
     operator==(thisTemp + controlSignal);
 
