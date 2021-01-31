@@ -1,3 +1,4 @@
 wmake libso bndCondition/temperaturePIDController/regulatorLibrary/
 wmake libso bndCondition/temperaturePIDController/
 wmake solver/icoThermalFoam
+wmake solver/simpleThermFoam
