@@ -1,4 +1,5 @@
-wclean libso bndCondition/temperaturePIDController/regulatorLibrary/
-wclean libso bndCondition/temperaturePIDController/
-wclean solver/icoThermalFoam
-wclean solver/simpleThermFoam
+wclean bndConditions/temperaturePIDController/regulatorLibrary/
+wclean bndConditions/temperaturePIDController/
+wclean bndConditions/temperaturePIDFixedGradient/
+wclean solvers/icoThermalFoam
+wclean solvers/simpleThermFoam
