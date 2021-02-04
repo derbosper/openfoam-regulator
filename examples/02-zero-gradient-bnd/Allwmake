@@ -3,3 +3,4 @@
 cwd=$(dirname $(realpath $0))
 
 wmake $cwd/solver/simpleThermFoam
+wmake $cwd/bndCondition/temperaturePIDFixedGradient
