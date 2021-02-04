@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cwd=$(dirname $(realpath $0))
+
+wclean $cwd/bndCondition/temperaturePIDFixedGradient
+wclean $cwd/solver/simpleThermFoam

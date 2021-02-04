@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cwd=$(dirname $(realpath $0))
+
+wmake $cwd/bndCondition/temperaturePIDController
+wmake $cwd/solver/icoThermalFoam
