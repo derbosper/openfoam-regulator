@@ -2,5 +2,4 @@
 
 cwd=$(dirname $(realpath $0))
 
-wclean $cwd/solver/simpleThermFoam
 wclean $cwd/bndCondition/temperaturePIDFixedGradient

@@ -1,1 +1,3 @@
 wmake libso regulatorLibrary/
+wmake solvers/icoThermalFoam/
+wmake solvers/simpleThermFoam/

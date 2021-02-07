@@ -3,4 +3,3 @@
 cwd=$(dirname $(realpath $0))
 
 wclean $cwd/bndCondition/temperaturePIDController
-wclean $cwd/solver/icoThermalFoam
