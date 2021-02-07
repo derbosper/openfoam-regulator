@@ -26,7 +26,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "temperaturePIDFixedGradientFvPatchScalarField.H"
+#include "convectiveHeatFluxFvPatchScalarField.H"
 #include "addToRunTimeSelectionTable.H"
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
@@ -34,7 +34,7 @@ License
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
+Foam::convectiveHeatFluxFvPatchScalarField::convectiveHeatFluxFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
@@ -45,9 +45,9 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 {}
 
 
-Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
+Foam::convectiveHeatFluxFvPatchScalarField::convectiveHeatFluxFvPatchScalarField
 (
-    const temperaturePIDFixedGradientFvPatchScalarField& ptf,
+    const convectiveHeatFluxFvPatchScalarField& ptf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
@@ -58,7 +58,7 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 {}
 
 
-Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
+Foam::convectiveHeatFluxFvPatchScalarField::convectiveHeatFluxFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
@@ -73,9 +73,9 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 }
 
 
-Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
+Foam::convectiveHeatFluxFvPatchScalarField::convectiveHeatFluxFvPatchScalarField
 (
-    const temperaturePIDFixedGradientFvPatchScalarField& tppsf
+    const convectiveHeatFluxFvPatchScalarField& tppsf
 )
 :
     fixedGradientFvPatchScalarField(tppsf),
@@ -83,9 +83,9 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 {}
 
 
-Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
+Foam::convectiveHeatFluxFvPatchScalarField::convectiveHeatFluxFvPatchScalarField
 (
-    const temperaturePIDFixedGradientFvPatchScalarField& tppsf,
+    const convectiveHeatFluxFvPatchScalarField& tppsf,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
@@ -96,7 +96,7 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
+void Foam::convectiveHeatFluxFvPatchScalarField::updateCoeffs()
 {
     if (updated())
     {
@@ -118,7 +118,7 @@ void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
 }
 
 
-void Foam::temperaturePIDFixedGradientFvPatchScalarField::write(Ostream& os) const
+void Foam::convectiveHeatFluxFvPatchScalarField::write(Ostream& os) const
 {
     fvPatchScalarField::write(os);
     os.writeEntryIfDifferent<word>("T", "T", TName_);
@@ -133,7 +133,7 @@ namespace Foam
     makePatchTypeField
     (
         fvPatchScalarField,
-        temperaturePIDFixedGradientFvPatchScalarField
+        convectiveHeatFluxFvPatchScalarField
     );
 }
 

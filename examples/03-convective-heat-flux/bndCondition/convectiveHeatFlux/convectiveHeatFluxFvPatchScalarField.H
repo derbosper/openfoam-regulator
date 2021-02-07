@@ -24,7 +24,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::temperaturePIDFixedGradientFvPatchScalarField
+    Foam::convectiveHeatFluxFvPatchScalarField
 
 Group
     grpInletBoundaryConditions grpOutletBoundaryConditions
@@ -46,22 +46,22 @@ Usage
     \verbatim
     <patchName>
     {
-        type            temperaturePIDFixedGradient;
+        type            convectiveHeatFlux;
         gamma           1.4;
         T0              uniform 800;
     }
     \endverbatim
 
 SourceFiles
-    temperaturePIDFixedGradientFvPatchScalarField.C
+    convectiveHeatFluxFvPatchScalarField.C
 
 See also
     Foam::fixedValueFvPatchField
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef temperaturePIDFixedGradientFvPatchScalarField_H
-#define temperaturePIDFixedGradientFvPatchScalarField_H
+#ifndef convectiveHeatFluxFvPatchScalarField_H
+#define convectiveHeatFluxFvPatchScalarField_H
 
 #include "fixedGradientFvPatchFields.H"
 
@@ -71,10 +71,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-             Class temperaturePIDFixedGradientFvPatchScalarField Declaration
+             Class convectiveHeatFluxFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class temperaturePIDFixedGradientFvPatchScalarField
+class convectiveHeatFluxFvPatchScalarField
 :
     public fixedGradientFvPatchScalarField
 {
@@ -86,40 +86,40 @@ class temperaturePIDFixedGradientFvPatchScalarField
 public:
 
     //- Runtime type information
-    TypeName("temperaturePIDFixedGradient");
+    TypeName("convectiveHeatFlux");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        temperaturePIDFixedGradientFvPatchScalarField
+        convectiveHeatFluxFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        temperaturePIDFixedGradientFvPatchScalarField
+        convectiveHeatFluxFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const dictionary&
         );
 
-        //- Construct by mapping given temperaturePIDFixedGradientFvPatchScalarField
+        //- Construct by mapping given convectiveHeatFluxFvPatchScalarField
         //  onto a new patch
-        temperaturePIDFixedGradientFvPatchScalarField
+        convectiveHeatFluxFvPatchScalarField
         (
-            const temperaturePIDFixedGradientFvPatchScalarField&,
+            const convectiveHeatFluxFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Construct as copy
-        temperaturePIDFixedGradientFvPatchScalarField
+        convectiveHeatFluxFvPatchScalarField
         (
-            const temperaturePIDFixedGradientFvPatchScalarField&
+            const convectiveHeatFluxFvPatchScalarField&
         );
 
         //- Construct and return a clone
@@ -127,14 +127,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new temperaturePIDFixedGradientFvPatchScalarField(*this)
+                new convectiveHeatFluxFvPatchScalarField(*this)
             );
         }
 
         //- Construct as copy setting internal field reference
-        temperaturePIDFixedGradientFvPatchScalarField
+        convectiveHeatFluxFvPatchScalarField
         (
-            const temperaturePIDFixedGradientFvPatchScalarField&,
+            const convectiveHeatFluxFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -146,7 +146,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new temperaturePIDFixedGradientFvPatchScalarField(*this, iF)
+                new convectiveHeatFluxFvPatchScalarField(*this, iF)
             );
         }
 
