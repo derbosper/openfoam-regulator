@@ -33,7 +33,7 @@ boundaryField
 
     wall
     {
-        type            temperaturePIDFixedGradient;
+        type            baseFixedGradient;
     }
 
     axis

@@ -26,7 +26,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "temperaturePIDFixedGradientFvPatchScalarField.H"
+#include "baseFixedGradientFvPatchScalarField.H"
 #include "addToRunTimeSelectionTable.H"
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
@@ -34,7 +34,7 @@ License
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
+Foam::baseFixedGradientFvPatchScalarField::baseFixedGradientFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
@@ -44,9 +44,9 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 {}
 
 
-Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
+Foam::baseFixedGradientFvPatchScalarField::baseFixedGradientFvPatchScalarField
 (
-    const temperaturePIDFixedGradientFvPatchScalarField& ptf,
+    const baseFixedGradientFvPatchScalarField& ptf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
@@ -56,7 +56,7 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 {}
 
 
-Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
+Foam::baseFixedGradientFvPatchScalarField::baseFixedGradientFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
@@ -70,18 +70,18 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 }
 
 
-Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
+Foam::baseFixedGradientFvPatchScalarField::baseFixedGradientFvPatchScalarField
 (
-    const temperaturePIDFixedGradientFvPatchScalarField& tppsf
+    const baseFixedGradientFvPatchScalarField& tppsf
 )
 :
     fixedGradientFvPatchScalarField(tppsf)
 {}
 
 
-Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
+Foam::baseFixedGradientFvPatchScalarField::baseFixedGradientFvPatchScalarField
 (
-    const temperaturePIDFixedGradientFvPatchScalarField& tppsf,
+    const baseFixedGradientFvPatchScalarField& tppsf,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
@@ -91,7 +91,7 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
+void Foam::baseFixedGradientFvPatchScalarField::updateCoeffs()
 {
     if (updated())
     {
@@ -104,7 +104,7 @@ void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
 }
 
 
-void Foam::temperaturePIDFixedGradientFvPatchScalarField::write(Ostream& os) const
+void Foam::baseFixedGradientFvPatchScalarField::write(Ostream& os) const
 {
     fvPatchScalarField::write(os);
     writeEntry("value", os);
@@ -118,7 +118,7 @@ namespace Foam
     makePatchTypeField
     (
         fvPatchScalarField,
-        temperaturePIDFixedGradientFvPatchScalarField
+        baseFixedGradientFvPatchScalarField
     );
 }
 

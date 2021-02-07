@@ -24,7 +24,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::temperaturePIDFixedGradientFvPatchScalarField
+    Foam::baseFixedGradientFvPatchScalarField
 
 Group
     grpInletBoundaryConditions grpOutletBoundaryConditions
@@ -46,22 +46,22 @@ Usage
     \verbatim
     <patchName>
     {
-        type            temperaturePIDFixedGradient;
+        type            baseFixedGradient;
         gamma           1.4;
         T0              uniform 800;
     }
     \endverbatim
 
 SourceFiles
-    temperaturePIDFixedGradientFvPatchScalarField.C
+    baseFixedGradientFvPatchScalarField.C
 
 See also
     Foam::fixedValueFvPatchField
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef temperaturePIDFixedGradientFvPatchScalarField_H
-#define temperaturePIDFixedGradientFvPatchScalarField_H
+#ifndef baseFixedGradientFvPatchScalarField_H
+#define baseFixedGradientFvPatchScalarField_H
 
 #include "fixedGradientFvPatchFields.H"
 
@@ -71,50 +71,50 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-             Class temperaturePIDFixedGradientFvPatchScalarField Declaration
+             Class baseFixedGradientFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class temperaturePIDFixedGradientFvPatchScalarField
+class baseFixedGradientFvPatchScalarField
 :
     public fixedGradientFvPatchScalarField
 {
 public:
 
     //- Runtime type information
-    TypeName("temperaturePIDFixedGradient");
+    TypeName("baseFixedGradient");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        temperaturePIDFixedGradientFvPatchScalarField
+        baseFixedGradientFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        temperaturePIDFixedGradientFvPatchScalarField
+        baseFixedGradientFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const dictionary&
         );
 
-        //- Construct by mapping given temperaturePIDFixedGradientFvPatchScalarField
+        //- Construct by mapping given baseFixedGradientFvPatchScalarField
         //  onto a new patch
-        temperaturePIDFixedGradientFvPatchScalarField
+        baseFixedGradientFvPatchScalarField
         (
-            const temperaturePIDFixedGradientFvPatchScalarField&,
+            const baseFixedGradientFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Construct as copy
-        temperaturePIDFixedGradientFvPatchScalarField
+        baseFixedGradientFvPatchScalarField
         (
-            const temperaturePIDFixedGradientFvPatchScalarField&
+            const baseFixedGradientFvPatchScalarField&
         );
 
         //- Construct and return a clone
@@ -122,14 +122,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new temperaturePIDFixedGradientFvPatchScalarField(*this)
+                new baseFixedGradientFvPatchScalarField(*this)
             );
         }
 
         //- Construct as copy setting internal field reference
-        temperaturePIDFixedGradientFvPatchScalarField
+        baseFixedGradientFvPatchScalarField
         (
-            const temperaturePIDFixedGradientFvPatchScalarField&,
+            const baseFixedGradientFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -141,7 +141,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new temperaturePIDFixedGradientFvPatchScalarField(*this, iF)
+                new baseFixedGradientFvPatchScalarField(*this, iF)
             );
         }
 
