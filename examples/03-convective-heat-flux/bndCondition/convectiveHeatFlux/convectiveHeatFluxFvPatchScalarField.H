@@ -35,11 +35,7 @@ Description
 Usage
     \table
         Property     | Description             | Required    | Default value
-        U            | Velocity field name     | no          | U
-        phi          | Flux field name         | no          | phi
-        psi          | Compressibility field name | no       | thermo:psi
-        gamma        | ratio of specific heats (Cp/Cv) | yes |
-        T0           | total temperature       | yes         |
+        T            | Temperature field name  | no          | T
     \endtable
 
     Example of the boundary condition specification:
