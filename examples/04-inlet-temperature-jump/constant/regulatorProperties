@@ -17,7 +17,7 @@ FoamFile
 
 fieldName T;
 patchName outlet;
-targetValue 80;
+targetValue 25;
 Kp 2;
 Ti 1e9;
 Td 0.00;
