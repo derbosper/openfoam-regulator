@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     icoFoam;
+application     icoThermFoam;
 
 startFrom       startTime;
 
@@ -46,6 +46,6 @@ timePrecision   6;
 runTimeModifiable true;
 
 // include boundary condition
-libs ("libtemperaturePIDController.so");
+libs ("libtemperaturePIDFixedValue.so");
 
 // ************************************************************************* //

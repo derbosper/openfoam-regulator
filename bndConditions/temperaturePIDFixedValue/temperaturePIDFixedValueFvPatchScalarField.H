@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::temperaturePIDControllerFvPatchScalarField
+    Foam::temperaturePIDFixedValueFvPatchScalarField
 
 Group
     grpInletBoundaryConditions
@@ -52,7 +52,7 @@ Description
     \verbatim
     wall
     {
-        type            temperaturePIDController;
+        type            temperaturePIDFixedValue;
         value           uniform 350;
         downstream      outlet;
         targetT         250;
@@ -68,12 +68,12 @@ SeeAlso
     Foam::fixedValueFvPatchField
 
 SourceFiles
-    temperaturePIDControllerFvPatchScalarField.C
+    temperaturePIDFixedValueFvPatchScalarField.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef temperaturePIDControllerFvPatchScalarField_H
-#define temperaturePIDControllerFvPatchScalarField_H
+#ifndef temperaturePIDFixedValueFvPatchScalarField_H
+#define temperaturePIDFixedValueFvPatchScalarField_H
 
 #include "fixedValueFvPatchFields.H"
 #include "Switch.H"
@@ -84,10 +84,10 @@ SourceFiles
 namespace Foam
 {
 /*---------------------------------------------------------------------------*\
-     Class temperaturePIDControllerFvPatchScalarField Declaration
+     Class temperaturePIDFixedValueFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class temperaturePIDControllerFvPatchScalarField
+class temperaturePIDFixedValueFvPatchScalarField
 :
     public fixedValueFvPatchScalarField
 {
@@ -96,20 +96,20 @@ class temperaturePIDControllerFvPatchScalarField
 public:
 
    //- Runtime type information
-   TypeName("temperaturePIDController");
+   TypeName("temperaturePIDFixedValue");
 
 
    // Constructors
 
         //- Construct from patch and internal field
-        temperaturePIDControllerFvPatchScalarField
+        temperaturePIDFixedValueFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        temperaturePIDControllerFvPatchScalarField
+        temperaturePIDFixedValueFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
@@ -119,18 +119,18 @@ public:
         //- Construct by mapping given
         //  flowRateInletVelocityFvPatchScalarField
         //  onto a new patch
-        temperaturePIDControllerFvPatchScalarField
+        temperaturePIDFixedValueFvPatchScalarField
         (
-            const temperaturePIDControllerFvPatchScalarField&,
+            const temperaturePIDFixedValueFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Construct as copy
-        temperaturePIDControllerFvPatchScalarField
+        temperaturePIDFixedValueFvPatchScalarField
         (
-            const temperaturePIDControllerFvPatchScalarField&
+            const temperaturePIDFixedValueFvPatchScalarField&
         );
 
         //- Construct and return a clone
@@ -138,14 +138,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new temperaturePIDControllerFvPatchScalarField ( *this )
+                new temperaturePIDFixedValueFvPatchScalarField ( *this )
             );
         }
 
         //- Construct as copy setting internal field reference
-        temperaturePIDControllerFvPatchScalarField
+        temperaturePIDFixedValueFvPatchScalarField
         (
-            const temperaturePIDControllerFvPatchScalarField&,
+            const temperaturePIDFixedValueFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -157,7 +157,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new temperaturePIDControllerFvPatchScalarField ( *this, iF )
+                new temperaturePIDFixedValueFvPatchScalarField ( *this, iF )
             );
         }
 

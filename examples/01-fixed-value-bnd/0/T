@@ -39,7 +39,7 @@ boundaryField
 
     wall
     {
-        type            temperaturePIDController;
+        type            temperaturePIDFixedValue;
         value           uniform 350;
     }
 

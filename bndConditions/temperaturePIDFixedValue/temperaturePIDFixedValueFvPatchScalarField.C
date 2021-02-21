@@ -23,15 +23,15 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "temperaturePIDControllerFvPatchScalarField.H"
+#include "temperaturePIDFixedValueFvPatchScalarField.H"
 #include "volFields.H"
 #include "addToRunTimeSelectionTable.H"
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::temperaturePIDControllerFvPatchScalarField::
-temperaturePIDControllerFvPatchScalarField
+Foam::temperaturePIDFixedValueFvPatchScalarField::
+temperaturePIDFixedValueFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
@@ -42,10 +42,10 @@ temperaturePIDControllerFvPatchScalarField
 {}
 
 
-Foam::temperaturePIDControllerFvPatchScalarField::
-temperaturePIDControllerFvPatchScalarField
+Foam::temperaturePIDFixedValueFvPatchScalarField::
+temperaturePIDFixedValueFvPatchScalarField
 (
-    const temperaturePIDControllerFvPatchScalarField& ptf,
+    const temperaturePIDFixedValueFvPatchScalarField& ptf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
@@ -56,8 +56,8 @@ temperaturePIDControllerFvPatchScalarField
 {}
 
 
-Foam::temperaturePIDControllerFvPatchScalarField::
-temperaturePIDControllerFvPatchScalarField
+Foam::temperaturePIDFixedValueFvPatchScalarField::
+temperaturePIDFixedValueFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
@@ -69,10 +69,10 @@ temperaturePIDControllerFvPatchScalarField
 {}
 
 
-Foam::temperaturePIDControllerFvPatchScalarField::
-temperaturePIDControllerFvPatchScalarField
+Foam::temperaturePIDFixedValueFvPatchScalarField::
+temperaturePIDFixedValueFvPatchScalarField
 (
-    const temperaturePIDControllerFvPatchScalarField& ptf
+    const temperaturePIDFixedValueFvPatchScalarField& ptf
 )
 :
     fixedValueFvPatchField<scalar>(ptf),
@@ -80,10 +80,10 @@ temperaturePIDControllerFvPatchScalarField
 {}
 
 
-Foam::temperaturePIDControllerFvPatchScalarField::
-temperaturePIDControllerFvPatchScalarField
+Foam::temperaturePIDFixedValueFvPatchScalarField::
+temperaturePIDFixedValueFvPatchScalarField
 (
-    const temperaturePIDControllerFvPatchScalarField& ptf,
+    const temperaturePIDFixedValueFvPatchScalarField& ptf,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
@@ -94,7 +94,7 @@ temperaturePIDControllerFvPatchScalarField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
+void Foam::temperaturePIDFixedValueFvPatchScalarField::updateCoeffs()
 {
     if (updated())
     {
@@ -121,7 +121,7 @@ void Foam::temperaturePIDControllerFvPatchScalarField::updateCoeffs()
 }
 
 
-void Foam::temperaturePIDControllerFvPatchScalarField::write
+void Foam::temperaturePIDFixedValueFvPatchScalarField::write
 (
     Ostream& os
 ) const
@@ -138,7 +138,7 @@ namespace Foam
    makePatchTypeField
    (
        fvPatchScalarField,
-       temperaturePIDControllerFvPatchScalarField
+       temperaturePIDFixedValueFvPatchScalarField
    );
 }
 
