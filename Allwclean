@@ -1,3 +1,11 @@
+#!/bin/bash
+
 wclean libso regulatorLibrary/
-wclean solvers/icoThermalFoam/
-wclean solvers/simpleThermFoam/
+
+for directory in ./bndConditions/*; do
+    wclean "$directory"
+done
+
+for directory in ./solvers/*; do
+    wclean "$directory"
+done

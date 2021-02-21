@@ -1,4 +1,11 @@
+#!/bin/bash
+
 wmake libso regulatorLibrary/
-wmake solvers/icoThermFoam/
-wmake solvers/pisoThermFoam/
-wmake solvers/simpleThermFoam/
+
+for directory in ./bndConditions/*; do
+    wmake "$directory"
+done
+
+for directory in ./solvers/*; do
+    wmake "$directory"
+done
