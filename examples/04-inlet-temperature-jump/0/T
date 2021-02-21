@@ -22,8 +22,18 @@ boundaryField
 {
     inlet
     {
-        type            fixedValue;
-        value           uniform 20;
+        type            uniformFixedValue;
+        uniformValue
+        {
+            type        expression;
+            variables
+            (
+                "start = 3"             // when temperature jumps [s]
+                "temperature = 40"     // new inlet temperature [degC]
+            );
+            // arg() == time
+            expression  #{ (arg() < start) ? 20 : temperature #};
+        }
     }
 
     outlet
@@ -33,7 +43,8 @@ boundaryField
 
     wall
     {
-        type            temperaturePIDFixedGradient;
+        type            fixedGradient;
+        gradient        uniform 0;
     }
 
     axis

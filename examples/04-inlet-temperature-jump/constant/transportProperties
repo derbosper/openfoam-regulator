@@ -18,8 +18,7 @@ FoamFile
 transportModel  Newtonian;
 
 nu              1e-05;
-a               0.3e-5;  // for water at 300K it's approx. 0.15e-6
-k               k       [1 1 -3 -1 0 0 0 ] 0.6;
+a               0.5e-6;  // for water at 300K it's approx. 0.15e-7
 rho             rho     [1 -3 0 0 0 0 0 ] 1000;
 
 // ************************************************************************* //
