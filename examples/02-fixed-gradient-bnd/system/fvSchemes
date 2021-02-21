@@ -17,12 +17,13 @@ FoamFile
 
 ddtSchemes
 {
-    default         steadyState;
+    default         Euler;
 }
 
 gradSchemes
 {
     default         Gauss linear;
+    grad(p)         Gauss linear;
 }
 
 divSchemes

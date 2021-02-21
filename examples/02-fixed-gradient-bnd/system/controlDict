@@ -15,21 +15,21 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     simpleFoam;
+application     pisoThermFoam;
 
-startFrom       latestTime;
+startFrom       startTime;
 
 startTime       0;
 
 stopAt          endTime;
 
-endTime         1000;
+endTime         50;
 
-deltaT          1;
+deltaT          0.01;
 
 writeControl    timeStep;
 
-writeInterval   50;
+writeInterval   500;
 
 purgeWrite      0;
 
