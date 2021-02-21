@@ -26,7 +26,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "baseFixedGradientFvPatchScalarField.H"
+#include "temperaturePIDFixedGradientFvPatchScalarField.H"
 #include "addToRunTimeSelectionTable.H"
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
@@ -34,77 +34,93 @@ License
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::baseFixedGradientFvPatchScalarField::baseFixedGradientFvPatchScalarField
+Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
-    fixedGradientFvPatchScalarField(p, iF)
+    fixedGradientFvPatchScalarField(p, iF),
+    regulator_(p.boundaryMesh().mesh())
 {}
 
 
-Foam::baseFixedGradientFvPatchScalarField::baseFixedGradientFvPatchScalarField
+Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
 (
-    const baseFixedGradientFvPatchScalarField& ptf,
+    const temperaturePIDFixedGradientFvPatchScalarField& ptf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
 )
 :
-    fixedGradientFvPatchScalarField(ptf, p, iF, mapper)
+    fixedGradientFvPatchScalarField(ptf, p, iF, mapper),
+    regulator_(ptf.regulator_)
 {}
 
 
-Foam::baseFixedGradientFvPatchScalarField::baseFixedGradientFvPatchScalarField
+Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const dictionary& dict
 )
 :
-    fixedGradientFvPatchScalarField(p, iF)
+    fixedGradientFvPatchScalarField(p, iF),
+    regulator_(p.boundaryMesh().mesh())
 {
     fvPatchField<scalar>::operator=(patchInternalField());
     gradient() = 0.0;
 }
 
 
-Foam::baseFixedGradientFvPatchScalarField::baseFixedGradientFvPatchScalarField
+Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
 (
-    const baseFixedGradientFvPatchScalarField& tppsf
+    const temperaturePIDFixedGradientFvPatchScalarField& tppsf
 )
 :
-    fixedGradientFvPatchScalarField(tppsf)
+    fixedGradientFvPatchScalarField(tppsf),
+    regulator_(tppsf.regulator_)
 {}
 
 
-Foam::baseFixedGradientFvPatchScalarField::baseFixedGradientFvPatchScalarField
+Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradientFvPatchScalarField
 (
-    const baseFixedGradientFvPatchScalarField& tppsf,
+    const temperaturePIDFixedGradientFvPatchScalarField& tppsf,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
-    fixedGradientFvPatchScalarField(tppsf, iF)
+    fixedGradientFvPatchScalarField(tppsf, iF),
+    regulator_(tppsf.regulator_)
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::baseFixedGradientFvPatchScalarField::updateCoeffs()
+void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
 {
     if (updated())
     {
         return;
     }
 
-    gradient() = 0.0;
+    // Read thermal conductivity from transportProperties
+    const dictionary& transportProperties = db().lookupObject<IOdictionary>("transportProperties");
+    dimensionedScalar k(transportProperties.lookup("k"));
+
+    // Calculate output signal from regulator
+    const scalar outputSignal = regulator_.read();
+
+    if (outputSignal > 0) {
+        gradient() = 1000 / k.value();
+    } else {
+        gradient() = 0;
+    }
 
     fixedGradientFvPatchScalarField::updateCoeffs();
 }
 
 
-void Foam::baseFixedGradientFvPatchScalarField::write(Ostream& os) const
+void Foam::temperaturePIDFixedGradientFvPatchScalarField::write(Ostream& os) const
 {
     fvPatchScalarField::write(os);
     writeEntry("value", os);
@@ -118,7 +134,7 @@ namespace Foam
     makePatchTypeField
     (
         fvPatchScalarField,
-        baseFixedGradientFvPatchScalarField
+        temperaturePIDFixedGradientFvPatchScalarField
     );
 }
 

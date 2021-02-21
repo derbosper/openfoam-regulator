@@ -2,4 +2,4 @@
 
 cwd=$(dirname $(realpath $0))
 
-wmake $cwd/bndCondition/temperaturePIDFixedGradient
+wmake libso $cwd/bndCondition/temperaturePIDFixedGradient

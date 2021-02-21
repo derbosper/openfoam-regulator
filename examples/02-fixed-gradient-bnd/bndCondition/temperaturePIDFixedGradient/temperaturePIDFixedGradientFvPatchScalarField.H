@@ -24,7 +24,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::baseFixedGradientFvPatchScalarField
+    Foam::temperaturePIDFixedGradientFvPatchScalarField
 
 Group
     grpInletBoundaryConditions grpOutletBoundaryConditions
@@ -46,24 +46,25 @@ Usage
     \verbatim
     <patchName>
     {
-        type            baseFixedGradient;
+        type            temperaturePIDFixedGradient;
         gamma           1.4;
         T0              uniform 800;
     }
     \endverbatim
 
 SourceFiles
-    baseFixedGradientFvPatchScalarField.C
+    temperaturePIDFixedGradientFvPatchScalarField.C
 
 See also
     Foam::fixedValueFvPatchField
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef baseFixedGradientFvPatchScalarField_H
-#define baseFixedGradientFvPatchScalarField_H
+#ifndef temperaturePIDFixedGradientFvPatchScalarField_H
+#define temperaturePIDFixedGradientFvPatchScalarField_H
 
 #include "fixedGradientFvPatchFields.H"
+#include "regulatorLibrary.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -71,50 +72,52 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-             Class baseFixedGradientFvPatchScalarField Declaration
+             Class temperaturePIDFixedGradientFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class baseFixedGradientFvPatchScalarField
+class temperaturePIDFixedGradientFvPatchScalarField
 :
     public fixedGradientFvPatchScalarField
 {
+    Regulator regulator_;
+
 public:
 
     //- Runtime type information
-    TypeName("baseFixedGradient");
+    TypeName("temperaturePIDFixedGradient");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        baseFixedGradientFvPatchScalarField
+        temperaturePIDFixedGradientFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        baseFixedGradientFvPatchScalarField
+        temperaturePIDFixedGradientFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const dictionary&
         );
 
-        //- Construct by mapping given baseFixedGradientFvPatchScalarField
+        //- Construct by mapping given temperaturePIDFixedGradientFvPatchScalarField
         //  onto a new patch
-        baseFixedGradientFvPatchScalarField
+        temperaturePIDFixedGradientFvPatchScalarField
         (
-            const baseFixedGradientFvPatchScalarField&,
+            const temperaturePIDFixedGradientFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Construct as copy
-        baseFixedGradientFvPatchScalarField
+        temperaturePIDFixedGradientFvPatchScalarField
         (
-            const baseFixedGradientFvPatchScalarField&
+            const temperaturePIDFixedGradientFvPatchScalarField&
         );
 
         //- Construct and return a clone
@@ -122,14 +125,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new baseFixedGradientFvPatchScalarField(*this)
+                new temperaturePIDFixedGradientFvPatchScalarField(*this)
             );
         }
 
         //- Construct as copy setting internal field reference
-        baseFixedGradientFvPatchScalarField
+        temperaturePIDFixedGradientFvPatchScalarField
         (
-            const baseFixedGradientFvPatchScalarField&,
+            const temperaturePIDFixedGradientFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -141,7 +144,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new baseFixedGradientFvPatchScalarField(*this, iF)
+                new temperaturePIDFixedGradientFvPatchScalarField(*this, iF)
             );
         }
 
