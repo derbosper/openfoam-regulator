@@ -12,10 +12,25 @@ scalar Regulator::patchAverage(const word &fieldName, const fvPatch &patch)
 
 // * * * * * * * * * * * * * * * * Constructor * * * * * * * * * * * * * * * //
 
-Regulator::Regulator(const fvMesh &mesh)
+Regulator::Regulator(const fvMesh& mesh, const dictionary& dict)
     : mesh_(mesh),
+      regulatedFieldName_(dict.getWord("fieldName")),
+      targetValue_( dict.getScalar("targetValue")),
+      targetPatchName_( dict.getWord("patchName")),
+      Kp_( dict.getScalar("Kp")),
+      Ti_( dict.getScalar("Ti")),
+      Td_( dict.getScalar("Td")),
       error_(0.),         // TODO change initial value to lookupOrDefault("error", 0.)
       errorIntegral_(0.), // TODO as above
+      oldError_(0.),
+      timeIndex_(mesh.time().timeIndex())
+{
+}
+
+Regulator::Regulator(const fvMesh &mesh)
+    : mesh_(mesh),
+      error_(0.),
+      errorIntegral_(0.),
       oldError_(0.),
       timeIndex_(mesh.time().timeIndex())
 {
@@ -43,8 +58,8 @@ Regulator::Regulator(const fvMesh &mesh)
 
     // Read various pieces of information from the main part of the dictionary
     regulatedFieldName_ = regulatorDict_.getWord("fieldName");
-    targetPatchName_ = regulatorDict_.getWord("patchName");
     targetValue_ = regulatorDict_.getScalar("targetValue");
+    targetPatchName_ = regulatorDict_.getWord("patchName");
     Kp_ = regulatorDict_.getScalar("Kp");
     Ti_ = regulatorDict_.getScalar("Ti");
     Td_ = regulatorDict_.getScalar("Td");

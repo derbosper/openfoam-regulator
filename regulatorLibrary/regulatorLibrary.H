@@ -68,6 +68,10 @@ private:
     label timeIndex_;          // Time index of the last update
 
 public:
+    // Initialize from mesh and dictionary
+    Regulator(const fvMesh& mesh, const dictionary& dict);
+
+    // Initialize from mesh and propertiesDict from "constant" directory
     Regulator(const fvMesh &mesh);
 
     word fieldName() const { return regulatedFieldName_; }
