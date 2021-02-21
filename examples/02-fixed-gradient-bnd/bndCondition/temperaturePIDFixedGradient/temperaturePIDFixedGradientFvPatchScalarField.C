@@ -41,7 +41,8 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 )
 :
     fixedGradientFvPatchScalarField(p, iF),
-    regulator_(p.boundaryMesh().mesh())
+    regulator_(p.boundaryMesh().mesh()),
+    Q_(0.0)
 {}
 
 
@@ -54,7 +55,8 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 )
 :
     fixedGradientFvPatchScalarField(ptf, p, iF, mapper),
-    regulator_(ptf.regulator_)
+    regulator_(ptf.regulator_),
+    Q_(ptf.Q_)
 {}
 
 
@@ -66,8 +68,10 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 )
 :
     fixedGradientFvPatchScalarField(p, iF),
-    regulator_(p.boundaryMesh().mesh())
+    regulator_(p.boundaryMesh().mesh()),
+    Q_(dict.get<scalar>("Q"))
 {
+    // Initialize patch with internal field value
     fvPatchField<scalar>::operator=(patchInternalField());
     gradient() = 0.0;
 }
@@ -79,7 +83,8 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 )
 :
     fixedGradientFvPatchScalarField(tppsf),
-    regulator_(tppsf.regulator_)
+    regulator_(tppsf.regulator_),
+    Q_(tppsf.Q_)
 {}
 
 
@@ -90,7 +95,8 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 )
 :
     fixedGradientFvPatchScalarField(tppsf, iF),
-    regulator_(tppsf.regulator_)
+    regulator_(tppsf.regulator_),
+    Q_(tppsf.Q_)
 {}
 
 
@@ -111,7 +117,7 @@ void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
     const scalar outputSignal = regulator_.read();
 
     if (outputSignal > 0) {
-        gradient() = 1000 / k.value();
+        gradient() = Q_ / k.value();
     } else {
         gradient() = 0;
     }

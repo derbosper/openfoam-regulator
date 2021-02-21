@@ -35,11 +35,7 @@ Description
 Usage
     \table
         Property     | Description             | Required    | Default value
-        U            | Velocity field name     | no          | U
-        phi          | Flux field name         | no          | phi
-        psi          | Compressibility field name | no       | thermo:psi
-        gamma        | ratio of specific heats (Cp/Cv) | yes |
-        T0           | total temperature       | yes         |
+        Q            | Power [W]               | yes         |
     \endtable
 
     Example of the boundary condition specification:
@@ -47,8 +43,7 @@ Usage
     <patchName>
     {
         type            temperaturePIDFixedGradient;
-        gamma           1.4;
-        T0              uniform 800;
+        Q               1000;
     }
     \endverbatim
 
@@ -80,6 +75,7 @@ class temperaturePIDFixedGradientFvPatchScalarField
     public fixedGradientFvPatchScalarField
 {
     Regulator regulator_;
+    scalar Q_;
 
 public:
 
