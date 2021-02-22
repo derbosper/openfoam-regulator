@@ -12,14 +12,14 @@ scalar Regulator::patchAverage(const word &fieldName, const fvPatch &patch)
 
 // * * * * * * * * * * * * * * * * Constructor * * * * * * * * * * * * * * * //
 
-Regulator::Regulator(const fvMesh& mesh, const dictionary& dict)
+Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
     : mesh_(mesh),
       regulatedFieldName_(dict.getWord("fieldName")),
-      targetValue_( dict.getScalar("targetValue")),
-      targetPatchName_( dict.getWord("patchName")),
-      Kp_( dict.getScalar("Kp")),
-      Ti_( dict.getScalar("Ti")),
-      Td_( dict.getScalar("Td")),
+      targetPatchName_(dict.getWord("patchName")),
+      targetValue_(dict.getScalar("targetValue")),
+      Kp_(dict.getScalar("Kp")),
+      Ti_(dict.getScalar("Ti")),
+      Td_(dict.getScalar("Td")),
       error_(0.),         // TODO change initial value to lookupOrDefault("error", 0.)
       errorIntegral_(0.), // TODO as above
       oldError_(0.),
@@ -64,6 +64,21 @@ Regulator::Regulator(const fvMesh &mesh)
     Ti_ = regulatorDict_.getScalar("Ti");
     Td_ = regulatorDict_.getScalar("Td");
 }
+
+Regulator::Regulator(const Regulator &reg)
+    : mesh_(reg.mesh_),
+      regulatorDict_(reg.regulatorDict_),
+      regulatedFieldName_(reg.regulatedFieldName_),
+      targetPatchName_(reg.targetPatchName_),
+      targetValue_(reg.targetValue_),
+      Kp_(reg.Kp_),
+      Ti_(reg.Ti_),
+      Td_(reg.Td_),
+      error_(reg.error_),
+      errorIntegral_(reg.errorIntegral_),
+      oldError_(reg.oldError_),
+      timeIndex_(reg.timeIndex_)
+{}
 
 // * * * * * * * * * * * * Public Member Functions  * * * * * * * * * * * * *//
 

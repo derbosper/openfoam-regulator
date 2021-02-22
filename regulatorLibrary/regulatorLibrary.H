@@ -57,8 +57,8 @@ private:
     const fvMesh &mesh_;       // Reference to the system mesh
     dictionary regulatorDict_; // Dictionary with all regulator settings
     word regulatedFieldName_;  // Controlled process variable scalar field
-    scalar targetValue_;       // Reference value used by the control loop
     word targetPatchName_;     // Name of a patch from which the process value is read
+    scalar targetValue_;       // Reference value used by the control loop
     scalar Kp_;                // Proportional control term
     scalar Ti_;                // Integral control term
     scalar Td_;                // Differential control term
@@ -69,14 +69,17 @@ private:
 
 public:
     // Initialize from mesh and dictionary
-    Regulator(const fvMesh& mesh, const dictionary& dict);
+    Regulator(const fvMesh &mesh, const dictionary &dict);
 
     // Initialize from mesh and propertiesDict from "constant" directory
     Regulator(const fvMesh &mesh);
 
+    // Construct a copy
+    Regulator(const Regulator &reg);
+
     word fieldName() const { return regulatedFieldName_; }
-    scalar targetValue() const { return targetValue_; }
     word targetPatchName() const { return targetPatchName_; }
+    scalar targetValue() const { return targetValue_; }
     scalar Kp() const { return Kp_; }
     scalar Ti() const { return Ti_; }
     scalar Td() const { return Td_; }
