@@ -53,19 +53,7 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
 {
 }
 
-Regulator::Regulator(const fvMesh &mesh):
-    mesh_( mesh ),
-    regulatorDict_( loadDict(mesh) ),
-    regulatedFieldName_( regulatorDict_.getWord("fieldName") ),
-    targetPatchName_( regulatorDict_.getWord("patchName") ),
-    targetValue_( regulatorDict_.getScalar("targetValue") ),
-    Kp_( regulatorDict_.getScalar("Kp") ),
-    Ti_( regulatorDict_.getScalar("Ti") ),
-    Td_( regulatorDict_.getScalar("Td") ),
-    error_(0.),
-    errorIntegral_(0.),
-    oldError_(0.),
-    timeIndex_(mesh.time().timeIndex())
+Regulator::Regulator(const fvMesh &mesh): Regulator(mesh, loadDict(mesh))
 {}
 
 Regulator::Regulator(const Regulator &reg)
