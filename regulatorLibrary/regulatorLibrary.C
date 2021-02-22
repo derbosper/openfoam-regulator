@@ -10,7 +10,7 @@ scalar Regulator::patchAverage(const word &fieldName, const fvPatch &patch)
     return gSum(field * patch.magSf()) / gSum(patch.magSf());
 }
 
-dictionary Regulator::loadDict(const fvMesh& mesh)
+const dictionary Regulator::loadDict(const fvMesh& mesh)
 {
     // Get access to a custom dictionary
     const word dictName("regulatorProperties");
@@ -32,7 +32,7 @@ dictionary Regulator::loadDict(const fvMesh& mesh)
         Info << "Dictionary OK" << endl;
 
     // Initialise the dictionary object
-    dictionary dict = IOdictionary(dictIO);
+    const dictionary dict = IOdictionary(dictIO);
     return dict;
 }
 
