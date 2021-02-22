@@ -67,11 +67,14 @@ private:
     scalar oldError_;          // Old error
     label timeIndex_;          // Time index of the last update
 
+    // Load regulatorProperties dictionary
+    static dictionary loadDict(const fvMesh &mesh);
+
 public:
-    // Initialize from mesh and dictionary
+    // Initialize from mesh and dictionary form "constant" directory
     Regulator(const fvMesh &mesh, const dictionary &dict);
 
-    // Initialize from mesh and propertiesDict from "constant" directory
+    // Initialize from mesh and default dictionary
     Regulator(const fvMesh &mesh);
 
     // Construct a copy
