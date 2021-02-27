@@ -55,7 +55,6 @@ class Regulator
 {
 private:
     const fvMesh &mesh_;       // Reference to the system mesh
-    const dictionary regulatorDict_; // Dictionary with all regulator settings
     const word regulatedFieldName_;  // Controlled process variable scalar field
     const word targetPatchName_;     // Name of a patch from which the process value is read
     scalar targetValue_;       // Reference value used by the control loop

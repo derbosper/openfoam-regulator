@@ -35,6 +35,15 @@ boundaryField
     {
         type            temperaturePIDFixedGradient;
         Q               1000;
+        regulator
+        {
+            fieldName   T;
+            patchName   outlet;
+            targetValue 25;
+            Kp          2;
+            Ti          1e9;
+            Td          0.00;
+        }
     }
 
     axis

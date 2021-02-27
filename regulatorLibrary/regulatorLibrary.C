@@ -50,15 +50,24 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
       errorIntegral_(0.), // TODO as above
       oldError_(0.),
       timeIndex_(mesh.time().timeIndex())
-{
-}
+{}
 
-Regulator::Regulator(const fvMesh &mesh): Regulator(mesh, loadDict(mesh))
+Regulator::Regulator(const fvMesh &mesh)
+    : mesh_(mesh),
+    regulatedFieldName_(word::null),
+    targetPatchName_(word::null),
+    targetValue_(0),
+    Kp_(0),
+    Ti_(0),
+    Td_(0),
+    error_(0),
+    errorIntegral_(0),
+    oldError_(0),
+    timeIndex_(mesh.time().timeIndex())
 {}
 
 Regulator::Regulator(const Regulator &reg)
     : mesh_(reg.mesh_),
-      regulatorDict_(reg.regulatorDict_),
       regulatedFieldName_(reg.regulatedFieldName_),
       targetPatchName_(reg.targetPatchName_),
       targetValue_(reg.targetValue_),

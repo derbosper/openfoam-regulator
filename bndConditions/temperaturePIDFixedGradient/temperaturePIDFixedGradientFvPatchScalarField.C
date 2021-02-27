@@ -68,7 +68,7 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 )
 :
     fixedGradientFvPatchScalarField(p, iF),
-    regulator_(p.boundaryMesh().mesh()),
+    regulator_(p.boundaryMesh().mesh(), dict.subDict("regulator")),
     Q_(dict.get<scalar>("Q"))
 {
     // Initialize patch with internal field value

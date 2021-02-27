@@ -41,6 +41,15 @@ boundaryField
     {
         type            temperaturePIDFixedValue;
         value           uniform 350;
+        regulator
+        {
+            fieldName   T;
+            patchName   outlet;
+            targetValue 350;
+            Kp          2;
+            Ti          1e9;
+            Td          0.00;
+        };
     }
 
     wedgeFront

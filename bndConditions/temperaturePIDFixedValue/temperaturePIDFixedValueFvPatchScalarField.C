@@ -65,7 +65,7 @@ temperaturePIDFixedValueFvPatchScalarField
 )
 :
     fixedValueFvPatchField<scalar>(p, iF, dict),
-    regulator_(p.boundaryMesh().mesh())
+    regulator_(p.boundaryMesh().mesh(), dict.subDict("regulator"))
 {}
 
 
