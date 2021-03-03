@@ -53,22 +53,6 @@ const scalar REG_SIGNAL_MAX = 1.0;
 
 class Regulator
 {
-private:
-    const fvMesh &mesh_;       // Reference to the system mesh
-    const word regulatedFieldName_;  // Controlled process variable scalar field
-    const word targetPatchName_;     // Name of a patch from which the process value is read
-    scalar targetValue_;       // Reference value used by the control loop
-    scalar Kp_;                // Proportional control term
-    scalar Ti_;                // Integral control term
-    scalar Td_;                // Differential control term
-    scalar error_;             // Measured error
-    scalar errorIntegral_;     // Error integral w.r.t. time
-    scalar oldError_;          // Old error
-    label timeIndex_;          // Time index of the last update
-
-    // Load regulatorProperties dictionary
-    static const dictionary loadDict(const fvMesh &mesh);
-
 public:
     // Initialize from mesh and dictionary form "constant" directory
     Regulator(const fvMesh &mesh, const dictionary &dict);
@@ -82,9 +66,9 @@ public:
     //- Operation mode enumeration
     enum operationMode
     {
-        twoStep,        // on/off control
+        twoStep, // on/off control
         PID,
-        PIDRestricted,  // like PID, but output signal is limited within REG_SIGNAL_MIN and REG_SIGNAL_MAX
+        PIDRestricted, // like PID, but output signal is limited within REG_SIGNAL_MIN and REG_SIGNAL_MAX
     };
 
     static const Enum<operationMode> operationModeNames;
@@ -104,6 +88,23 @@ public:
 
     //- Calculate face average of a value
     static scalar patchAverage(const word &fieldName, const fvPatch &patch);
+
+private:
+    const fvMesh &mesh_;            // Reference to the system mesh
+    const word regulatedFieldName_; // Controlled process variable scalar field
+    const word targetPatchName_;    // Name of a patch from which the process value is read
+    scalar targetValue_;            // Reference value used by the control loop
+    operationMode mode_;            // Control type mode
+    scalar Kp_;                     // Proportional control term
+    scalar Ti_;                     // Integral control term
+    scalar Td_;                     // Differential control term
+    scalar error_;                  // Measured error
+    scalar errorIntegral_;          // Error integral w.r.t. time
+    scalar oldError_;               // Old error
+    label timeIndex_;               // Time index of the last update
+
+    // Load regulatorProperties dictionary
+    static const dictionary loadDict(const fvMesh &mesh);
 };
 
 #endif
