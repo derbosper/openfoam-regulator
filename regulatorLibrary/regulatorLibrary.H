@@ -79,6 +79,16 @@ public:
     // Construct a copy
     Regulator(const Regulator &reg);
 
+    //- Operation mode enumeration
+    enum operationMode
+    {
+        twoStep,        // on/off control
+        PID,
+        PIDRestricted,  // like PID, but output signal is limited within REG_SIGNAL_MIN and REG_SIGNAL_MAX
+    };
+
+    static const Enum<operationMode> operationModeNames;
+
     const word fieldName() const { return regulatedFieldName_; }
     const word targetPatchName() const { return targetPatchName_; }
     scalar targetValue() const { return targetValue_; }

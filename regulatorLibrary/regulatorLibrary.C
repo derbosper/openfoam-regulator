@@ -36,6 +36,13 @@ const dictionary Regulator::loadDict(const fvMesh& mesh)
     return dict;
 }
 
+const Foam::Enum<Regulator::operationMode>
+    Regulator::operationModeNames({
+        {operationMode::twoStep, "twoStep"},
+        {operationMode::PID, "PID"},
+        {operationMode::PIDRestricted, "PIDRestricted"},
+    });
+
 // * * * * * * * * * * * * * * * * Constructor * * * * * * * * * * * * * * * //
 
 Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
