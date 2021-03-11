@@ -40,6 +40,7 @@ boundaryField
             fieldName   T;
             patchName   outlet;
             targetValue 25;
+            mode        PIDRestricted;
             Kp          2;
             Ti          1e9;
             Td          0.00;

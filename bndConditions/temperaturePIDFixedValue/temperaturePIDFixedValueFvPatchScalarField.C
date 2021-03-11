@@ -111,7 +111,9 @@ void Foam::temperaturePIDFixedValueFvPatchScalarField::updateCoeffs()
     // Adjust the temperature of a wall based on output signal of the regulator
     // Assume that the temperature change is 50*sign(signal) for the testing
     // purposes, with no physical meaning
-    const scalar controlSignal = 50*sign(outputSignal);
+    // -- sign(0.) gives 1, so we need to substract small number to achieve no
+    // -- no control signal when regulator output is 0.
+    const scalar controlSignal = 50*sign(outputSignal - 1e-7);
     operator==(thisTemp + controlSignal);
 
     Info << "Wall temperature: " << thisTemp << endl;

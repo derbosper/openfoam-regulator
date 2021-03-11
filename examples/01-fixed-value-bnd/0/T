@@ -46,6 +46,7 @@ boundaryField
             fieldName   T;
             patchName   outlet;
             targetValue 350;
+            mode        twoStep;
             Kp          2;
             Ti          1e9;
             Td          0.00;
