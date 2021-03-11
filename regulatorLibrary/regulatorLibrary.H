@@ -103,8 +103,6 @@ private:
     scalar oldError_;               // Old error
     label timeIndex_;               // Time index of the last update
 
-    // Load regulatorProperties dictionary
-    static const dictionary loadDict(const fvMesh &mesh);
 };
 
 #endif

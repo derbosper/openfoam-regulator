@@ -10,32 +10,6 @@ scalar Regulator::patchAverage(const word &fieldName, const fvPatch &patch)
     return gSum(field * patch.magSf()) / gSum(patch.magSf());
 }
 
-const dictionary Regulator::loadDict(const fvMesh& mesh)
-{
-    // Get access to a custom dictionary
-    const word dictName("regulatorProperties");
-
-    // Create and input-output object - this holds the path to the dict and its name
-    IOobject dictIO(dictName,               // name of the file
-                    mesh.time().constant(), // path to where the file is
-                    mesh,                   // reference to the mesh needed by the constructor
-                    IOobject::MUST_READ     // indicate that reading this dictionary
-                                            // is compulsory
-    );
-
-    // Check the if the dictionary is present and follows the OF format
-    if (!dictIO.typeHeaderOk<dictionary>(true))
-        FatalErrorIn("regulatorLibrary.C")
-            << "Cannot open specified refinement dictionary " << dictName
-            << exit(FatalError);
-    else
-        Info << "Dictionary OK" << endl;
-
-    // Initialise the dictionary object
-    const dictionary dict = IOdictionary(dictIO);
-    return dict;
-}
-
 const Foam::Enum<Regulator::operationMode>
     Regulator::operationModeNames({
         {operationMode::twoStep, "twoStep"},
