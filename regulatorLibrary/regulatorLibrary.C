@@ -90,24 +90,42 @@ scalar Regulator::read()
     const scalar currentRegulatedPatchValue = probeTargetPatch();
 
     // Calculate errors
+    scalar result = 0.;
     error_ = targetValue_ - currentRegulatedPatchValue;
-    errorIntegral_ += 0.5*(error_ + oldError_)*deltaT;
-    const scalar errorDifferential = (error_ - oldError_) / deltaT;
+    if (mode_ == twoStep)
+    {
+        result = error_ <= 0 ? 0 : 1;
+    }
+    else
+    {
+        errorIntegral_ += 0.5*(error_ + oldError_)*deltaT;
+        const scalar errorDifferential = (error_ - oldError_) / deltaT;
 
-    // Calculate output signal
-    // A negliable value is added to Ti_ to prevent division by 0
-    const scalar outputSignal = Kp_*(error_ + 1/(Ti_ + 1e-7)*errorIntegral_ + Td_*errorDifferential);
+        // Calculate output signal
+        // A negliable value is added to Ti_ to prevent division by 0
+        const scalar outputSignal = Kp_*(error_ + 1/(Ti_ + 1e-7)*errorIntegral_ + Td_*errorDifferential);
 
-    // Return result within defined SIGNAL_MIN and SIGNAL_MAX
-    const scalar result = max(min(outputSignal, REG_SIGNAL_MAX), REG_SIGNAL_MIN);
+        if (mode_ == PIDRestricted)
+        {
+            // Return result within defined SIGNAL_MIN and SIGNAL_MAX
+            result = max(min(outputSignal, REG_SIGNAL_MAX), REG_SIGNAL_MIN);
+        }
+        else if (mode_ == PID)
+        {
+            // Return raw computed signal from PID algorithm
+            result = outputSignal;
+        }
+        else
+        {
+            FatalIOError << "Unknown regulator mode" << endl;
+            exit(FatalIOError);
+        }
+    }
 
     Info << "Time index: " << mesh_.time().timeIndex() << endl;
     Info << "regulatedFieldName: " << regulatedFieldName_ << endl;
     Info << "targetPatchName: " << targetPatchName_ << endl;
     Info << "targetValue: " << targetValue_ << endl;
-    Info << "Kp: " << Kp_ << endl;
-    Info << "Ti: " << Ti_ << endl;
-    Info << "Td: " << Td_ << endl;
     Info << "currentRegulatedPatchValue: " << currentRegulatedPatchValue << endl;
     Info << "Error: " << error_ << endl;
 
