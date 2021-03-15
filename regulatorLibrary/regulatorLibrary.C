@@ -125,6 +125,7 @@ scalar Regulator::read()
     Info << "targetValue: " << targetValue_ << endl;
     Info << "currentRegulatedPatchValue: " << currentRegulatedPatchValue << endl;
     Info << "Error: " << error_ << endl;
+    Info << "Output signal: " << result << endl;
 
     return result;
 }
