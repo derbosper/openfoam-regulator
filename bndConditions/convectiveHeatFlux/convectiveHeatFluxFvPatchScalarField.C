@@ -108,9 +108,9 @@ void Foam::convectiveHeatFluxFvPatchScalarField::updateCoeffs()
 
     const dictionary& transportProperties = db().lookupObject<IOdictionary>("transportProperties");
 
-    dimensionedScalar Tsur(transportProperties.lookup("Tsur"));
-    dimensionedScalar h(transportProperties.lookup("h"));
-    dimensionedScalar k(transportProperties.lookup("k"));
+    dimensionedScalar Tsur(transportProperties.get<dimensionedScalar>("Tsur"));
+    dimensionedScalar h(transportProperties.get<dimensionedScalar>("h"));
+    dimensionedScalar k(transportProperties.get<dimensionedScalar>("k"));
 
     gradient() = - h.value() / k.value() * (T - Tsur.value());
 
