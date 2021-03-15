@@ -14,7 +14,6 @@ const Foam::Enum<Regulator::operationMode>
     Regulator::operationModeNames({
         {operationMode::twoStep, "twoStep"},
         {operationMode::PID, "PID"},
-        {operationMode::PIDRestricted, "PIDRestricted"},
     });
 
 // * * * * * * * * * * * * * * * * Constructor * * * * * * * * * * * * * * * //
@@ -92,30 +91,28 @@ scalar Regulator::read()
     // Calculate errors
     scalar result = 0.;
     error_ = targetValue_ - currentRegulatedPatchValue;
-    if (mode_ == twoStep)
-    {
-        result = error_ <= 0 ? 0 : 1;
-    }
-    else
-    {
-        errorIntegral_ += 0.5*(error_ + oldError_)*deltaT;
-        const scalar errorDifferential = (error_ - oldError_) / deltaT;
 
-        // Calculate output signal
-        // A negliable value is added to Ti_ to prevent division by 0
-        const scalar outputSignal = Kp_*(error_ + 1/(Ti_ + 1e-7)*errorIntegral_ + Td_*errorDifferential);
-
-        if (mode_ == PIDRestricted)
+    switch (mode_)
+    {
+        case twoStep:
         {
-            // Return result within defined SIGNAL_MIN and SIGNAL_MAX
+            result = error_ <= 0 ? 0 : 1;
+            break;
+        }
+        case PID:
+        {
+            errorIntegral_ += 0.5*(error_ + oldError_)*deltaT;
+            const scalar errorDifferential = (error_ - oldError_) / deltaT;
+
+            // Calculate output signal
+            // A negliable value is added to Ti_ to prevent division by 0
+            const scalar outputSignal = Kp_*(error_ + 1/(Ti_ + 1e-7)*errorIntegral_ + Td_*errorDifferential);
+
+            // Return result within defined regulator saturation: SIGNAL_MIN and SIGNAL_MAX
             result = max(min(outputSignal, REG_SIGNAL_MAX), REG_SIGNAL_MIN);
+            break;
         }
-        else if (mode_ == PID)
-        {
-            // Return raw computed signal from PID algorithm
-            result = outputSignal;
-        }
-        else
+        default:
         {
             FatalIOError << "Unknown regulator mode" << endl;
             exit(FatalIOError);

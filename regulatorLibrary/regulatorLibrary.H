@@ -68,7 +68,6 @@ public:
     {
         twoStep, // on/off control
         PID,
-        PIDRestricted, // like PID, but output signal is limited within REG_SIGNAL_MIN and REG_SIGNAL_MAX
     };
 
     static const Enum<operationMode> operationModeNames;
