@@ -76,9 +76,6 @@ public:
     const word fieldName() const { return regulatedFieldName_; }
     const word targetPatchName() const { return targetPatchName_; }
     scalar targetValue() const { return targetValue_; }
-    scalar Kp() const { return Kp_; }
-    scalar Ti() const { return Ti_; }
-    scalar Td() const { return Td_; }
 
     //- Read output signal from the regulator
     scalar read();
