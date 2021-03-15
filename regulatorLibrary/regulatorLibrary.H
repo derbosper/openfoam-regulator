@@ -48,8 +48,6 @@ Description
 
 #include "fvCFD.H"
 
-const scalar REG_SIGNAL_MIN = -1.0;
-const scalar REG_SIGNAL_MAX = 1.0;
 
 class Regulator
 {
@@ -94,6 +92,8 @@ private:
     scalar Kp_;                     // Proportional control term
     scalar Ti_;                     // Integral control term
     scalar Td_;                     // Differential control term
+    scalar outputMax_;              // Max output signal (saturation)
+    scalar outputMin_;              // Min output signal
     scalar error_;                  // Measured error
     scalar errorIntegral_;          // Error integral w.r.t. time
     scalar oldError_;               // Old error

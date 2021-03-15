@@ -27,6 +27,8 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
       Kp_(dict.getScalar("Kp")),
       Ti_(dict.getScalar("Ti")),
       Td_(dict.getScalar("Td")),
+      outputMax_(dict.getOrDefault<scalar>("outputMax", 1.)),
+      outputMin_(dict.getOrDefault<scalar>("outputMin", -1.)),
       error_(0.),         // TODO change initial value to lookupOrDefault("error", 0.)
       errorIntegral_(0.), // TODO as above
       oldError_(0.),
@@ -42,6 +44,8 @@ Regulator::Regulator(const fvMesh &mesh)
     Kp_(0),
     Ti_(0),
     Td_(0),
+    outputMax_(1),
+    outputMin_(0),
     error_(0),
     errorIntegral_(0),
     oldError_(0),
@@ -57,6 +61,8 @@ Regulator::Regulator(const Regulator &reg)
       Kp_(reg.Kp_),
       Ti_(reg.Ti_),
       Td_(reg.Td_),
+      outputMax_(reg.outputMax_),
+      outputMin_(reg.outputMin_),
       error_(reg.error_),
       errorIntegral_(reg.errorIntegral_),
       oldError_(reg.oldError_),
@@ -108,8 +114,8 @@ scalar Regulator::read()
             // A negliable value is added to Ti_ to prevent division by 0
             const scalar outputSignal = Kp_*(error_ + 1/(Ti_ + 1e-7)*errorIntegral_ + Td_*errorDifferential);
 
-            // Return result within defined regulator saturation: SIGNAL_MIN and SIGNAL_MAX
-            result = max(min(outputSignal, REG_SIGNAL_MAX), REG_SIGNAL_MIN);
+            // Return result within defined regulator saturation: outputMax_ and outputMin_
+            result = max(min(outputSignal, outputMax_), outputMin_);
             break;
         }
         default:
