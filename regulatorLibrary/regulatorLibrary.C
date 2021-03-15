@@ -24,16 +24,42 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
       targetPatchName_(dict.getWord("patchName")),
       targetValue_(dict.getScalar("targetValue")),
       mode_(operationModeNames.get("mode", dict)),
-      Kp_(dict.getScalar("Kp")),
-      Ti_(dict.getScalar("Ti")),
-      Td_(dict.getScalar("Td")),
-      outputMax_(dict.getOrDefault<scalar>("outputMax", 1.)),
-      outputMin_(dict.getOrDefault<scalar>("outputMin", -1.)),
-      error_(0.),         // TODO change initial value to lookupOrDefault("error", 0.)
-      errorIntegral_(0.), // TODO as above
+      Kp_(0.),
+      Ti_(0.),
+      Td_(0.),
+      outputMax_(1.),
+      outputMin_(0.),
+      error_(0.),
+      errorIntegral_(0.),
       oldError_(0.),
       timeIndex_(mesh.time().timeIndex())
-{}
+{
+    switch (mode_)
+    {
+        // Two step regulator returns either 0 or 1
+        case twoStep:
+        {
+            outputMax_ = 1.;
+            outputMax_ = 0.;
+            break;
+        }
+        // PID returns a value between outputMin and outputMax, defaults to (-1, 1)
+        case PID:
+        {
+            Kp_ = dict.getScalar("Kp");
+            Ti_ = dict.getScalar("Ti");
+            Td_ = dict.getScalar("Td");
+            outputMax_ = dict.getOrDefault<scalar>("outputMax", 1.);
+            outputMin_ = dict.getOrDefault<scalar>("outputMin", -1.);
+            break;
+        }
+        default:
+        {
+            FatalIOError << "Unknown regulator mode: " << mode_ << endl;
+            exit(FatalIOError);
+        }
+    }
+}
 
 Regulator::Regulator(const fvMesh &mesh)
     : mesh_(mesh),
@@ -117,11 +143,6 @@ scalar Regulator::read()
             // Return result within defined regulator saturation: outputMax_ and outputMin_
             result = max(min(outputSignal, outputMax_), outputMin_);
             break;
-        }
-        default:
-        {
-            FatalIOError << "Unknown regulator mode" << endl;
-            exit(FatalIOError);
         }
     }
 
