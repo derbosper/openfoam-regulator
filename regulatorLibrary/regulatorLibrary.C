@@ -39,8 +39,12 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
         // Two step regulator returns either 0 or 1
         case twoStep:
         {
-            outputMax_ = 1.;
-            outputMax_ = 0.;
+            if (dict.found("outputMax") || dict.found("outputMin"))
+            {
+                FatalIOError << "outputMin and outputMax values cannot be set "
+                << "in twoStep mode, as they are always 0. and 1."
+                << exit(FatalIOError);
+            }
             break;
         }
         // PID returns a value between outputMin and outputMax, defaults to (-1, 1)
@@ -128,7 +132,7 @@ scalar Regulator::read()
     {
         case twoStep:
         {
-            result = error_ <= 0 ? 0 : 1;
+            result = error_ <= 0 ? 0. : 1.;
             break;
         }
         case PID:
