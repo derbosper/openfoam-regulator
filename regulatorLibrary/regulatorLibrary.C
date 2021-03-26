@@ -150,13 +150,13 @@ scalar Regulator::read()
         }
     }
 
-    Info << "Time index: " << mesh_.time().timeIndex() << endl;
-    Info << "regulatedFieldName: " << regulatedFieldName_ << endl;
-    Info << "targetPatchName: " << targetPatchName_ << endl;
-    Info << "targetValue: " << targetValue_ << endl;
-    Info << "currentRegulatedPatchValue: " << currentRegulatedPatchValue << endl;
-    Info << "Error: " << error_ << endl;
-    Info << "Output signal: " << result << endl;
+    Info << "Regulator: regulatedFieldName = " << regulatedFieldName_ << endl;
+    Info << "Regulator: targetPatchName = " << targetPatchName_ << endl;
+    Info << "Regulator: targetValue = " << targetValue_ << endl;
+    Info << "Regulator: mode = " << mode_ << endl;
+    Info << "Regulator: currentRegulatedPatchValue = " << currentRegulatedPatchValue << endl;
+    Info << "Regulator: error = " << error_ << endl;
+    Info << "Regulator: outputSignal = " << result << endl;
 
     return result;
 }
