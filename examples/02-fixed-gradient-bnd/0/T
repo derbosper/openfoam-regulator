@@ -22,8 +22,18 @@ boundaryField
 {
     inlet
     {
-        type            fixedValue;
-        value           uniform 20;
+        type            uniformFixedValue;
+        uniformValue
+        {
+            type        expression;
+            variables
+            (
+                "start = 15"             // when temperature jumps [s]
+                "temperature = 15"     // new inlet temperature [degC]
+            );
+            // arg() == time
+            expression  #{ (arg() < start) ? 20 : temperature #};
+        }
     }
 
     outlet
@@ -34,16 +44,13 @@ boundaryField
     wall
     {
         type            temperaturePIDFixedGradient;
-        Q               1000;
+        Q               20000;
         regulator
         {
             fieldName   T;
             patchName   outlet;
             targetValue 25;
-            mode        PID;
-            Kp          2;
-            Ti          1e9;
-            Td          0.00;
+            mode        twoStep;
         }
     }
 
