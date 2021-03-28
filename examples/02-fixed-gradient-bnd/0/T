@@ -44,7 +44,7 @@ boundaryField
     wall
     {
         type            temperaturePIDFixedGradient;
-        Q               20000;
+        Q               15000;
         regulator
         {
             fieldName   T;
