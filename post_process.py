@@ -46,19 +46,19 @@ def plot_results(df: pd.DataFrame) -> None:
     t = df["time"]
 
     ax1 = plt.subplot(311)
-    plt.plot(t, df["error"])
-    plt.setp(ax1.get_xticklabels(), visible=False)
-    plt.ylabel("error")
+    plt.plot(t, df["inletValue"])
+    plt.setp(ax1.get_xticklabels())
+    plt.ylabel("inlet T [C]")
 
     ax2 = plt.subplot(312, sharex=ax1)
     plt.plot(t, df["regulatedPatchValue"])
     plt.setp(ax2.get_xticklabels(), visible=False)
-    plt.ylabel("target patch T [C]")
+    plt.ylabel("target T [C]")
 
     ax3 = plt.subplot(313, sharex=ax1)
-    plt.plot(t, df["inletValue"])
-    plt.setp(ax3.get_xticklabels())
-    plt.ylabel("inlet T [C]")
+    plt.plot(t, df["error"])
+    plt.setp(ax3.get_xticklabels(), visible=False)
+    plt.ylabel("error")
 
     plt.xlabel("time [s]")
     plt.show()
