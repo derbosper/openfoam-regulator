@@ -77,6 +77,9 @@ public:
     //- Read output signal from the regulator
     scalar read();
 
+    //- Write to runtime dict
+    void write(Ostream& os, const word dictName = "regulator") const;
+
     //- Read value of the regulated field from regulation target patch
     scalar probeTargetPatch() const;
 

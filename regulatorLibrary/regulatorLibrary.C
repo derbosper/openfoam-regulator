@@ -160,3 +160,13 @@ scalar Regulator::read()
 
     return result;
 }
+
+void Regulator::write(Ostream& os, const word dictName) const
+{
+    os.beginBlock(dictName);
+    os.writeEntry("fieldName", regulatedFieldName_);
+    os.writeEntry("patchName", targetPatchName_);
+    os.writeEntry("targetValue", targetValue_);
+    os.writeEntry("mode", operationModeNames.get(mode_));
+    os.endBlock();
+}
