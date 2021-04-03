@@ -24,15 +24,15 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
       targetPatchName_(dict.getWord("patchName")),
       targetValue_(dict.getScalar("targetValue")),
       mode_(operationModeNames.get("mode", dict)),
+      timeIndex_(mesh.time().timeIndex()),
+      error_(0.),
+      oldError_(0.),
       Kp_(0.),
       Ti_(0.),
       Td_(0.),
       outputMax_(1.),
       outputMin_(0.),
-      error_(0.),
-      errorIntegral_(0.),
-      oldError_(0.),
-      timeIndex_(mesh.time().timeIndex())
+      errorIntegral_(0.)
 {
     switch (mode_)
     {
@@ -71,15 +71,15 @@ Regulator::Regulator(const fvMesh &mesh)
     targetPatchName_(word::null),
     targetValue_(0),
     mode_(PID),
+    timeIndex_(mesh.time().timeIndex()),
+    error_(0),
+    oldError_(0),
     Kp_(0),
     Ti_(0),
     Td_(0),
     outputMax_(1),
     outputMin_(0),
-    error_(0),
-    errorIntegral_(0),
-    oldError_(0),
-    timeIndex_(mesh.time().timeIndex())
+    errorIntegral_(0)
 {}
 
 Regulator::Regulator(const Regulator &reg)
@@ -88,15 +88,15 @@ Regulator::Regulator(const Regulator &reg)
       targetPatchName_(reg.targetPatchName_),
       targetValue_(reg.targetValue_),
       mode_(reg.mode_),
+      timeIndex_(reg.timeIndex_),
+      error_(reg.error_),
+      oldError_(reg.oldError_),
       Kp_(reg.Kp_),
       Ti_(reg.Ti_),
       Td_(reg.Td_),
       outputMax_(reg.outputMax_),
       outputMin_(reg.outputMin_),
-      error_(reg.error_),
-      errorIntegral_(reg.errorIntegral_),
-      oldError_(reg.oldError_),
-      timeIndex_(reg.timeIndex_)
+      errorIntegral_(reg.errorIntegral_)
 {}
 
 // * * * * * * * * * * * * Public Member Functions  * * * * * * * * * * * * *//

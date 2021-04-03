@@ -89,16 +89,16 @@ private:
     const word targetPatchName_;    // Name of a patch from which the process value is read
     scalar targetValue_;            // Reference value used by the control loop
     operationMode mode_;            // Control type mode
+    label timeIndex_;               // Time index of the last update
+    scalar error_;                  // Measured error
+    scalar oldError_;               // Old error
+    // PID specific
     scalar Kp_;                     // Proportional control term
     scalar Ti_;                     // Integral control term
     scalar Td_;                     // Differential control term
     scalar outputMax_;              // Max output signal (saturation)
     scalar outputMin_;              // Min output signal
-    scalar error_;                  // Measured error
     scalar errorIntegral_;          // Error integral w.r.t. time
-    scalar oldError_;               // Old error
-    label timeIndex_;               // Time index of the last update
-
 };
 
 #endif
