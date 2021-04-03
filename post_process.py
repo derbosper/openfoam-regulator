@@ -12,12 +12,6 @@ class RuntimeVariable:
         self.prefix = prefix
         self.type = type
 
-
-# ragulatedPatchTargetValue_prefix = "Regulator: targetValue = "
-# regulatedPatchValue_prefix = "Regulator: currentRegulatedPatchValue = "
-# error_prefix = "Regulator: error = "
-# outputSignal_prefix = "Regulator: outputSignal = "
-
 RUNTIME_VARIABLES = [
     RuntimeVariable(name="time", prefix="Time = "),
     RuntimeVariable(
@@ -45,20 +39,25 @@ def dataframe_from_logs(file: str) -> pd.DataFrame:
 def plot_results(df: pd.DataFrame) -> None:
     t = df["time"]
 
-    ax1 = plt.subplot(311)
+    ax1 = plt.subplot(411)
     plt.plot(t, df["inletValue"])
-    plt.setp(ax1.get_xticklabels())
+    plt.setp(ax1.get_xticklabels(), visible=False)
     plt.ylabel("inlet T [C]")
 
-    ax2 = plt.subplot(312, sharex=ax1)
+    ax2 = plt.subplot(412, sharex=ax1)
     plt.plot(t, df["regulatedPatchValue"])
     plt.setp(ax2.get_xticklabels(), visible=False)
     plt.ylabel("target T [C]")
 
-    ax3 = plt.subplot(313, sharex=ax1)
+    ax3 = plt.subplot(413, sharex=ax1)
     plt.plot(t, df["error"])
     plt.setp(ax3.get_xticklabels(), visible=False)
     plt.ylabel("error")
+
+    ax4 = plt.subplot(414, sharex=ax1)
+    plt.plot(t, df["outputSignal"])
+    plt.setp(ax4.get_xticklabels(), visible=True)
+    plt.ylabel("output signal")
 
     plt.xlabel("time [s]")
     plt.show()
