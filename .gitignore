@@ -1,6 +1,9 @@
 # Generated mesh
 **/polyMesh
 
+# VTK files
+**/VTK
+
 # Generated solution directories, excluding 0
 [0-9]*
 0.[0-9]*
