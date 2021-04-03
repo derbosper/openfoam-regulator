@@ -132,6 +132,8 @@ void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
 void Foam::temperaturePIDFixedGradientFvPatchScalarField::write(Ostream& os) const
 {
     fvPatchScalarField::write(os);
+    regulator_.write(os);
+    os.writeEntry("Q", Q_);
     writeEntry("value", os);
 }
 
