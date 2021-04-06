@@ -94,15 +94,15 @@ private:
     operationMode mode_;            // Control type mode
     label timeIndex_;               // Time index of the last update
     scalar error_;                  // Measured error
-    scalar oldError_;               // Old error
     // on/off specific
-    scalar outputSignal_;           // Current output signal
+    scalar outputSignal_;           // Current output signal (PID can be implemented without this member)
     // PID specific
     scalar Kp_;                     // Proportional control term
     scalar Ti_;                     // Integral control term
     scalar Td_;                     // Differential control term
     scalar outputMax_;              // Max output signal (saturation)
     scalar outputMin_;              // Min output signal
+    scalar oldError_;               // Old error
     scalar errorIntegral_;          // Error integral w.r.t. time
 };
 

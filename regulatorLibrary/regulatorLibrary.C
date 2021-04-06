@@ -26,13 +26,13 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
       mode_(operationModeNames.get("mode", dict)),
       timeIndex_(mesh.time().timeIndex()),
       error_(0.),
-      oldError_(0.),
       outputSignal_(0.),
       Kp_(0.),
       Ti_(0.),
       Td_(0.),
       outputMax_(1.),
       outputMin_(0.),
+      oldError_(0.),
       errorIntegral_(0.)
 {
     switch (mode_)
@@ -74,13 +74,13 @@ Regulator::Regulator(const fvMesh &mesh)
     mode_(PID),
     timeIndex_(mesh.time().timeIndex()),
     error_(0),
-    oldError_(0),
     outputSignal_(0),
     Kp_(0),
     Ti_(0),
     Td_(0),
     outputMax_(1),
     outputMin_(0),
+    oldError_(0),
     errorIntegral_(0)
 {}
 
@@ -92,13 +92,13 @@ Regulator::Regulator(const Regulator &reg)
       mode_(reg.mode_),
       timeIndex_(reg.timeIndex_),
       error_(reg.error_),
-      oldError_(reg.oldError_),
       outputSignal_(reg.outputSignal_),
       Kp_(reg.Kp_),
       Ti_(reg.Ti_),
       Td_(reg.Td_),
       outputMax_(reg.outputMax_),
       outputMin_(reg.outputMin_),
+      oldError_(reg.oldError_),
       errorIntegral_(reg.errorIntegral_)
 {}
 
@@ -121,7 +121,6 @@ scalar Regulator::read()
     if (timeIndex_ != mesh_.time().timeIndex())
     {
         timeIndex_ = mesh_.time().timeIndex();
-        oldError_ = error_;
     }
 
     // Get the target patch average field value
@@ -144,6 +143,7 @@ scalar Regulator::read()
         }
         case PID:
         {
+            oldError_ = error_;
             errorIntegral_ += 0.5*(error_ + oldError_)*deltaT;
             const scalar errorDifferential = (error_ - oldError_) / deltaT;
 
