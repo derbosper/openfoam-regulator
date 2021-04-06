@@ -95,6 +95,8 @@ private:
     label timeIndex_;               // Time index of the last update
     scalar error_;                  // Measured error
     scalar oldError_;               // Old error
+    // on/off specific
+    scalar outputSignal_;           // Current output signal
     // PID specific
     scalar Kp_;                     // Proportional control term
     scalar Ti_;                     // Integral control term

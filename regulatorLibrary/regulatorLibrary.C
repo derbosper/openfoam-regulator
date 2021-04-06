@@ -27,6 +27,7 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
       timeIndex_(mesh.time().timeIndex()),
       error_(0.),
       oldError_(0.),
+      outputSignal_(0.),
       Kp_(0.),
       Ti_(0.),
       Td_(0.),
@@ -74,6 +75,7 @@ Regulator::Regulator(const fvMesh &mesh)
     timeIndex_(mesh.time().timeIndex()),
     error_(0),
     oldError_(0),
+    outputSignal_(0),
     Kp_(0),
     Ti_(0),
     Td_(0),
@@ -91,6 +93,7 @@ Regulator::Regulator(const Regulator &reg)
       timeIndex_(reg.timeIndex_),
       error_(reg.error_),
       oldError_(reg.oldError_),
+      outputSignal_(reg.outputSignal_),
       Kp_(reg.Kp_),
       Ti_(reg.Ti_),
       Td_(reg.Td_),
@@ -125,14 +128,18 @@ scalar Regulator::read()
     const scalar currentRegulatedPatchValue = probeTargetPatch();
 
     // Calculate errors
-    scalar result = 0.;
     error_ = targetValue_ - currentRegulatedPatchValue;
+
+    const scalar h = 0.5; // TODO replace with proper histeresis
 
     switch (mode_)
     {
         case twoStep:
         {
-            result = error_ <= 0 ? 0. : 1.;
+            const scalar targetCorrected = outputSignal_ > 0. ? targetValue_ + 0.5*h : targetValue_ - 0.5*h;
+            const scalar errorCorrected = targetCorrected - currentRegulatedPatchValue;
+            Info << "target = " << targetValue_ << " corrected: " << targetCorrected << " error = " << error_ << " corrected: " << errorCorrected << endl;
+            outputSignal_ = errorCorrected <= 0 ? 0. : 1.;
             break;
         }
         case PID:
@@ -145,7 +152,7 @@ scalar Regulator::read()
             const scalar outputSignal = Kp_*(error_ + 1/(Ti_ + 1e-7)*errorIntegral_ + Td_*errorDifferential);
 
             // Return result within defined regulator saturation: outputMax_ and outputMin_
-            result = max(min(outputSignal, outputMax_), outputMin_);
+            outputSignal_ = max(min(outputSignal, outputMax_), outputMin_);
             break;
         }
     }
@@ -156,9 +163,9 @@ scalar Regulator::read()
     Info << "Regulator: mode = " << mode_ << endl;
     Info << "Regulator: currentRegulatedPatchValue = " << currentRegulatedPatchValue << endl;
     Info << "Regulator: error = " << error_ << endl;
-    Info << "Regulator: outputSignal = " << result << endl;
+    Info << "Regulator: outputSignal = " << outputSignal_ << endl;
 
-    return result;
+    return outputSignal_;
 }
 
 void Regulator::write(Ostream& os, const word dictName) const
