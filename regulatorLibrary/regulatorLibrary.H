@@ -96,6 +96,7 @@ private:
     scalar error_;                  // Measured error
     // on/off specific
     scalar outputSignal_;           // Current output signal (PID can be implemented without this member)
+    scalar h_;                       // Controller histeresis
     // PID specific
     scalar Kp_;                     // Proportional control term
     scalar Ti_;                     // Integral control term

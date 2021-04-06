@@ -27,6 +27,7 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
       timeIndex_(mesh.time().timeIndex()),
       error_(0.),
       outputSignal_(0.),
+      h_(0.),
       Kp_(0.),
       Ti_(0.),
       Td_(0.),
@@ -46,6 +47,7 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
                 << "in twoStep mode, as they are always 0. and 1."
                 << exit(FatalIOError);
             }
+            h_ = dict.getOrDefault<scalar>("h", 0.);
             break;
         }
         // PID returns a value between outputMin and outputMax, defaults to (-1, 1)
@@ -75,6 +77,7 @@ Regulator::Regulator(const fvMesh &mesh)
     timeIndex_(mesh.time().timeIndex()),
     error_(0),
     outputSignal_(0),
+    h_(0),
     Kp_(0),
     Ti_(0),
     Td_(0),
@@ -93,6 +96,7 @@ Regulator::Regulator(const Regulator &reg)
       timeIndex_(reg.timeIndex_),
       error_(reg.error_),
       outputSignal_(reg.outputSignal_),
+      h_(reg.h_),
       Kp_(reg.Kp_),
       Ti_(reg.Ti_),
       Td_(reg.Td_),
@@ -129,15 +133,14 @@ scalar Regulator::read()
     // Calculate errors
     error_ = targetValue_ - currentRegulatedPatchValue;
 
-    const scalar h = 0.5; // TODO replace with proper histeresis
-
     switch (mode_)
     {
         case twoStep:
         {
-            const scalar targetCorrected = outputSignal_ > 0. ? targetValue_ + 0.5*h : targetValue_ - 0.5*h;
+            //- Przy istnieniu histerezy wprowadzana jest zmienna zastępczna y'_z taka,
+            //- że y'_z = y + 0.5h, dla sygnału wyjściowego 1 albo y - 0.5h dla sygnału 0
+            const scalar targetCorrected = outputSignal_ > 0. ? targetValue_ + 0.5 * h_ : targetValue_ - 0.5 * h_;
             const scalar errorCorrected = targetCorrected - currentRegulatedPatchValue;
-            Info << "target = " << targetValue_ << " corrected: " << targetCorrected << " error = " << error_ << " corrected: " << errorCorrected << endl;
             outputSignal_ = errorCorrected <= 0 ? 0. : 1.;
             break;
         }

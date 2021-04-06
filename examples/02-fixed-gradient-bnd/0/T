@@ -51,6 +51,7 @@ boundaryField
             patchName   outlet;
             targetValue 25;
             mode        twoStep;
+            h           0.4;
         }
     }
 
