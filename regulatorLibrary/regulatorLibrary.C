@@ -152,7 +152,7 @@ scalar Regulator::read()
 
             // Calculate output signal
             // A negliable value is added to Ti_ to prevent division by 0
-            const scalar outputSignal = Kp_*(error_ + 1/(Ti_ + 1e-7)*errorIntegral_ + Td_*errorDifferential);
+            const scalar outputSignal = Kp_*(error_ + 1/(Ti_ + SMALL)*errorIntegral_ + Td_*errorDifferential);
 
             // Return result within defined regulator saturation: outputMax_ and outputMin_
             outputSignal_ = max(min(outputSignal, outputMax_), outputMin_);

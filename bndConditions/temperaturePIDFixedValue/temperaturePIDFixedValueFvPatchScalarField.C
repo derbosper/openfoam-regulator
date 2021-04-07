@@ -113,7 +113,7 @@ void Foam::temperaturePIDFixedValueFvPatchScalarField::updateCoeffs()
     // purposes, with no physical meaning
     // -- sign(0.) gives 1, so we need to substract small number to achieve no
     // -- no control signal when regulator output is 0.
-    const scalar controlSignal = 50*sign(outputSignal - 1e-7);
+    const scalar controlSignal = 50*sign(outputSignal - SMALL);
     operator==(thisTemp + controlSignal);
 
     Info << "Wall temperature: " << thisTemp << endl;
