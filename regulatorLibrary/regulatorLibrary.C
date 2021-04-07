@@ -147,7 +147,7 @@ scalar Regulator::read()
         case PID:
         {
             oldError_ = error_;
-            errorIntegral_ += 0.5*(error_ + oldError_)*deltaT;
+            errorIntegral_ += error_ * deltaT;
             const scalar errorDifferential = (error_ - oldError_) / deltaT;
 
             // Calculate output signal
