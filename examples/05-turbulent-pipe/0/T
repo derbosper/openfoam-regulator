@@ -1,0 +1,67 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 20;
+
+boundaryField
+{
+    inlet
+    {
+        type            uniformFixedValue;
+        uniformValue
+        {
+            type        expression;
+            variables
+            (
+                "start = 15"             // when temperature jumps [s]
+                "temperature = 15"     // new inlet temperature [degC]
+            );
+            // arg() == time
+            expression  #{ (arg() < start) ? 20 : temperature #};
+        }
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+
+    wall
+    {
+        type            temperaturePIDFixedGradient;
+        Q               200000;
+        regulator
+        {
+            fieldName   T;
+            patchName   outlet;
+            targetValue 25;
+            mode        twoStep;
+            h           0.4;
+            // Kp          1;
+            // Ti          0.2;
+            // Td          0.1;
+        }
+    }
+
+    symmetry
+    {
+        type            symmetry;
+    }
+}
+
+// ************************************************************************* //
