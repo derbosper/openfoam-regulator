@@ -103,7 +103,7 @@ void Foam::temperaturePIDFixedValueFvPatchScalarField::updateCoeffs()
 
     // Get temperature of this boundary
     const fvPatch& thisPatch = patch().boundaryMesh()[patch().name()];
-    const scalar thisTemp = Sensor::patchAverage("T", thisPatch);
+    const scalar thisTemp = patchAverage("T", thisPatch);
 
     // Calculate output signal
     const scalar outputSignal = regulator_.read();

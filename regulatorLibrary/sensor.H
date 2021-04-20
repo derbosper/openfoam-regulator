@@ -1,7 +1,32 @@
+/* 
+sensor
+{
+    field       T;
+    type        points;
+    points
+    (
+        (0.02 0.005 0.0)
+        (0.05 0.005 0.0)
+        (0.07 0.005 0.0)
+    );
+}
+
+or
+
+sensor
+{
+    field       T;
+    type        patch;
+    patchName   outlet;
+}
+
+*/
+
 #ifndef Sensor_H
 #define Sensor_H
 
 #include "fvCFD.H"
+#include "pointField.H"
 
 class Sensor
 {
@@ -30,14 +55,15 @@ public:
 
     word fieldName() const;
 
-    // Calculate face average of a value
-    static scalar patchAverage(const word &fieldName, const fvPatch &patch);
-
 private:
     const fvMesh &mesh_;   // Reference to the system mesh
     const word fieldName_; // Controlled process variable scalar field name
     const sensorType type_;
     const word patchName_; // Name of a patch from which the process value is read
+    const pointField points_;   // List of points for from which the average process value is read
 };
+
+// * * * * * * * * * * * * Helper Functions  * * * * * * * * * * * * //
+scalar patchAverage(const word &fieldName, const fvPatch &patch);
 
 #endif
