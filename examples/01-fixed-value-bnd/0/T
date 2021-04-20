@@ -43,8 +43,12 @@ boundaryField
         value           uniform 350;
         regulator
         {
-            fieldName   T;
-            patchName   outlet;
+            sensor
+            {
+                field       T;
+                type        patch;
+                patchName   outlet;
+            }
             targetValue 350;
             mode        twoStep;
         };

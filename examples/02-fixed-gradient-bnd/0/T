@@ -47,8 +47,12 @@ boundaryField
         Q               15000;
         regulator
         {
-            fieldName   T;
-            patchName   outlet;
+            sensor
+            {
+                field       T;
+                type        patch;
+                patchName   outlet;
+            }
             targetValue 25;
             mode        twoStep;
             h           0.4;
