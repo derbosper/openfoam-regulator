@@ -2,24 +2,10 @@
 
 // * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * * //
 
-scalar Regulator::patchAverage(const word &fieldName, const fvPatch &patch)
-{
-    const fvPatchField<scalar> &field =
-        patch.lookupPatchField<volScalarField, scalar>(fieldName);
-
-    return gSum(field * patch.magSf()) / gSum(patch.magSf());
-}
-
 const Foam::Enum<Regulator::operationMode>
     Regulator::operationModeNames({
         {operationMode::twoStep, "twoStep"},
         {operationMode::PID, "PID"},
-    });
-
-const Foam::Enum<Regulator::sensorType>
-    Regulator::sensorTypeNames({
-        {sensorType::patch, "patch"},
-        {sensorType::points, "points"},
     });
 
 // * * * * * * * * * * * * * * * * Constructor * * * * * * * * * * * * * * * //
@@ -118,7 +104,7 @@ scalar Regulator::probeTargetPatch() const
 {
     // Get the target patch average field value
     const fvPatch &targetPatch = mesh_.boundary()[targetPatchName_];
-    const scalar result = patchAverage(regulatedFieldName_, targetPatch);
+    const scalar result = Sensor::patchAverage(regulatedFieldName_, targetPatch);
     return result;
 }
 

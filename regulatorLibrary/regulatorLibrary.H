@@ -47,6 +47,7 @@ Description
 #define Regulator_H
 
 #include "fvCFD.H"
+#include "sensor.H"
 
 
 class Regulator
@@ -69,13 +70,6 @@ public:
     };
     static const Enum<operationMode> operationModeNames;
 
-    enum sensorType
-    {
-        patch, // reads from speficied patch
-        points, // reads from specified points 
-    };
-    static const Enum<sensorType> sensorTypeNames;
-
     const word fieldName() const { return regulatedFieldName_; }
     const word targetPatchName() const { return targetPatchName_; }
     scalar targetValue() const { return targetValue_; }
@@ -88,9 +82,6 @@ public:
 
     //- Read value of the regulated field from regulation target patch
     scalar probeTargetPatch() const;
-
-    //- Calculate face average of a value
-    static scalar patchAverage(const word &fieldName, const fvPatch &patch);
 
 private:
     const fvMesh &mesh_;            // Reference to the system mesh
