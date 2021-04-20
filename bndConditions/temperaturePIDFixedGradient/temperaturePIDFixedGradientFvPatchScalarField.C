@@ -123,8 +123,8 @@ void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
         gradient() = 0;
     }
 
-
-    Info << "Regulator: value at inlet = " << patchAverage("T", patch().boundaryMesh()["inlet"]) << endl;
+    // TODO make this logging sensor-type-agnostic
+    // Info << "Regulator: value at inlet = " << patchAverage("T", patch().boundaryMesh()["inlet"]) << endl;
 
     fixedGradientFvPatchScalarField::updateCoeffs();
 }
