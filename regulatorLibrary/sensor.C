@@ -56,9 +56,11 @@ scalar Sensor::read() const
         result = 0;
         break;
     }
-    default:
-        result = 0;
     }
+
+    Info << "Regulator: regulatedFieldName = " << fieldName_ << endl;
+    Info << "Regulator: targetPatchName = " << patchName_ << endl;
+
     return result;
 }
 

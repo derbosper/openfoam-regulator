@@ -35,9 +35,9 @@ public:
 
 private:
     const fvMesh &mesh_;   // Reference to the system mesh
-    const word fieldName_; // Name of the field being read
+    const word fieldName_; // Controlled process variable scalar field name
     const sensorType type_;
-    const word patchName_;  // For patch type
+    const word patchName_; // Name of a patch from which the process value is read
 };
 
 #endif

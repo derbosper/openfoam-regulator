@@ -70,8 +70,6 @@ public:
     };
     static const Enum<operationMode> operationModeNames;
 
-    const word fieldName() const { return regulatedFieldName_; }
-    const word targetPatchName() const { return targetPatchName_; }
     scalar targetValue() const { return targetValue_; }
 
     //- Read output signal from the regulator
@@ -80,13 +78,9 @@ public:
     //- Write to runtime dict
     void write(Ostream& os, const word dictName = "regulator") const;
 
-    //- Read value of the regulated field from regulation target patch
-    scalar probeTargetPatch() const;
-
 private:
     const fvMesh &mesh_;            // Reference to the system mesh
-    const word regulatedFieldName_; // Controlled process variable scalar field
-    const word targetPatchName_;    // Name of a patch from which the process value is read
+    const Sensor sensor_;           // Sensor instance for reading field values
     scalar targetValue_;            // Reference value used by the control loop
     operationMode mode_;            // Control type mode
     label timeIndex_;               // Time index of the last update

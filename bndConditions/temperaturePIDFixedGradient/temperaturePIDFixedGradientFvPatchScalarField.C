@@ -124,7 +124,7 @@ void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
     }
 
 
-    Info << "Regulator: value at inlet = " << Sensor::patchAverage(regulator_.fieldName(), patch().boundaryMesh()["inlet"]) << endl;
+    Info << "Regulator: value at inlet = " << Sensor::patchAverage("T", patch().boundaryMesh()["inlet"]) << endl;
 
     fixedGradientFvPatchScalarField::updateCoeffs();
 }

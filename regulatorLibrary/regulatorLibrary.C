@@ -12,8 +12,7 @@ const Foam::Enum<Regulator::operationMode>
 
 Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
     : mesh_(mesh),
-      regulatedFieldName_(dict.getWord("fieldName")),
-      targetPatchName_(dict.getWord("patchName")),
+      sensor_(mesh, dict.subDict("sensor")),
       targetValue_(dict.getScalar("targetValue")),
       mode_(operationModeNames.get("mode", dict)),
       timeIndex_(mesh.time().timeIndex()),
@@ -62,8 +61,7 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
 
 Regulator::Regulator(const fvMesh &mesh)
     : mesh_(mesh),
-    regulatedFieldName_(word::null),
-    targetPatchName_(word::null),
+    sensor_(mesh),
     targetValue_(0),
     mode_(PID),
     timeIndex_(mesh.time().timeIndex()),
@@ -81,8 +79,7 @@ Regulator::Regulator(const fvMesh &mesh)
 
 Regulator::Regulator(const Regulator &reg)
     : mesh_(reg.mesh_),
-      regulatedFieldName_(reg.regulatedFieldName_),
-      targetPatchName_(reg.targetPatchName_),
+      sensor_(reg.sensor_),
       targetValue_(reg.targetValue_),
       mode_(reg.mode_),
       timeIndex_(reg.timeIndex_),
@@ -100,14 +97,6 @@ Regulator::Regulator(const Regulator &reg)
 
 // * * * * * * * * * * * * Public Member Functions  * * * * * * * * * * * * *//
 
-scalar Regulator::probeTargetPatch() const
-{
-    // Get the target patch average field value
-    const fvPatch &targetPatch = mesh_.boundary()[targetPatchName_];
-    const scalar result = Sensor::patchAverage(regulatedFieldName_, targetPatch);
-    return result;
-}
-
 scalar Regulator::read()
 {
     // Get the time step
@@ -120,7 +109,7 @@ scalar Regulator::read()
     }
 
     // Get the target patch average field value
-    const scalar currentRegulatedPatchValue = probeTargetPatch();
+    const scalar currentRegulatedPatchValue = sensor_.read();
 
     // Calculate errors
     error_ = targetValue_ - currentRegulatedPatchValue;
@@ -152,8 +141,6 @@ scalar Regulator::read()
         }
     }
 
-    Info << "Regulator: regulatedFieldName = " << regulatedFieldName_ << endl;
-    Info << "Regulator: targetPatchName = " << targetPatchName_ << endl;
     Info << "Regulator: targetValue = " << targetValue_ << endl;
     Info << "Regulator: mode = " << mode_ << endl;
     Info << "Regulator: currentRegulatedPatchValue = " << currentRegulatedPatchValue << endl;
@@ -166,8 +153,8 @@ scalar Regulator::read()
 void Regulator::write(Ostream& os, const word dictName) const
 {
     os.beginBlock(dictName);
-    os.writeEntry("fieldName", regulatedFieldName_);
-    os.writeEntry("patchName", targetPatchName_);
+    // os.writeEntry("fieldName", regulatedFieldName_);
+    // os.writeEntry("patchName", targetPatchName_);
     os.writeEntry("targetValue", targetValue_);
     os.writeEntry("mode", operationModeNames.get(mode_));
     os.endBlock();
