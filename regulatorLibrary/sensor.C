@@ -70,6 +70,11 @@ scalar Sensor::read() const
         reduce(fieldSum, sumOp<scalar>());
         return fieldSum / points_.size();
     }
+    default:
+    {
+        FatalError << "Unknown sensor type" << endl;
+        return 1;
+    }
     }
 }
 
