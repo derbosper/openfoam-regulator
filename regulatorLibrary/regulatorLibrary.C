@@ -16,6 +16,12 @@ const Foam::Enum<Regulator::operationMode>
         {operationMode::PID, "PID"},
     });
 
+const Foam::Enum<Regulator::sensorType>
+    Regulator::sensorTypeNames({
+        {sensorType::patch, "patch"},
+        {sensorType::points, "points"},
+    });
+
 // * * * * * * * * * * * * * * * * Constructor * * * * * * * * * * * * * * * //
 
 Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)

@@ -67,8 +67,14 @@ public:
         twoStep, // on/off control
         PID,
     };
-
     static const Enum<operationMode> operationModeNames;
+
+    enum sensorType
+    {
+        patch, // reads from speficied patch
+        points, // reads from specified points 
+    };
+    static const Enum<sensorType> sensorTypeNames;
 
     const word fieldName() const { return regulatedFieldName_; }
     const word targetPatchName() const { return targetPatchName_; }
