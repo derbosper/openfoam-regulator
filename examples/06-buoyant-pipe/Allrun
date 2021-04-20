@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cwd=$(dirname $(realpath $0))
+
+# decomposePar
+# mpirun --allow-run-as-root -np 4 buoyantBoussinesqPimpleFoam -parallel -case $cwd
+# reconstructPar
+
+buoyantBoussinesqPimpleFoam -case $cwd

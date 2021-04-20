@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cwd=$(dirname $(realpath $0))
+
+wclean $cwd/bndCondition/temperaturePIDFixedGradient
+
+foamListTimes -case "$cwd" -rm
+
+rm -r "$cwd/constant/polyMesh"
