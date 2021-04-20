@@ -22,8 +22,28 @@ boundaryField
 {
     floor
     {
-        type            fixedValue;
-        value           uniform 50;
+        type            temperaturePIDFixedGradient;
+        Q               20000;
+        regulator
+        {
+            sensor
+            {
+                field       T;
+                type        points;
+                points
+                (
+                    (5.0 4.5 5.0)
+                    (5.5 4.5 5.0)
+                    (4.5 4.5 5.0)
+                );
+            }
+            targetValue 20;
+            mode        twoStep;
+            h           0.4;
+            // Kp          1;
+            // Ti          0.2;
+            // Td          0.1;
+        }
     }
     walls
     {
