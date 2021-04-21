@@ -23,7 +23,7 @@ boundaryField
     floor
     {
         type            temperaturePIDFixedGradient;
-        Q               20000;
+        Q               10000;
         regulator
         {
             sensor
@@ -47,7 +47,8 @@ boundaryField
     }
     walls
     {
-        type            zeroGradient;
+        type            fixedGradient;
+        gradient        uniform -50;
     }
 }
 
