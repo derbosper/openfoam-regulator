@@ -45,11 +45,6 @@ Sensor::Sensor(const Sensor &rhs):
 
 scalar Sensor::read() const
 {
-    // Some info for post-processing or whatever
-    // TODO check if it's necessary
-    Info << "Regulator: regulatedFieldName = " << fieldName_ << endl;
-    Info << "Regulator: targetPatchName = " << patchName_ << endl;
-
     switch (type_)
     {
     case sensorType::patch:

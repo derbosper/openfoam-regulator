@@ -109,10 +109,10 @@ scalar Regulator::read()
     }
 
     // Get the target patch average field value
-    const scalar currentRegulatedPatchValue = sensor_.read();
+    const scalar sensorValue = sensor_.read();
 
     // Calculate errors
-    error_ = targetValue_ - currentRegulatedPatchValue;
+    error_ = targetValue_ - sensorValue;
 
     switch (mode_)
     {
@@ -121,7 +121,7 @@ scalar Regulator::read()
             //- Przy istnieniu histerezy wprowadzana jest zmienna zastępczna y'_z taka,
             //- że y'_z = y + 0.5h, dla sygnału wyjściowego 1 albo y - 0.5h dla sygnału 0
             const scalar targetCorrected = outputSignal_ > 0. ? targetValue_ + 0.5 * h_ : targetValue_ - 0.5 * h_;
-            const scalar errorCorrected = targetCorrected - currentRegulatedPatchValue;
+            const scalar errorCorrected = targetCorrected - sensorValue;
             outputSignal_ = errorCorrected <= 0 ? 0. : 1.;
             break;
         }
@@ -141,9 +141,9 @@ scalar Regulator::read()
         }
     }
 
+    Info << "Regulator: mode = " << operationModeNames.get(mode_) << endl;
     Info << "Regulator: targetValue = " << targetValue_ << endl;
-    Info << "Regulator: mode = " << mode_ << endl;
-    Info << "Regulator: currentRegulatedPatchValue = " << currentRegulatedPatchValue << endl;
+    Info << "Regulator: sensorValue = " << sensorValue << endl;
     Info << "Regulator: error = " << error_ << endl;
     Info << "Regulator: outputSignal = " << outputSignal_ << endl;
 
