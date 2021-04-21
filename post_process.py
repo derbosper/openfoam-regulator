@@ -15,10 +15,10 @@ class RuntimeVariable:
 RUNTIME_VARIABLES = [
     RuntimeVariable(name="time", prefix="Time = "),
     RuntimeVariable(
-        name="regulatedPatchValue", prefix="Regulator: currentRegulatedPatchValue = "
+        name="sensorValue", prefix="Regulator: sensorValue = "
     ),
     RuntimeVariable(name="targetValue", prefix="Regulator: targetValue = "),
-    RuntimeVariable(name="inletValue", prefix="Regulator: value at inlet = "),
+    # RuntimeVariable(name="inletValue", prefix="Regulator: value at inlet = "),
     RuntimeVariable(name="error", prefix="Regulator: error = "),
     RuntimeVariable(name="outputSignal", prefix="Regulator: outputSignal = "),
 ]
@@ -40,12 +40,13 @@ def plot_results(df: pd.DataFrame) -> None:
     t = df["time"]
 
     ax1 = plt.subplot(411)
-    plt.plot(t, df["inletValue"])
+    # plt.plot(t, df["inletValue"])
+    plt.plot(t, df["sensorValue"])
     plt.setp(ax1.get_xticklabels(), visible=False)
     plt.ylabel("inlet T [C]")
 
     ax2 = plt.subplot(412, sharex=ax1)
-    plt.plot(t, df["regulatedPatchValue"])
+    plt.plot(t, df["sensorValue"])
     plt.setp(ax2.get_xticklabels(), visible=False)
     plt.ylabel("target T [C]")
 
