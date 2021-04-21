@@ -76,8 +76,10 @@ class convectiveHeatFluxFvPatchScalarField
 {
     // Private data
 
-        //- Name of the temperature field
-        word TName_;
+        word TName_;  // Name of the temperature field
+        scalar Tsur_;  // Temperature of surroundings
+        scalar kappa_;  // Thermal conductivity of surrounding fluid
+        scalar h_;  // Convection heat transfer coefficient
 
 public:
 

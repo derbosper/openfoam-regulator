@@ -41,7 +41,10 @@ Foam::convectiveHeatFluxFvPatchScalarField::convectiveHeatFluxFvPatchScalarField
 )
 :
     fixedGradientFvPatchScalarField(p, iF),
-    TName_("T")
+    TName_("T"),
+    Tsur_(0),
+    kappa_(0),
+    h_(0)
 {}
 
 
@@ -54,7 +57,10 @@ Foam::convectiveHeatFluxFvPatchScalarField::convectiveHeatFluxFvPatchScalarField
 )
 :
     fixedGradientFvPatchScalarField(ptf, p, iF, mapper),
-    TName_(ptf.TName_)
+    TName_(ptf.TName_),
+    Tsur_(ptf.Tsur_),
+    kappa_(ptf.kappa_),
+    h_(ptf.h_)
 {}
 
 
@@ -66,7 +72,10 @@ Foam::convectiveHeatFluxFvPatchScalarField::convectiveHeatFluxFvPatchScalarField
 )
 :
     fixedGradientFvPatchScalarField(p, iF),
-    TName_(dict.lookupOrDefault<word>("T", "T"))
+    TName_(dict.lookupOrDefault<word>("T", "T")),
+    Tsur_(dict.get<scalar>("Tsur")),
+    kappa_(dict.get<scalar>("kappa")),
+    h_(dict.get<scalar>("h"))
 {
     fvPatchField<scalar>::operator=(patchInternalField());
     gradient() = 0.0;
@@ -79,7 +88,11 @@ Foam::convectiveHeatFluxFvPatchScalarField::convectiveHeatFluxFvPatchScalarField
 )
 :
     fixedGradientFvPatchScalarField(tppsf),
-    TName_(tppsf.TName_)
+    TName_(tppsf.TName_),
+    Tsur_(tppsf.Tsur_),
+    kappa_(tppsf.kappa_),
+    h_(tppsf.h_)
+
 {}
 
 
@@ -90,7 +103,10 @@ Foam::convectiveHeatFluxFvPatchScalarField::convectiveHeatFluxFvPatchScalarField
 )
 :
     fixedGradientFvPatchScalarField(tppsf, iF),
-    TName_(tppsf.TName_)
+    TName_(tppsf.TName_),
+    Tsur_(tppsf.Tsur_),
+    kappa_(tppsf.kappa_),
+    h_(tppsf.h_)
 {}
 
 
@@ -106,13 +122,7 @@ void Foam::convectiveHeatFluxFvPatchScalarField::updateCoeffs()
     const fvPatchScalarField& T =
         patch().lookupPatchField<volScalarField, scalar>(TName_);
 
-    const dictionary& transportProperties = db().lookupObject<IOdictionary>("transportProperties");
-
-    dimensionedScalar Tsur(transportProperties.get<dimensionedScalar>("Tsur"));
-    dimensionedScalar h(transportProperties.get<dimensionedScalar>("h"));
-    dimensionedScalar k(transportProperties.get<dimensionedScalar>("k"));
-
-    gradient() = - h.value() / k.value() * (T - Tsur.value());
+    gradient() = - h_ / kappa_ * (T - Tsur_);
 
     fixedGradientFvPatchScalarField::updateCoeffs();
 }
@@ -122,6 +132,9 @@ void Foam::convectiveHeatFluxFvPatchScalarField::write(Ostream& os) const
 {
     fvPatchScalarField::write(os);
     os.writeEntryIfDifferent<word>("T", "T", TName_);
+    os.writeEntry<scalar>("Tsur", Tsur_);
+    os.writeEntry<scalar>("kappa", kappa_);
+    os.writeEntry<scalar>("h", h_);
     writeEntry("value", os);
 }
 
