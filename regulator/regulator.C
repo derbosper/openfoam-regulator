@@ -1,4 +1,4 @@
-#include "regulatorLibrary.H"
+#include "regulator.H"
 
 // * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * * //
 

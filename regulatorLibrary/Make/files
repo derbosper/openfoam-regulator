@@ -1,4 +1,0 @@
-regulatorLibrary.C
-sensor.C
-
-LIB = $(FOAM_USER_LIBBIN)/libregulatorLibrary

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-wmake libso regulatorLibrary/
+wmake libso regulator/
 
 for directory in ./bndConditions/*; do
     wmake "$directory"

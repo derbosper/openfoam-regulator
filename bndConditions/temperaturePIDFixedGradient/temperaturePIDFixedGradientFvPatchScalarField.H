@@ -59,7 +59,7 @@ See also
 #define temperaturePIDFixedGradientFvPatchScalarField_H
 
 #include "fixedGradientFvPatchFields.H"
-#include "regulatorLibrary.H"
+#include "regulator.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

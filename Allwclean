@@ -2,7 +2,7 @@
 
 # Clean all compiled libs
 
-wclean libso regulatorLibrary/
+wclean libso regulator/
 
 for directory in ./bndConditions/*; do
     wclean "$directory"

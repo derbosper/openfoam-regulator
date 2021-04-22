@@ -77,7 +77,7 @@ SourceFiles
 
 #include "fixedValueFvPatchFields.H"
 #include "Switch.H"
-#include "regulatorLibrary.H"
+#include "regulator.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
