@@ -75,7 +75,8 @@ class temperaturePIDFixedGradientFvPatchScalarField
     public fixedGradientFvPatchScalarField
 {
     Regulator regulator_;
-    scalar Q_;
+    scalar Q_;  // Heat power [W]
+    scalar kappa_; // Heat conducivity of surrounding medium [W/m/K]
 
 public:
 

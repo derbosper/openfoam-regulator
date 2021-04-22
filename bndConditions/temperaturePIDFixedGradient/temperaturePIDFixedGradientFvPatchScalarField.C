@@ -43,7 +43,8 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 :
     fixedGradientFvPatchScalarField(p, iF),
     regulator_(p.boundaryMesh().mesh()),
-    Q_(0.0)
+    Q_(0.0),
+    kappa_(0.0)
 {}
 
 
@@ -57,7 +58,8 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 :
     fixedGradientFvPatchScalarField(ptf, p, iF, mapper),
     regulator_(ptf.regulator_),
-    Q_(ptf.Q_)
+    Q_(ptf.Q_),
+    kappa_(ptf.kappa_)
 {}
 
 
@@ -70,7 +72,8 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 :
     fixedGradientFvPatchScalarField(p, iF),
     regulator_(p.boundaryMesh().mesh(), dict.subDict("regulator")),
-    Q_(dict.get<scalar>("Q"))
+    Q_(dict.get<scalar>("Q")),
+    kappa_(dict.get<scalar>("kappa"))
 {
     // Initialize patch with internal field value
     fvPatchField<scalar>::operator=(patchInternalField());
@@ -85,7 +88,8 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 :
     fixedGradientFvPatchScalarField(tppsf),
     regulator_(tppsf.regulator_),
-    Q_(tppsf.Q_)
+    Q_(tppsf.Q_),
+    kappa_(tppsf.kappa_)
 {}
 
 
@@ -97,7 +101,8 @@ Foam::temperaturePIDFixedGradientFvPatchScalarField::temperaturePIDFixedGradient
 :
     fixedGradientFvPatchScalarField(tppsf, iF),
     regulator_(tppsf.regulator_),
-    Q_(tppsf.Q_)
+    Q_(tppsf.Q_),
+    kappa_(tppsf.kappa_)
 {}
 
 
@@ -110,15 +115,11 @@ void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
         return;
     }
 
-    // Read thermal conductivity from transportProperties
-    const dictionary& transportProperties = db().lookupObject<IOdictionary>("thermophysicalProperties");
-    dimensionedScalar kappa(transportProperties.get<dimensionedScalar>("kappa"));
-
     // Calculate output signal from regulator
     const scalar outputSignal = regulator_.read();
 
     if (outputSignal > 0) {
-        gradient() = Q_ / kappa.value();
+        gradient() = Q_ / kappa_;
     } else {
         gradient() = 0;
     }
@@ -135,6 +136,7 @@ void Foam::temperaturePIDFixedGradientFvPatchScalarField::write(Ostream& os) con
     fvPatchScalarField::write(os);
     regulator_.write(os);
     os.writeEntry("Q", Q_);
+    os.writeEntry("kappa", kappa_);
     writeEntry("value", os);
 }
 
