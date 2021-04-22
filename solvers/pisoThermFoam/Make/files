@@ -1,3 +1,0 @@
-pisoThermFoam.C
-
-EXE = $(FOAM_APPBIN)/pisoThermFoam
