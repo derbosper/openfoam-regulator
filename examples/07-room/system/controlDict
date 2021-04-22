@@ -49,6 +49,6 @@ adjustTimeStep  no;
 
 maxCo           0.5;
 
-libs ( "libtemperaturePIDFixedGradient.so" "libconvectiveHeatFlux" );
+libs ( "libtemperaturePIDFixedGradient.so" );
 
 // ************************************************************************* //
