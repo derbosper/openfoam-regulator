@@ -1,3 +1,0 @@
-simpleThermFoam.C
-
-EXE = $(FOAM_APPBIN)/simpleThermFoam
