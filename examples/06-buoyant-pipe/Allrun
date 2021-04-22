@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+#------------------------------------------------------------------------------
 
-cwd=$(dirname $(realpath $0))
+fluentMeshToFoam coarse.msh
 
-# decomposePar
-# mpirun --allow-run-as-root -np 4 buoyantBoussinesqPimpleFoam -parallel -case $cwd
-# reconstructPar
+buoyantBoussinesqPimpleFoam
 
-buoyantBoussinesqPimpleFoam -case $cwd
+#------------------------------------------------------------------------------

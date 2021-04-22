@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Clean all compiled libs
+
 wclean libso regulatorLibrary/
 
 for directory in ./bndConditions/*; do

@@ -3,7 +3,7 @@ cd "${0%/*}" || exit                                # Run from this directory
 #------------------------------------------------------------------------------
 
 foamListTimes -rm
-rm -r VTK/
-rm -r constant/polyMesh/
+rm -rf VTK/
+rm -rf constant/polyMesh/
 
 #------------------------------------------------------------------------------

@@ -45,6 +45,7 @@ boundaryField
     {
         type            temperaturePIDFixedGradient;
         Q               200000;
+        kappa           10;
         regulator
         {
             sensor

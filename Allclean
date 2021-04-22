@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for directory in ./examples/*; do
+    "$directory/Allclean"
+done
