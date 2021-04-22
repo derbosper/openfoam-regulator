@@ -1,3 +1,0 @@
-convectiveHeatFluxFvPatchScalarField.C
-
-LIB = $(FOAM_USER_LIBBIN)/libconvectiveHeatFlux
