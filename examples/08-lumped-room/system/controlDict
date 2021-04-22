@@ -66,4 +66,8 @@ functions
 
 libs ( "libregulatedTemperature.so" );
 
+DebugSwitches
+{
+    lumpedMassWallTemperature   1;
+}
 // ************************************************************************* //
