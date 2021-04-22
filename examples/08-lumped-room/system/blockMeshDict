@@ -55,7 +55,7 @@ boundary
             (3 7 6 2)
         );
     }
-    fixedWalls
+    walls
     {
         type wall;
         faces

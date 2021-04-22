@@ -30,7 +30,7 @@ boundaryField
         type            noSlip;
     }
 
-    fixedWalls
+    walls
     {
         type            noSlip;
     }

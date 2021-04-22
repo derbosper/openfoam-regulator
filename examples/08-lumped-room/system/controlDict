@@ -23,13 +23,13 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         6000;
+endTime         20000;
 
 deltaT          2;
 
 writeControl    timeStep;
 
-writeInterval   100;
+writeInterval   50;
 
 purgeWrite      0;
 
@@ -63,5 +63,7 @@ functions
         TRef            373;
     }
 }
+
+libs ( "libtemperaturePIDFixedGradient.so" );
 
 // ************************************************************************* //

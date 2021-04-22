@@ -32,7 +32,7 @@ boundaryField
         value           uniform 1e5;
     }
 
-    fixedWalls
+    walls
     {
         type            fixedFluxPressure;
         value           uniform 1e5;

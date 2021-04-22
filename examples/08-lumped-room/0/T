@@ -16,18 +16,33 @@ FoamFile
 
 dimensions      [0 0 0 1 0 0 0];
 
-internalField   uniform 300;
+internalField   uniform 291;
 
 boundaryField
 {
     floor
     {
-        type            uniformFixedValue;
-        uniformValue
+        type            temperaturePIDFixedGradient;
+        Q               1200;
+        regulator
         {
-            type        expression;
-            // arg() == time
-            expression  #{ (arg() < 3000) ? 600 : 300 #};
+            sensor
+            {
+                field       T;
+                type        points;
+                points
+                (
+                    (5.0 4.5 5.0)
+                    (5.5 4.5 5.0)
+                    (4.5 4.5 5.0)
+                );
+            }
+            targetValue 293;
+            mode        twoStep;
+            h           1;
+            // Kp          1;
+            // Ti          0.2;
+            // Td          0.1;
         }
     }
 
@@ -38,12 +53,13 @@ boundaryField
         kappa           none;
         mass            1000;
         Cp              4100;
-        value           uniform 300;
+        value           $internalField;
     }
 
-    fixedWalls
+    walls
     {
-        type            zeroGradient;
+        type            fixedGradient;
+        gradient        uniform -10;
     }
 }
 
