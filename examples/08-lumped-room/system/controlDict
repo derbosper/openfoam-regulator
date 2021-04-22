@@ -64,6 +64,6 @@ functions
     }
 }
 
-libs ( "libtemperaturePIDFixedGradient.so" );
+libs ( "libregulatedTemperature.so" );
 
 // ************************************************************************* //

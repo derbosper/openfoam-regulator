@@ -22,7 +22,7 @@ boundaryField
 {
     floor
     {
-        type            temperaturePIDFixedGradient;
+        type            regulatedTemperature;
         Q               1200;
         kappa           25;
         regulator

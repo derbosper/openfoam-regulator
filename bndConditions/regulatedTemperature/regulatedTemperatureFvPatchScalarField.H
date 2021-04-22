@@ -24,7 +24,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::temperaturePIDFixedGradientFvPatchScalarField
+    Foam::regulatedTemperatureFvPatchScalarField
 
 Group
     grpInletBoundaryConditions grpOutletBoundaryConditions
@@ -42,21 +42,21 @@ Usage
     \verbatim
     <patchName>
     {
-        type            temperaturePIDFixedGradient;
+        type            regulatedTemperature;
         Q               1000;
     }
     \endverbatim
 
 SourceFiles
-    temperaturePIDFixedGradientFvPatchScalarField.C
+    regulatedTemperatureFvPatchScalarField.C
 
 See also
     Foam::fixedValueFvPatchField
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef temperaturePIDFixedGradientFvPatchScalarField_H
-#define temperaturePIDFixedGradientFvPatchScalarField_H
+#ifndef regulatedTemperatureFvPatchScalarField_H
+#define regulatedTemperatureFvPatchScalarField_H
 
 #include "fixedGradientFvPatchFields.H"
 #include "regulator.H"
@@ -67,10 +67,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-             Class temperaturePIDFixedGradientFvPatchScalarField Declaration
+             Class regulatedTemperatureFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class temperaturePIDFixedGradientFvPatchScalarField
+class regulatedTemperatureFvPatchScalarField
 :
     public fixedGradientFvPatchScalarField
 {
@@ -81,40 +81,40 @@ class temperaturePIDFixedGradientFvPatchScalarField
 public:
 
     //- Runtime type information
-    TypeName("temperaturePIDFixedGradient");
+    TypeName("regulatedTemperature");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        temperaturePIDFixedGradientFvPatchScalarField
+        regulatedTemperatureFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        temperaturePIDFixedGradientFvPatchScalarField
+        regulatedTemperatureFvPatchScalarField
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const dictionary&
         );
 
-        //- Construct by mapping given temperaturePIDFixedGradientFvPatchScalarField
+        //- Construct by mapping given regulatedTemperatureFvPatchScalarField
         //  onto a new patch
-        temperaturePIDFixedGradientFvPatchScalarField
+        regulatedTemperatureFvPatchScalarField
         (
-            const temperaturePIDFixedGradientFvPatchScalarField&,
+            const regulatedTemperatureFvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Construct as copy
-        temperaturePIDFixedGradientFvPatchScalarField
+        regulatedTemperatureFvPatchScalarField
         (
-            const temperaturePIDFixedGradientFvPatchScalarField&
+            const regulatedTemperatureFvPatchScalarField&
         );
 
         //- Construct and return a clone
@@ -122,14 +122,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new temperaturePIDFixedGradientFvPatchScalarField(*this)
+                new regulatedTemperatureFvPatchScalarField(*this)
             );
         }
 
         //- Construct as copy setting internal field reference
-        temperaturePIDFixedGradientFvPatchScalarField
+        regulatedTemperatureFvPatchScalarField
         (
-            const temperaturePIDFixedGradientFvPatchScalarField&,
+            const regulatedTemperatureFvPatchScalarField&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -141,7 +141,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new temperaturePIDFixedGradientFvPatchScalarField(*this, iF)
+                new regulatedTemperatureFvPatchScalarField(*this, iF)
             );
         }
 

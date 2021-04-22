@@ -43,7 +43,7 @@ boundaryField
 
     wall
     {
-        type            temperaturePIDFixedGradient;
+        type            regulatedTemperature;
         Q               15000;
         kappa           10;
         regulator
