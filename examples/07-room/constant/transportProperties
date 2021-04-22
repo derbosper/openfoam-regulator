@@ -32,6 +32,4 @@ Pr              0.7;
 // Turbulent Prandtl number
 Prt             0.85;
 
-// Thermal conductivity
-kappa           25;
 // ************************************************************************* //

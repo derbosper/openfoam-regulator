@@ -16,7 +16,7 @@ FoamFile
 
 dimensions      [0 0 0 1 0 0 0];
 
-internalField   uniform 18;
+internalField   uniform 291;
 
 boundaryField
 {
@@ -24,6 +24,7 @@ boundaryField
     {
         type            temperaturePIDFixedGradient;
         Q               1200;
+        kappa           25;
         regulator
         {
             sensor
@@ -37,18 +38,21 @@ boundaryField
                     (4.5 4.5 5.0)
                 );
             }
-            targetValue 20;
+            targetValue 293;
             mode        twoStep;
             h           1;
-            // Kp          1;
-            // Ti          0.2;
-            // Td          0.1;
         }
     }
+
+    ceiling
+    {
+        type            zeroGradient;
+    }
+
     walls
     {
         type            fixedGradient;
-        gradient        uniform -6;
+        gradient        uniform -10;
     }
 }
 

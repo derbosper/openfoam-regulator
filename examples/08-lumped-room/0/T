@@ -24,6 +24,7 @@ boundaryField
     {
         type            temperaturePIDFixedGradient;
         Q               1200;
+        kappa           25;
         regulator
         {
             sensor
@@ -40,9 +41,6 @@ boundaryField
             targetValue 293;
             mode        twoStep;
             h           1;
-            // Kp          1;
-            // Ti          0.2;
-            // Td          0.1;
         }
     }
 

@@ -27,6 +27,13 @@ boundaryField
         value           $internalField;
     }
 
+    ceiling
+    {
+        type            fixedFluxPressure;
+        rho             rhok;
+        value           uniform 0;
+    }
+
     walls
     {
         type            fixedFluxPressure;

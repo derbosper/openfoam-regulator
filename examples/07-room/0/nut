@@ -26,6 +26,11 @@ boundaryField
         type            nutkWallFunction;
         value           uniform 0;
     }
+    ceiling
+    {
+        type            nutkWallFunction;
+        value           uniform 0;
+    }
     walls
     {
         type            nutkWallFunction;

@@ -26,6 +26,11 @@ boundaryField
         type            epsilonWallFunction;
         value           uniform 0.01;
     }
+    ceiling
+    {
+        type            epsilonWallFunction;
+        value           uniform 0.01;
+    }
     walls
     {
         type            epsilonWallFunction;

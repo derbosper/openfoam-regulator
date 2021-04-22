@@ -26,6 +26,12 @@ boundaryField
         value           $internalField;
     }
 
+    ceiling
+    {
+        type            calculated;
+        value           $internalField;
+    }
+
     walls
     {
         type            calculated;

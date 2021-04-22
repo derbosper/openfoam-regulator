@@ -26,6 +26,11 @@ boundaryField
         type            kqRWallFunction;
         value           uniform 0.1;
     }
+    ceiling
+    {
+        type            kqRWallFunction;
+        value           uniform 0.1;
+    }
     walls
     {
         type            kqRWallFunction;

@@ -25,6 +25,11 @@ boundaryField
         type            noSlip;
     }
 
+    ceiling
+    {
+        type            noSlip;
+    }
+
     walls
     {
         type            noSlip;
