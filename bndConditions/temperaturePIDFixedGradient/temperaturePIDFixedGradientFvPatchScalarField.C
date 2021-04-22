@@ -111,7 +111,7 @@ void Foam::temperaturePIDFixedGradientFvPatchScalarField::updateCoeffs()
     }
 
     // Read thermal conductivity from transportProperties
-    const dictionary& transportProperties = db().lookupObject<IOdictionary>("transportProperties");
+    const dictionary& transportProperties = db().lookupObject<IOdictionary>("thermophysicalProperties");
     dimensionedScalar kappa(transportProperties.get<dimensionedScalar>("kappa"));
 
     // Calculate output signal from regulator
