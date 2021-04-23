@@ -31,6 +31,7 @@ sensor
 class Sensor
 {
 public:
+    virtual ~Sensor() = default;
     Sensor() = delete;
 
     // Initilize from mesh and dictionary
@@ -39,30 +40,29 @@ public:
     // Initialize from mesh
     Sensor(const fvMesh &mesh);
 
-    // Returns sensor-type-dependent implementation of Sensor
-    static Sensor* create(const fvMesh& mesh, const dictionary& dict);
-
-    enum sensorType
-    {
-        patch,  // reads from speficied patch
-        points, // reads from specified points
-    };
-    static const Enum<sensorType> sensorTypeNames;
-
     // Read current field value
-    scalar read() const;
+    virtual scalar read() const = 0;
 
     // Write to runtime dict
     void write(Ostream &os) const;
 
     word fieldName() const;
 
-private:
+    // Returns sensor-type-dependent implementation of Sensor
+    static Sensor* create(const fvMesh& mesh, const dictionary& dict);
+    
+    enum sensorType
+    {
+        patch,  // reads from speficied patch
+        points, // reads from specified points
+    };
+
+    static const Enum<sensorType> sensorTypeNames;
+
+protected:
     const fvMesh &mesh_;   // Reference to the system mesh
     const word fieldName_; // Controlled process variable scalar field name
-    const sensorType type_;
-    const word patchName_; // Name of a patch from which the process value is read
-    const pointField points_;   // List of points for from which the average process value is read
+
 };
 
 class PointSensor : public Sensor
@@ -77,14 +77,12 @@ public:
     PointSensor(const fvMesh &mesh);
 
     // Read current field value
-    scalar read() const;
+    scalar read() const override;
 
     // Write to runtime dict
     void write(Ostream &os) const;
 
 private:
-    const fvMesh &mesh_;   // Reference to the system mesh
-    const word fieldName_; // Controlled process variable scalar field name
     const pointField points_;   // List of points for from which the average process value is read
 };
 
@@ -100,14 +98,12 @@ public:
     PatchSensor(const fvMesh &mesh);
 
     // Read current field value
-    scalar read() const;
+    scalar read() const override;
 
     // Write to runtime dict
     void write(Ostream &os) const;
 
 private:
-    const fvMesh &mesh_;   // Reference to the system mesh
-    const word fieldName_; // Controlled process variable scalar field name
     const word patchName_; // Name of a patch from which the process value is read
 };
 
