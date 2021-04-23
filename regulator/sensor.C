@@ -1,25 +1,11 @@
 #include "sensor.H"
 
-// * * * * * * * * * * * * Helper Functions  * * * * * * * * * * * * //
-scalar patchAverage(const word &fieldName, const fvPatch &patch)
-{
-    const fvPatchField<scalar> &field =
-        patch.lookupPatchField<volScalarField, scalar>(fieldName);
-
-    return gSum(field * patch.magSf()) / gSum(patch.magSf());
-}
-
-// * * * * * * * * * * * * Constructor  * * * * * * * * * * * * //
-Sensor::Sensor(const fvMesh &mesh, const dictionary &dict):
-    mesh_(mesh),
-    fieldName_(dict.getWord("field"))
-{}
-
-// * * * * * * * * * * * * Public member functions  * * * * * * * * * * * * //
-word Sensor::fieldName() const
-{
-    return fieldName_;
-}
+// * * * * * * * * * * * * Factory  * * * * * * * * * * * * //
+const Foam::Enum<Sensor::sensorType>
+    Sensor::sensorTypeNames({
+        {sensorType::patch, "patch"},
+        {sensorType::points, "points"},
+    });
 
 Sensor* Sensor::create(const fvMesh& mesh, const dictionary& dict)
 {
@@ -32,17 +18,27 @@ Sensor* Sensor::create(const fvMesh& mesh, const dictionary& dict)
     case points:
         return new PointSensor(mesh, dict);
     default:
+        FatalIOErrorInFunction(dict)
+            << "    Unknown Sensor type " << type
+            << exit(FatalIOError);
         return NULL;
     }
 }
 
-const Foam::Enum<Sensor::sensorType>
-    Sensor::sensorTypeNames({
-        {sensorType::patch, "patch"},
-        {sensorType::points, "points"},
-    });
 
-// * * * * * * * * * * * * Point sensor  * * * * * * * * * * * * //
+// * * * * * * * * * * * * Base Sensor  * * * * * * * * * * * * //
+Sensor::Sensor(const fvMesh &mesh, const dictionary &dict):
+    mesh_(mesh),
+    fieldName_(dict.getWord("field"))
+{}
+
+word Sensor::fieldName() const
+{
+    return fieldName_;
+}
+
+
+// * * * * * * * * * * * * PointSensor  * * * * * * * * * * * * //
 PointSensor::PointSensor(const fvMesh &mesh, const dictionary &dict):
     Sensor(mesh, dict),
     points_(dict.get<pointField>("points"))
@@ -62,7 +58,8 @@ scalar PointSensor::read() const
     return fieldSum / points_.size();
 }
 
-// * * * * * * * * * * * * Patch sensor  * * * * * * * * * * * * //
+
+// * * * * * * * * * * * * PatchSensor  * * * * * * * * * * * * //
 PatchSensor::PatchSensor(const fvMesh &mesh, const dictionary &dict):
     Sensor(mesh, dict),
     patchName_(dict.getWord("patchName"))
@@ -72,4 +69,14 @@ scalar PatchSensor::read() const
 {
     const fvPatch &targetPatch = mesh_.boundary()[patchName_];
     return patchAverage(fieldName_, targetPatch);
+}
+
+
+// * * * * * * * * * * * * Helper Functions  * * * * * * * * * * * * //
+scalar patchAverage(const word &fieldName, const fvPatch &patch)
+{
+    const fvPatchField<scalar> &field =
+        patch.lookupPatchField<volScalarField, scalar>(fieldName);
+
+    return gSum(field * patch.magSf()) / gSum(patch.magSf());
 }

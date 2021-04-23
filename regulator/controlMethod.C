@@ -1,5 +1,7 @@
 #include "controlMethod.H"
 
+
+// * * * * * * * * * * * * Factory  * * * * * * * * * * * * //
 const Foam::Enum<ControlMethod::controlType>
     ControlMethod::controlTypeNames({
         {controlType::twoStep, "twoStep"},
@@ -17,8 +19,9 @@ ControlMethod* ControlMethod::create(const dictionary &dict)
     case PID:
         return new PIDControl(dict);
     default:
-        FatalIOError << "Unknown regulator type: " << type << endl;
-        exit(FatalIOError);
+        FatalIOErrorInFunction(dict)
+            << "    Unknown control method " << type
+            << exit(FatalIOError);
         return NULL;
     }
 }
