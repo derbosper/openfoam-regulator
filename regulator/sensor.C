@@ -10,11 +10,6 @@ scalar patchAverage(const word &fieldName, const fvPatch &patch)
 }
 
 // * * * * * * * * * * * * Constructor  * * * * * * * * * * * * //
-Sensor::Sensor(const fvMesh& mesh):
-    mesh_(mesh),
-    fieldName_(word::null)
-{}
-
 Sensor::Sensor(const fvMesh &mesh, const dictionary &dict):
     mesh_(mesh),
     fieldName_(dict.getWord("field"))
@@ -48,12 +43,6 @@ const Foam::Enum<Sensor::sensorType>
     });
 
 // * * * * * * * * * * * * Point sensor  * * * * * * * * * * * * //
-
-PointSensor::PointSensor(const fvMesh& mesh):
-    Sensor(mesh),
-    points_(pointField::null())
-{}
-
 PointSensor::PointSensor(const fvMesh &mesh, const dictionary &dict):
     Sensor(mesh, dict),
     points_(dict.get<pointField>("points"))
@@ -74,11 +63,6 @@ scalar PointSensor::read() const
 }
 
 // * * * * * * * * * * * * Patch sensor  * * * * * * * * * * * * //
-PatchSensor::PatchSensor(const fvMesh& mesh):
-    Sensor(mesh),
-    patchName_(word::null)
-{}
-
 PatchSensor::PatchSensor(const fvMesh &mesh, const dictionary &dict):
     Sensor(mesh, dict),
     patchName_(dict.getWord("patchName"))

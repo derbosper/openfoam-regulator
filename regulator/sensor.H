@@ -37,9 +37,6 @@ public:
     // Initilize from mesh and dictionary
     Sensor(const fvMesh &mesh, const dictionary &dict);
 
-    // Initialize from mesh
-    Sensor(const fvMesh &mesh);
-
     // Read current field value
     virtual scalar read() const = 0;
 
@@ -70,16 +67,10 @@ class PointSensor : public Sensor
 public:
     PointSensor() = delete;
 
-    // Initilize from mesh and dictionary
     PointSensor(const fvMesh &mesh, const dictionary &dict);
 
-    // Initialize from mesh
-    PointSensor(const fvMesh &mesh);
-
-    // Read current field value
     scalar read() const override;
 
-    // Write to runtime dict
     void write(Ostream &os) const;
 
 private:
@@ -91,20 +82,15 @@ class PatchSensor : public Sensor
 public:
     PatchSensor() = delete;
 
-    // Initilize from mesh and dictionary
     PatchSensor(const fvMesh &mesh, const dictionary &dict);
 
-    // Initialize from mesh
-    PatchSensor(const fvMesh &mesh);
-
-    // Read current field value
     scalar read() const override;
 
-    // Write to runtime dict
     void write(Ostream &os) const;
 
 private:
-    const word patchName_; // Name of a patch from which the process value is read
+    // Name of a patch from which the process value is read
+    const word patchName_;
 };
 
 // * * * * * * * * * * * * Helper Functions  * * * * * * * * * * * * //
