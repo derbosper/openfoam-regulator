@@ -1,4 +1,5 @@
 regulator.C
 sensor.C
+controlMethod.C
 
 LIB = $(FOAM_USER_LIBBIN)/libregulator
