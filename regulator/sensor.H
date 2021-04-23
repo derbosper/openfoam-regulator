@@ -39,6 +39,9 @@ public:
     // Initialize from mesh
     Sensor(const fvMesh &mesh);
 
+    // Returns sensor-type-dependent implementation of Sensor
+    static Sensor* create(const fvMesh& mesh, const dictionary& dict);
+
     enum sensorType
     {
         patch,  // reads from speficied patch

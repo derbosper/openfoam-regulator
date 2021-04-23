@@ -70,6 +70,21 @@ word Sensor::fieldName() const
     return fieldName_;
 }
 
+Sensor* Sensor::create(const fvMesh& mesh, const dictionary& dict)
+{
+    const sensorType type = sensorTypeNames.get("type", dict);
+
+    switch (type)
+    {
+    case patch:
+        return new PatchSensor(mesh, dict);
+    case points:
+        return new PointSensor(mesh, dict);
+    default:
+        return NULL;
+    }
+}
+
 // *********************************************************
 PointSensor::PointSensor(const fvMesh& mesh):
     Sensor(mesh),

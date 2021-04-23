@@ -12,7 +12,7 @@ const Foam::Enum<Regulator::operationMode>
 
 Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
     : mesh_(mesh),
-      sensor_(new PointSensor(mesh, dict.subDict("sensor"))),
+      sensor_(Sensor::create(mesh, dict.subDict("sensor"))),
       targetValue_(dict.getScalar("targetValue")),
       mode_(operationModeNames.get("mode", dict)),
       timeIndex_(mesh.time().timeIndex()),
