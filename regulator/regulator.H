@@ -53,14 +53,13 @@ Description
 class Regulator
 {
 public:
+    Regulator() = delete;
+
     // Initialize from mesh and dictionary form "constant" directory
     Regulator(const fvMesh &mesh, const dictionary &dict);
 
     // Initialize from mesh and default dictionary
     Regulator(const fvMesh &mesh);
-
-    // Construct a copy
-    Regulator(const Regulator &reg);
 
     //- Operation mode enumeration
     enum operationMode

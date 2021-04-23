@@ -31,14 +31,13 @@ sensor
 class Sensor
 {
 public:
+    Sensor() = delete;
+
     // Initilize from mesh and dictionary
     Sensor(const fvMesh &mesh, const dictionary &dict);
 
     // Initialize from mesh
     Sensor(const fvMesh &mesh);
-
-    // Copy
-    Sensor(const Sensor &rhs);
 
     enum sensorType
     {

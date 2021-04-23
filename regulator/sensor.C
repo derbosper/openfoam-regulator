@@ -35,14 +35,6 @@ Sensor::Sensor(const fvMesh &mesh, const dictionary &dict):
     points_(type_ == sensorType::points ? dict.get<pointField>("points") : pointField::null())
 {}
 
-Sensor::Sensor(const Sensor &rhs):
-    mesh_(rhs.mesh_),
-    fieldName_(rhs.fieldName_),
-    type_(rhs.type_),
-    patchName_(rhs.patchName_),
-    points_(rhs.points_)
-{}
-
 scalar Sensor::read() const
 {
     switch (type_)

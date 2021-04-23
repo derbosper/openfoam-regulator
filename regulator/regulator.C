@@ -77,23 +77,6 @@ Regulator::Regulator(const fvMesh &mesh)
     errorIntegral_(0)
 {}
 
-Regulator::Regulator(const Regulator &reg)
-    : mesh_(reg.mesh_),
-      sensor_(reg.sensor_),
-      targetValue_(reg.targetValue_),
-      mode_(reg.mode_),
-      timeIndex_(reg.timeIndex_),
-      error_(reg.error_),
-      outputSignal_(reg.outputSignal_),
-      h_(reg.h_),
-      Kp_(reg.Kp_),
-      Ti_(reg.Ti_),
-      Td_(reg.Td_),
-      outputMax_(reg.outputMax_),
-      outputMin_(reg.outputMin_),
-      oldError_(reg.oldError_),
-      errorIntegral_(reg.errorIntegral_)
-{}
 
 // * * * * * * * * * * * * Public Member Functions  * * * * * * * * * * * * *//
 
