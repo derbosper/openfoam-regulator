@@ -10,6 +10,15 @@ const Foam::Enum<Regulator::operationMode>
 
 // * * * * * * * * * * * * * * * * Constructor * * * * * * * * * * * * * * * //
 
+Regulator::~Regulator()
+{
+    if (sensor_)
+    {
+        delete sensor_;
+        sensor_ = NULL;
+    }
+}
+
 Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
     : mesh_(mesh),
       sensor_(Sensor::create(mesh, dict.subDict("sensor"))),

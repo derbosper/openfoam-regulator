@@ -54,6 +54,7 @@ class Regulator
 {
 public:
     Regulator() = delete;
+    ~Regulator();
 
     // Initialize from mesh and dictionary form "constant" directory
     Regulator(const fvMesh &mesh, const dictionary &dict);
