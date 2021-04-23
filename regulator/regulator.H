@@ -48,6 +48,7 @@ Description
 
 #include "fvCFD.H"
 #include "sensor.H"
+#include "controlMethod.H"
 
 
 class Regulator
@@ -62,14 +63,6 @@ public:
     // Initialize from mesh and default dictionary
     Regulator(const fvMesh &mesh);
 
-    //- Operation mode enumeration
-    enum operationMode
-    {
-        twoStep, // on/off control
-        PID,
-    };
-    static const Enum<operationMode> operationModeNames;
-
     scalar targetValue() const { return targetValue_; }
 
     //- Read output signal from the regulator
@@ -80,22 +73,10 @@ public:
 
 private:
     const fvMesh &mesh_;            // Reference to the system mesh
-    const Sensor* sensor_;           // Sensor instance for reading field values
+    const Sensor* sensor_;          // Sensor instance for reading field values
+    ControlMethod* controlMethod_;  // Control algorithm
     scalar targetValue_;            // Reference value used by the control loop
-    operationMode mode_;            // Control type mode
     label timeIndex_;               // Time index of the last update
-    scalar error_;                  // Measured error
-    // on/off specific
-    scalar outputSignal_;           // Current output signal (PID can be implemented without this member)
-    scalar h_;                       // Controller histeresis
-    // PID specific
-    scalar Kp_;                     // Proportional control term
-    scalar Ti_;                     // Integral control term
-    scalar Td_;                     // Differential control term
-    scalar outputMax_;              // Max output signal (saturation)
-    scalar outputMin_;              // Min output signal
-    scalar oldError_;               // Old error
-    scalar errorIntegral_;          // Error integral w.r.t. time
 };
 
 #endif

@@ -20,7 +20,7 @@ public:
 
     // Calculate output signal from current process value, target value
     // and current time delta
-    virtual scalar operator()(scalar current, scalar target, scalar deltaT) = 0;
+    virtual scalar calculate(scalar current, scalar target, scalar deltaT) = 0;
 };
 
 class TwoStepControl : public ControlMethod
@@ -29,7 +29,7 @@ public:
     TwoStepControl() = default;
     TwoStepControl(const dictionary &);
 
-    scalar operator()(scalar current, scalar target, scalar deltaT);
+    scalar calculate(scalar current, scalar target, scalar deltaT);
 
 private:
     // Wartość histerezy
@@ -48,7 +48,7 @@ public:
     PIDControl() = default;
     PIDControl(const dictionary &);
 
-    scalar operator()(scalar current, scalar target, scalar deltaT);
+    scalar calculate(scalar current, scalar target, scalar deltaT);
 
 private:
     scalar Kp_;                     // Proportional control term

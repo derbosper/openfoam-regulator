@@ -8,7 +8,7 @@ const Foam::Enum<ControlMethod::controlType>
 
 ControlMethod* ControlMethod::create(const dictionary &dict)
 {
-    const controlType type = controlTypeNames.get("type", dict);
+    const controlType type = controlTypeNames.get("mode", dict);
 
     switch (type)
     {
@@ -29,7 +29,7 @@ TwoStepControl::TwoStepControl(const dictionary &dict)
     outputSignal_(0.)
 {}
 
-scalar TwoStepControl::operator()(scalar current, scalar target, scalar deltaT)
+scalar TwoStepControl::calculate(scalar current, scalar target, scalar deltaT)
 {
     const scalar targetCorrected = outputSignal_ > 0. ? target + 0.5 * h_ : target - 0.5 * h_;
     const scalar errorCorrected = targetCorrected - current;
@@ -48,7 +48,7 @@ PIDControl::PIDControl(const dictionary &dict)
     errorIntegral_(0.)
 {}
 
-scalar PIDControl::operator()(scalar current, scalar target, scalar deltaT)
+scalar PIDControl::calculate(scalar current, scalar target, scalar deltaT)
 {
     scalar error = target - current;
     errorIntegral_ += error * deltaT;
