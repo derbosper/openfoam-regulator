@@ -79,7 +79,7 @@ public:
 
 private:
     const fvMesh &mesh_;            // Reference to the system mesh
-    const Sensor sensor_;           // Sensor instance for reading field values
+    const Sensor* sensor_;           // Sensor instance for reading field values
     scalar targetValue_;            // Reference value used by the control loop
     operationMode mode_;            // Control type mode
     label timeIndex_;               // Time index of the last update

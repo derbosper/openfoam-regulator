@@ -12,7 +12,7 @@ const Foam::Enum<Regulator::operationMode>
 
 Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
     : mesh_(mesh),
-      sensor_(mesh, dict.subDict("sensor")),
+      sensor_(new PointSensor(mesh, dict.subDict("sensor"))),
       targetValue_(dict.getScalar("targetValue")),
       mode_(operationModeNames.get("mode", dict)),
       timeIndex_(mesh.time().timeIndex()),
@@ -61,7 +61,7 @@ Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
 
 Regulator::Regulator(const fvMesh &mesh)
     : mesh_(mesh),
-    sensor_(mesh),
+    sensor_(nullptr),
     targetValue_(0),
     mode_(PID),
     timeIndex_(mesh.time().timeIndex()),
@@ -92,7 +92,7 @@ scalar Regulator::read()
     }
 
     // Get the target patch average field value
-    const scalar sensorValue = sensor_.read();
+    const scalar sensorValue = sensor_->read();
 
     // Calculate errors
     error_ = targetValue_ - sensorValue;
