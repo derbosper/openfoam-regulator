@@ -31,9 +31,20 @@ ControlMethod* ControlMethod::create(const dictionary &dict)
     }
 }
 
+// * * * * * * * * * * * * Constructor  * * * * * * * * * * * * //
+ControlMethod::ControlMethod(const dictionary &dict)
+  : type_(controlTypeNames.get("mode", dict))
+{}
+
+void ControlMethod::write(Ostream &os) const
+{
+    os.writeEntry("mode", controlTypeNames.get(type_));
+}
+
 // * * * * * * * * * * * * Two Step Control  * * * * * * * * * * * * //
 TwoStepControl::TwoStepControl(const dictionary &dict)
-  : h_(parameters(dict).getOrDefault<scalar>("h", 0.)),
+  : ControlMethod(dict),
+    h_(parameters(dict).getOrDefault<scalar>("h", 0.)),
     outputSignal_(0.)
 {}
 
@@ -45,9 +56,18 @@ scalar TwoStepControl::calculate(scalar current, scalar target, scalar deltaT)
     return outputSignal_;
 }
 
+void TwoStepControl::write(Ostream &os) const
+{
+    ControlMethod::write(os);
+    os.beginBlock("parameters");
+    os.writeEntryIfDifferent("h", 0.,  h_);
+    os.endBlock();
+}
+
 // * * * * * * * * * * * * PID Control  * * * * * * * * * * * * //
 PIDControl::PIDControl(const dictionary &dict)
-  : Kp_(parameters(dict).getScalar("Kp")),
+  : ControlMethod(dict),
+    Kp_(parameters(dict).getScalar("Kp")),
     Ti_(parameters(dict).getScalar("Ti")),
     Td_(parameters(dict).getScalar("Td")),
     outputMax_(parameters(dict).getOrDefault<scalar>("outputMax", 1.)),
@@ -69,4 +89,16 @@ scalar PIDControl::calculate(scalar current, scalar target, scalar deltaT)
 
     // Return result within defined regulator saturation: outputMax_ and outputMin_
     return max(min(outputSignal, outputMax_), outputMin_);
+}
+
+void PIDControl::write(Ostream &os) const
+{
+    ControlMethod::write(os);
+    os.beginBlock("parameters");
+    os.writeEntry("Kp", Kp_);
+    os.writeEntry("Ti", Ti_);
+    os.writeEntry("Td", Td_);
+    os.writeEntryIfDifferent("outputMax", 1., outputMax_);
+    os.writeEntryIfDifferent("outputMin", -1., outputMin_);
+    os.endBlock();
 }

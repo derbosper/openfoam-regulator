@@ -8,6 +8,7 @@ class ControlMethod
 public:
     virtual ~ControlMethod() = default;
     ControlMethod() = default;
+    ControlMethod(const dictionary &);
 
     static ControlMethod* create(const dictionary &);
 
@@ -24,6 +25,12 @@ public:
     //- Calculate output signal from current process value, target value
     // and current time delta
     virtual scalar calculate(scalar current, scalar target, scalar deltaT) = 0;
+
+    //- Write to runtime dict
+    virtual void write(Ostream &) const;
+
+protected:
+    controlType type_;
 };
 
 class TwoStepControl : public ControlMethod
@@ -33,6 +40,7 @@ public:
     TwoStepControl(const dictionary &);
 
     scalar calculate(scalar current, scalar target, scalar deltaT);
+    void write(Ostream &) const override;
 
 private:
     // Wartość histerezy
@@ -52,6 +60,8 @@ public:
     PIDControl(const dictionary &);
 
     scalar calculate(scalar current, scalar target, scalar deltaT);
+    void write(Ostream &) const override;
+
 
 private:
     scalar Kp_;                     // Proportional control term

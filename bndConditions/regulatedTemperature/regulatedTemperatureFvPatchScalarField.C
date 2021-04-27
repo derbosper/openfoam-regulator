@@ -134,9 +134,9 @@ void Foam::regulatedTemperatureFvPatchScalarField::updateCoeffs()
 void Foam::regulatedTemperatureFvPatchScalarField::write(Ostream& os) const
 {
     fvPatchScalarField::write(os);
-    regulator_.write(os);
     os.writeEntry("Q", Q_);
     os.writeEntry("kappa", kappa_);
+    regulator_.write(os);
     writeEntry("value", os);
 }
 

@@ -29,7 +29,8 @@ Sensor* Sensor::create(const fvMesh& mesh, const dictionary& dict)
 // * * * * * * * * * * * * Base Sensor  * * * * * * * * * * * * //
 Sensor::Sensor(const fvMesh &mesh, const dictionary &dict):
     mesh_(mesh),
-    fieldName_(dict.getWord("field"))
+    fieldName_(dict.getWord("field")),
+    type_(sensorTypeNames.get("type", dict))
 {}
 
 word Sensor::fieldName() const
@@ -37,6 +38,11 @@ word Sensor::fieldName() const
     return fieldName_;
 }
 
+void Sensor::write(Ostream &os) const
+{
+    os.writeEntry("field", fieldName_);
+    os.writeEntry("type", sensorTypeNames.get(type_));
+}
 
 // * * * * * * * * * * * * PointSensor  * * * * * * * * * * * * //
 PointSensor::PointSensor(const fvMesh &mesh, const dictionary &dict):
@@ -58,6 +64,11 @@ scalar PointSensor::read() const
     return fieldSum / points_.size();
 }
 
+void PointSensor::write(Ostream &os) const
+{
+    Sensor::write(os);
+    os.writeEntry("points", points_);
+}
 
 // * * * * * * * * * * * * PatchSensor  * * * * * * * * * * * * //
 PatchSensor::PatchSensor(const fvMesh &mesh, const dictionary &dict):
@@ -71,6 +82,11 @@ scalar PatchSensor::read() const
     return patchAverage(fieldName_, targetPatch);
 }
 
+void PatchSensor::write(Ostream &os) const
+{
+    Sensor::write(os);
+    os.writeEntry("patchName", patchName_);
+}
 
 // * * * * * * * * * * * * Helper Functions  * * * * * * * * * * * * //
 scalar patchAverage(const word &fieldName, const fvPatch &patch)

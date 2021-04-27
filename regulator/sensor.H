@@ -41,7 +41,7 @@ public:
     virtual scalar read() const = 0;
 
     // Write to runtime dict
-    void write(Ostream &os) const;
+    virtual void write(Ostream &os) const;
 
     word fieldName() const;
 
@@ -59,7 +59,7 @@ public:
 protected:
     const fvMesh &mesh_;   // Reference to the system mesh
     const word fieldName_; // Controlled process variable scalar field name
-
+    const sensorType type_;
 };
 
 class PointSensor : public Sensor
@@ -71,7 +71,7 @@ public:
 
     scalar read() const override;
 
-    void write(Ostream &os) const;
+    void write(Ostream &os) const override;
 
 private:
     const pointField points_;   // List of points for from which the average process value is read
@@ -86,7 +86,7 @@ public:
 
     scalar read() const override;
 
-    void write(Ostream &os) const;
+    void write(Ostream &os) const override;
 
 private:
     // Name of a patch from which the process value is read

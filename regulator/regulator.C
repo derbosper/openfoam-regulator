@@ -62,8 +62,12 @@ scalar Regulator::read()
 void Regulator::write(Ostream& os, const word dictName) const
 {
     os.beginBlock(dictName);
-    // os.writeEntry("fieldName", regulatedFieldName_);
-    // os.writeEntry("patchName", targetPatchName_);
     os.writeEntry("targetValue", targetValue_);
+    controlMethod_->write(os);
+
+    os.beginBlock("sensor");
+    sensor_->write(os);
+    os.endBlock();
+
     os.endBlock();
 }
