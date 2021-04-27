@@ -43,7 +43,7 @@ Foam::regulatedTemperatureFvPatchScalarField::regulatedTemperatureFvPatchScalarF
 :
     fixedGradientFvPatchScalarField(p, iF),
     regulator_(p.boundaryMesh().mesh()),
-    Q_(0.0),
+    q_(0.0),
     kappa_(0.0)
 {}
 
@@ -58,7 +58,7 @@ Foam::regulatedTemperatureFvPatchScalarField::regulatedTemperatureFvPatchScalarF
 :
     fixedGradientFvPatchScalarField(ptf, p, iF, mapper),
     regulator_(ptf.regulator_),
-    Q_(ptf.Q_),
+    q_(ptf.q_),
     kappa_(ptf.kappa_)
 {}
 
@@ -72,7 +72,7 @@ Foam::regulatedTemperatureFvPatchScalarField::regulatedTemperatureFvPatchScalarF
 :
     fixedGradientFvPatchScalarField(p, iF),
     regulator_(p.boundaryMesh().mesh(), dict.subDict("regulator")),
-    Q_(dict.get<scalar>("Q")),
+    q_(dict.get<scalar>("q")),
     kappa_(dict.get<scalar>("kappa"))
 {
     // Initialize patch with internal field value
@@ -88,7 +88,7 @@ Foam::regulatedTemperatureFvPatchScalarField::regulatedTemperatureFvPatchScalarF
 :
     fixedGradientFvPatchScalarField(tppsf),
     regulator_(tppsf.regulator_),
-    Q_(tppsf.Q_),
+    q_(tppsf.q_),
     kappa_(tppsf.kappa_)
 {}
 
@@ -101,7 +101,7 @@ Foam::regulatedTemperatureFvPatchScalarField::regulatedTemperatureFvPatchScalarF
 :
     fixedGradientFvPatchScalarField(tppsf, iF),
     regulator_(tppsf.regulator_),
-    Q_(tppsf.Q_),
+    q_(tppsf.q_),
     kappa_(tppsf.kappa_)
 {}
 
@@ -119,7 +119,7 @@ void Foam::regulatedTemperatureFvPatchScalarField::updateCoeffs()
     const scalar outputSignal = regulator_.read();
 
     if (outputSignal > 0) {
-        gradient() = Q_ / kappa_;
+        gradient() = q_ / kappa_;
     } else {
         gradient() = 0;
     }
@@ -134,7 +134,7 @@ void Foam::regulatedTemperatureFvPatchScalarField::updateCoeffs()
 void Foam::regulatedTemperatureFvPatchScalarField::write(Ostream& os) const
 {
     fvPatchScalarField::write(os);
-    os.writeEntry("Q", Q_);
+    os.writeEntry("q", q_);
     os.writeEntry("kappa", kappa_);
     regulator_.write(os);
     writeEntry("value", os);
