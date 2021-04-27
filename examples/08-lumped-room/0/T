@@ -23,8 +23,8 @@ boundaryField
     floor
     {
         type            regulatedTemperature;
-        Q               1200;
-        kappa           25;
+        q               80;
+        kappa           0.6;
         regulator
         {
             sensor
@@ -42,7 +42,7 @@ boundaryField
             mode        twoStep;
             parameters
             {
-                h           1;
+                h           2;
             }
         }
     }
@@ -54,13 +54,13 @@ boundaryField
         kappa           none;
         mass            1000;
         Cp              4100;
-        value           $internalField;
+        value           uniform 293;
     }
 
     walls
     {
         type            fixedGradient;
-        gradient        uniform -10;
+        gradient        uniform -30;
     }
 }
 
