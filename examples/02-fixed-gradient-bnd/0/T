@@ -56,7 +56,10 @@ boundaryField
             }
             targetValue 25;
             mode        twoStep;
-            h           0.4;
+            parameters
+            {
+                h           0.4;
+            }
         }
     }
 

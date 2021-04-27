@@ -40,7 +40,10 @@ boundaryField
             }
             targetValue 293;
             mode        twoStep;
-            h           1;
+            parameters
+            {
+                h           1;
+            }
         }
     }
 

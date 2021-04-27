@@ -56,10 +56,13 @@ boundaryField
             }
             targetValue 25;
             mode        twoStep;
-            h           0.4;
-            // Kp          1;
-            // Ti          0.2;
-            // Td          0.1;
+            parameters
+            {
+                h           0.4;
+                // Kp          1;
+                // Ti          0.2;
+                // Td          0.1;
+            }
         }
     }
 
