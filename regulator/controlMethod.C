@@ -1,9 +1,9 @@
 #include "controlMethod.H"
 
 // * * * * * * * * * * * * Utility function  * * * * * * * * * * * * //
-const dictionary & ControlMethod::parameters(const dictionary &dict)
+const dictionary ControlMethod::parameters(const dictionary &dict)
 {
-    return dict.subDict("parameters");
+    return dict.subOrEmptyDict("parameters");
 };
 
 // * * * * * * * * * * * * Factory  * * * * * * * * * * * * //

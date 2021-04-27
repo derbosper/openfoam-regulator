@@ -18,8 +18,8 @@ public:
     };
     static const Enum<controlType> controlTypeNames;
 
-    //- Returns a reference to parameters sub-dictionary
-    static const dictionary & parameters(const dictionary &);
+    //- Returns a parameters sub-dictionary or empty dict
+    static const dictionary parameters(const dictionary &);
 
     //- Calculate output signal from current process value, target value
     // and current time delta
