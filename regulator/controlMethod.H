@@ -18,7 +18,10 @@ public:
     };
     static const Enum<controlType> controlTypeNames;
 
-    // Calculate output signal from current process value, target value
+    //- Returns a reference to parameters sub-dictionary
+    static const dictionary & parameters(const dictionary &);
+
+    //- Calculate output signal from current process value, target value
     // and current time delta
     virtual scalar calculate(scalar current, scalar target, scalar deltaT) = 0;
 };

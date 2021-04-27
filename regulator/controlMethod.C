@@ -1,5 +1,10 @@
 #include "controlMethod.H"
 
+// * * * * * * * * * * * * Utility function  * * * * * * * * * * * * //
+const dictionary & ControlMethod::parameters(const dictionary &dict)
+{
+    return dict.subDict("parameters");
+};
 
 // * * * * * * * * * * * * Factory  * * * * * * * * * * * * //
 const Foam::Enum<ControlMethod::controlType>
@@ -28,7 +33,7 @@ ControlMethod* ControlMethod::create(const dictionary &dict)
 
 // * * * * * * * * * * * * Two Step Control  * * * * * * * * * * * * //
 TwoStepControl::TwoStepControl(const dictionary &dict)
-  : h_(dict.getOrDefault<scalar>("h", 0.)),
+  : h_(parameters(dict).getOrDefault<scalar>("h", 0.)),
     outputSignal_(0.)
 {}
 
@@ -42,11 +47,11 @@ scalar TwoStepControl::calculate(scalar current, scalar target, scalar deltaT)
 
 // * * * * * * * * * * * * PID Control  * * * * * * * * * * * * //
 PIDControl::PIDControl(const dictionary &dict)
-  : Kp_(dict.getScalar("Kp")),
-    Ti_(dict.getScalar("Ti")),
-    Td_(dict.getScalar("Td")),
-    outputMax_(dict.getOrDefault<scalar>("outputMax", 1.)),
-    outputMin_(dict.getOrDefault<scalar>("outputMin", -1.)),
+  : Kp_(parameters(dict).getScalar("Kp")),
+    Ti_(parameters(dict).getScalar("Ti")),
+    Td_(parameters(dict).getScalar("Td")),
+    outputMax_(parameters(dict).getOrDefault<scalar>("outputMax", 1.)),
+    outputMin_(parameters(dict).getOrDefault<scalar>("outputMin", -1.)),
     oldError_(0.),
     errorIntegral_(0.)
 {}
