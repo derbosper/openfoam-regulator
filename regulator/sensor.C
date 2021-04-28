@@ -5,6 +5,7 @@ const Foam::Enum<Sensor::sensorType>
     Sensor::sensorTypeNames({
         {sensorType::patch, "patch"},
         {sensorType::points, "points"},
+        {sensorType::volume, "volume"},
     });
 
 Sensor* Sensor::create(const fvMesh& mesh, const dictionary& dict)
@@ -17,6 +18,8 @@ Sensor* Sensor::create(const fvMesh& mesh, const dictionary& dict)
         return new PatchSensor(mesh, dict);
     case points:
         return new PointSensor(mesh, dict);
+    case volume:
+        return new VolumeSensor(mesh, dict);
     default:
         FatalIOErrorInFunction(dict)
             << "    Unknown Sensor type " << type
@@ -60,6 +63,7 @@ scalar PointSensor::read() const
         const label celli = mesh_.findCell(location);
         fieldSum += field[celli];
     }
+    // Sync across all processes
     reduce(fieldSum, sumOp<scalar>());
     return fieldSum / points_.size();
 }
@@ -86,6 +90,22 @@ void PatchSensor::write(Ostream &os) const
 {
     Sensor::write(os);
     os.writeEntry("patchName", patchName_);
+}
+
+// * * * * * * * * * * * * VolumeSensor  * * * * * * * * * * * * //
+VolumeSensor::VolumeSensor(const fvMesh &mesh, const dictionary &dict):
+    Sensor(mesh, dict)
+{}
+
+scalar VolumeSensor::read() const
+{
+    const volScalarField &field = mesh_.lookupObject<volScalarField>(fieldName_);
+    return field.weightedAverage(mesh_.V()).value();
+}
+
+void VolumeSensor::write(Ostream &os) const
+{
+    Sensor::write(os);
 }
 
 // * * * * * * * * * * * * Helper Functions  * * * * * * * * * * * * //

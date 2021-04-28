@@ -52,6 +52,7 @@ public:
     {
         patch,  // reads from speficied patch
         points, // reads from specified points
+        volume,
     };
 
     static const Enum<sensorType> sensorTypeNames;
@@ -91,6 +92,19 @@ public:
 private:
     // Name of a patch from which the process value is read
     const word patchName_;
+};
+
+//- Reads volume-weighted average of the whole internal field
+class VolumeSensor : public Sensor
+{
+public:
+    VolumeSensor() = delete;
+
+    VolumeSensor(const fvMesh &mesh, const dictionary &dict);
+
+    scalar read() const override;
+
+    void write(Ostream &os) const override;
 };
 
 // * * * * * * * * * * * * Helper Functions  * * * * * * * * * * * * //
