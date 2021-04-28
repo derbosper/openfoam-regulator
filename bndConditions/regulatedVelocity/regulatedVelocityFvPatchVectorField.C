@@ -1,0 +1,142 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | www.openfoam.com
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+    Copyright (C) 2011-2016 OpenFOAM Foundation
+    Copyright (C) 2019 OpenCFD Ltd.
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+\*---------------------------------------------------------------------------*/
+
+#include "regulatedVelocityFvPatchVectorField.H"
+#include "addToRunTimeSelectionTable.H"
+#include "volFields.H"
+
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+Foam::regulatedVelocityFvPatchVectorField::
+regulatedVelocityFvPatchVectorField
+(
+    const fvPatch& p,
+    const DimensionedField<vector, volMesh>& iF
+)
+:
+    fixedValueFvPatchVectorField(p, iF),
+    maxValue_(p.size()),
+    minValue_(p.size())
+{}
+
+
+Foam::regulatedVelocityFvPatchVectorField::
+regulatedVelocityFvPatchVectorField
+(
+    const fvPatch& p,
+    const DimensionedField<vector, volMesh>& iF,
+    const dictionary& dict
+)
+:
+    fixedValueFvPatchVectorField(p, iF, dict, false),
+    maxValue_("maxValue", dict, p.size()),
+    minValue_("minValue", dict, p.size())
+{
+    tmp<vectorField> tvalues(maxValue_*patch().nf());
+    fvPatchVectorField::operator=(tvalues);
+}
+
+
+Foam::regulatedVelocityFvPatchVectorField::
+regulatedVelocityFvPatchVectorField
+(
+    const regulatedVelocityFvPatchVectorField& ptf,
+    const fvPatch& p,
+    const DimensionedField<vector, volMesh>& iF,
+    const fvPatchFieldMapper& mapper
+)
+:
+    fixedValueFvPatchVectorField(p, iF),
+    maxValue_(ptf.maxValue_, mapper, pTraits<scalar>::zero),
+    minValue_(ptf.minValue_, mapper, pTraits<scalar>::zero)
+{
+    tmp<vectorField> tvalues(maxValue_*patch().nf());
+    fvPatchVectorField::operator=(tvalues);
+}
+
+
+Foam::regulatedVelocityFvPatchVectorField::
+regulatedVelocityFvPatchVectorField
+(
+    const regulatedVelocityFvPatchVectorField& ptf
+)
+:
+    fixedValueFvPatchVectorField(ptf),
+    maxValue_(ptf.maxValue_),
+    minValue_(ptf.minValue_)
+{}
+
+
+Foam::regulatedVelocityFvPatchVectorField::
+regulatedVelocityFvPatchVectorField
+(
+    const regulatedVelocityFvPatchVectorField& ptf,
+    const DimensionedField<vector, volMesh>& iF
+)
+:
+    fixedValueFvPatchVectorField(ptf, iF),
+    maxValue_(ptf.maxValue_),
+    minValue_(ptf.minValue_)
+{}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+void Foam::regulatedVelocityFvPatchVectorField::updateCoeffs()
+{
+    if (updated())
+    {
+        return;
+    }
+
+    tmp<vectorField> tvalues(maxValue_*patch().nf());
+    fvPatchVectorField::operator=(tvalues);
+    fvPatchVectorField::updateCoeffs();
+}
+
+
+void Foam::regulatedVelocityFvPatchVectorField::write(Ostream& os) const
+{
+    fvPatchVectorField::write(os);
+    maxValue_.writeEntry("maxValue", os);
+    minValue_.writeEntry("minValue", os);
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+    makePatchTypeField
+    (
+        fvPatchVectorField,
+        regulatedVelocityFvPatchVectorField
+    );
+}
+
+// ************************************************************************* //

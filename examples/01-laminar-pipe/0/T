@@ -26,13 +26,8 @@ boundaryField
         uniformValue
         {
             type        expression;
-            variables
-            (
-                "start = 15"             // when temperature jumps [s]
-                "temperature = 15"     // new inlet temperature [degC]
-            );
             // arg() == time
-            expression  #{ (arg() < start) ? 20 : temperature #};
+            expression  #{ (arg() < 15) ? 20 : 30 #};
         }
     }
 
@@ -43,24 +38,8 @@ boundaryField
 
     wall
     {
-        type            regulatedTemperature;
-        Q               15000;
-        kappa           10;
-        regulator
-        {
-            sensor
-            {
-                field       T;
-                type        patch;
-                patchName   outlet;
-            }
-            targetValue 25;
-            mode        twoStep;
-            parameters
-            {
-                h           0.4;
-            }
-        }
+        type            fixedGradient;
+        gradient        uniform -500;
     }
 
     axis
