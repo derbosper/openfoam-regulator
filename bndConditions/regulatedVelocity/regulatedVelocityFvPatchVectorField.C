@@ -119,7 +119,8 @@ void Foam::regulatedVelocityFvPatchVectorField::updateCoeffs()
         return;
     }
 
-    tmp<vectorField> tvalues(maxValue_*patch().nf());
+    const scalarField outputValue = (maxValue_ - minValue_) * regulator_.read() + minValue_;
+    tmp<vectorField> tvalues = outputValue*patch().nf();
     fvPatchVectorField::operator=(tvalues);
     fvPatchVectorField::updateCoeffs();
 }
