@@ -28,10 +28,12 @@ boundaryField
         regulator
         {
             targetValue 15;
-            mode        twoStep;
+            mode        PID;
             parameters
             {
-                h       1;
+                Kp       0.1;
+                Ti       0.5;
+                Td       0;
             };
             sensor
             {
