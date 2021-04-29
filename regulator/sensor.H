@@ -46,7 +46,7 @@ public:
     word fieldName() const;
 
     // Returns sensor-type-dependent implementation of Sensor
-    static Sensor* create(const fvMesh& mesh, const dictionary& dict);
+    static std::shared_ptr<Sensor> create(const fvMesh& mesh, const dictionary& dict);
     
     enum sensorType
     {

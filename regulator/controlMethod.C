@@ -13,21 +13,21 @@ const Foam::Enum<ControlMethod::controlType>
         {controlType::PID, "PID"},
     });
 
-ControlMethod* ControlMethod::create(const dictionary &dict)
+std::shared_ptr<ControlMethod> ControlMethod::create(const dictionary &dict)
 {
     const controlType type = controlTypeNames.get("mode", dict);
 
     switch (type)
     {
     case twoStep:
-        return new TwoStepControl(dict);
+        return std::make_shared<TwoStepControl>(dict);
     case PID:
-        return new PIDControl(dict);
+        return std::make_shared<PIDControl>(dict);
     default:
         FatalIOErrorInFunction(dict)
             << "    Unknown control method " << type
             << exit(FatalIOError);
-        return NULL;
+        return nullptr;
     }
 }
 

@@ -10,7 +10,7 @@ public:
     ControlMethod() = default;
     ControlMethod(const dictionary &);
 
-    static ControlMethod* create(const dictionary &);
+    static std::shared_ptr<ControlMethod> create(const dictionary &);
 
     enum controlType
     {

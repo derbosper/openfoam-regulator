@@ -8,23 +8,24 @@ const Foam::Enum<Sensor::sensorType>
         {sensorType::volume, "volume"},
     });
 
-Sensor* Sensor::create(const fvMesh& mesh, const dictionary& dict)
+std::shared_ptr<Sensor>
+Sensor::create(const fvMesh& mesh, const dictionary& dict)
 {
     const sensorType type = sensorTypeNames.get("type", dict);
 
     switch (type)
     {
     case patch:
-        return new PatchSensor(mesh, dict);
+        return std::make_shared<PatchSensor>(mesh, dict);
     case points:
-        return new PointSensor(mesh, dict);
+        return std::make_shared<PointSensor>(mesh, dict);
     case volume:
-        return new VolumeSensor(mesh, dict);
+        return std::make_shared<VolumeSensor>(mesh, dict);
     default:
         FatalIOErrorInFunction(dict)
             << "    Unknown Sensor type " << type
             << exit(FatalIOError);
-        return NULL;
+        return nullptr;
     }
 }
 

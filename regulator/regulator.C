@@ -4,16 +4,7 @@
 
 Regulator::~Regulator()
 {
-    if (sensor_)
-    {
-        delete sensor_;
-        sensor_ = NULL;
-    }
-    if (controlMethod_)
-    {
-        delete controlMethod_;
-        controlMethod_ = NULL;
-    }
+    Info << "Destructor" << endl;
 }
 
 Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
