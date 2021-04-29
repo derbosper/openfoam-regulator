@@ -29,9 +29,10 @@ def dataframe_from_logs(file: str) -> pd.DataFrame:
     with open(file, "r", encoding="utf-8") as f:
         for line in f:
             for var in RUNTIME_VARIABLES:
-                if line.startswith(var.prefix):
-                    value = var.type(line.removeprefix(var.prefix).strip())
-                    data[var.name].append(value)
+                is_updated = var.name != "time" and len(data[var.name]) == len(data["time"])
+                if line.startswith(var.prefix) and not is_updated:
+                        value = var.type(line.removeprefix(var.prefix).strip())
+                        data[var.name].append(value)
 
     df = pd.DataFrame(data, columns=[var.name for var in RUNTIME_VARIABLES])
     return df
