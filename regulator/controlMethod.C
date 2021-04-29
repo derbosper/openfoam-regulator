@@ -72,7 +72,7 @@ PIDControl::PIDControl(const dictionary &dict)
     Ti_(parameters(dict).getScalar("Ti")),
     Td_(parameters(dict).getScalar("Td")),
     outputMax_(parameters(dict).getOrDefault<scalar>("outputMax", 1.)),
-    outputMin_(parameters(dict).getOrDefault<scalar>("outputMin", -1.)),
+    outputMin_(parameters(dict).getOrDefault<scalar>("outputMin", 0.)),
     oldError_(0.),
     errorIntegral_(0.)
 {}
@@ -86,7 +86,7 @@ scalar PIDControl::calculate(scalar current, scalar target, scalar deltaT)
 
     // Calculate output signal
     // A negliable value is added to Ti_ to prevent division by 0
-    const scalar outputSignal = Kp_*(error + 1/(Ti_ + SMALL)*errorIntegral_ + Td_*errorDifferential);
+    const scalar outputSignal = Kp_*(error + 1/(Ti_ + ROOTSMALL)*errorIntegral_ + Td_*errorDifferential);
 
     // Return result within defined regulator saturation: outputMax_ and outputMin_
     return max(min(outputSignal, outputMax_), outputMin_);
@@ -100,6 +100,6 @@ void PIDControl::write(Ostream &os) const
     os.writeEntry("Ti", Ti_);
     os.writeEntry("Td", Td_);
     os.writeEntryIfDifferent("outputMax", 1., outputMax_);
-    os.writeEntryIfDifferent("outputMin", -1., outputMin_);
+    os.writeEntryIfDifferent("outputMin", 0., outputMin_);
     os.endBlock();
 }
