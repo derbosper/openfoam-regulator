@@ -27,7 +27,7 @@ boundaryField
         {
             type        expression;
             // arg() == time
-            expression  #{ (arg() < 15) ? 20 : 30 #};
+            expression  #{ (arg() < 15) ? 20 : 20 #};
         }
     }
 

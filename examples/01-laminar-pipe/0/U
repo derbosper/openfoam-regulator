@@ -16,7 +16,7 @@ FoamFile
 
 dimensions      [0 1 -1 0 0 0 0];
 
-internalField   uniform (0 0 0);
+internalField   uniform (-0.01 0 0);
 
 boundaryField
 {
@@ -24,20 +24,20 @@ boundaryField
     {
         type            regulatedVelocity;
         maxValue        uniform -0.01;
-        minValue        uniform 0.00;
+        minValue        uniform -0.001;
         regulator
         {
             targetValue 15;
             mode        twoStep;
+            parameters
+            {
+                h       1;
+            };
             sensor
             {
                 field       T;
                 type        patch;
                 patchName   outlet;
-            }
-            parameters
-            {
-                h           2;
             }
         }
     }
