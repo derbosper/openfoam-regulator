@@ -2,11 +2,6 @@
 
 // * * * * * * * * * * * * * * * * Constructor * * * * * * * * * * * * * * * //
 
-Regulator::~Regulator()
-{
-    Info << "Destructor" << endl;
-}
-
 Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
     : mesh_(mesh),
       sensor_(Sensor::create(mesh, dict.subDict("sensor"))),

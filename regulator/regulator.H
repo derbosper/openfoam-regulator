@@ -55,7 +55,7 @@ class Regulator
 {
 public:
     Regulator() = delete;
-    ~Regulator();
+    ~Regulator() = default;
 
     // Initialize from mesh and dictionary form "constant" directory
     Regulator(const fvMesh &mesh, const dictionary &dict);
@@ -72,11 +72,20 @@ public:
     void write(Ostream& os, const word dictName = "regulator") const;
 
 private:
-    const fvMesh &mesh_;            // Reference to the system mesh
-    const std::shared_ptr<Sensor> sensor_;          // Sensor instance for reading field values
-    std::shared_ptr<ControlMethod> controlMethod_;  // Control algorithm
-    scalar targetValue_;            // Reference value used by the control loop
-    label timeIndex_;               // Time index of the last update
+    // Reference to the system mesh
+    const fvMesh &mesh_;
+
+    // Sensor instance for reading field values
+    const std::shared_ptr<Sensor> sensor_;
+
+    // Control algorithm
+    std::shared_ptr<ControlMethod> controlMethod_;
+
+    // Reference value used by the control loop
+    scalar targetValue_;
+
+    // Time index of the last update
+    label timeIndex_;
 };
 
 #endif

@@ -46,8 +46,9 @@ public:
     word fieldName() const;
 
     // Returns sensor-type-dependent implementation of Sensor
-    static std::shared_ptr<Sensor> create(const fvMesh& mesh, const dictionary& dict);
-    
+    static std::shared_ptr<Sensor>
+    create(const fvMesh& mesh, const dictionary& dict);
+
     enum sensorType
     {
         patch,  // reads from speficied patch
@@ -75,7 +76,8 @@ public:
     void write(Ostream &os) const override;
 
 private:
-    const pointField points_;   // List of points for from which the average process value is read
+    // List of points for from which the average process value is read
+    const pointField points_;
 };
 
 class PatchSensor : public Sensor

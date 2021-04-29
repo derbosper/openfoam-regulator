@@ -13,7 +13,8 @@ const Foam::Enum<ControlMethod::controlType>
         {controlType::PID, "PID"},
     });
 
-std::shared_ptr<ControlMethod> ControlMethod::create(const dictionary &dict)
+std::shared_ptr<ControlMethod>
+ControlMethod::create(const dictionary &dict)
 {
     const controlType type = controlTypeNames.get("mode", dict);
 
