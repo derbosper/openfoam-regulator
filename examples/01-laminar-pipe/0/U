@@ -25,6 +25,21 @@ boundaryField
         type            regulatedVelocity;
         maxValue        uniform -0.01;
         minValue        uniform 0.00;
+        regulator
+        {
+            targetValue 15;
+            mode        twoStep;
+            sensor
+            {
+                field       T;
+                type        patch;
+                patchName   outlet;
+            }
+            parameters
+            {
+                h           2;
+            }
+        }
     }
 
     outlet

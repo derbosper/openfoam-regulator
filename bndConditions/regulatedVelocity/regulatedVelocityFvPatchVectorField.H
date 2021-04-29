@@ -67,6 +67,7 @@ SourceFiles
 
 #include "fvPatchFields.H"
 #include "fixedValueFvPatchFields.H"
+#include "regulator.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -83,9 +84,9 @@ class regulatedVelocityFvPatchVectorField
 {
     // Private Data
 
-        scalarField maxValue_;
-        scalarField minValue_;
-
+        scalarField maxValue_;  // Reference value at 100% power
+        scalarField minValue_;  // Minimal value to avoid 0 flow rate
+        Regulator regulator_;
 
 public:
 

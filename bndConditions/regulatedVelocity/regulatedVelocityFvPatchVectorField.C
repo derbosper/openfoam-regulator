@@ -41,7 +41,8 @@ regulatedVelocityFvPatchVectorField
 :
     fixedValueFvPatchVectorField(p, iF),
     maxValue_(p.size()),
-    minValue_(p.size())
+    minValue_(p.size()),
+    regulator_(p.boundaryMesh().mesh())
 {}
 
 
@@ -55,7 +56,8 @@ regulatedVelocityFvPatchVectorField
 :
     fixedValueFvPatchVectorField(p, iF, dict, false),
     maxValue_("maxValue", dict, p.size()),
-    minValue_("minValue", dict, p.size())
+    minValue_("minValue", dict, p.size()),
+    regulator_(p.boundaryMesh().mesh(), dict.subDict("regulator"))
 {
     tmp<vectorField> tvalues(maxValue_*patch().nf());
     fvPatchVectorField::operator=(tvalues);
@@ -73,7 +75,8 @@ regulatedVelocityFvPatchVectorField
 :
     fixedValueFvPatchVectorField(p, iF),
     maxValue_(ptf.maxValue_, mapper, pTraits<scalar>::zero),
-    minValue_(ptf.minValue_, mapper, pTraits<scalar>::zero)
+    minValue_(ptf.minValue_, mapper, pTraits<scalar>::zero),
+    regulator_(ptf.regulator_)
 {
     tmp<vectorField> tvalues(maxValue_*patch().nf());
     fvPatchVectorField::operator=(tvalues);
@@ -88,7 +91,8 @@ regulatedVelocityFvPatchVectorField
 :
     fixedValueFvPatchVectorField(ptf),
     maxValue_(ptf.maxValue_),
-    minValue_(ptf.minValue_)
+    minValue_(ptf.minValue_),
+    regulator_(ptf.regulator_)
 {}
 
 
@@ -101,7 +105,8 @@ regulatedVelocityFvPatchVectorField
 :
     fixedValueFvPatchVectorField(ptf, iF),
     maxValue_(ptf.maxValue_),
-    minValue_(ptf.minValue_)
+    minValue_(ptf.minValue_),
+    regulator_(ptf.regulator_)
 {}
 
 
@@ -125,6 +130,7 @@ void Foam::regulatedVelocityFvPatchVectorField::write(Ostream& os) const
     fvPatchVectorField::write(os);
     maxValue_.writeEntry("maxValue", os);
     minValue_.writeEntry("minValue", os);
+    regulator_.write(os);
 }
 
 
