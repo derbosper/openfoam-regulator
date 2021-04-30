@@ -119,6 +119,9 @@ void Foam::regulatedVelocityFvPatchVectorField::updateCoeffs()
         return;
     }
 
+    // Print current patch temperature
+    Info << "Regulator: value at inlet = " << patchAverage("T", patch()) << endl;
+
     const scalarField outputValue = (maxValue_ - minValue_) * regulator_.read() + minValue_;
     tmp<vectorField> tvalues = outputValue*patch().nf();
     fvPatchVectorField::operator=(tvalues);
