@@ -1,5 +1,10 @@
 #include "sensor.H"
 
+const dictionary &sensorDict(const dictionary &dict)
+{
+    return dict.subDict("sensor");
+}
+
 // * * * * * * * * * * * * Factory  * * * * * * * * * * * * //
 const Foam::Enum<Sensor::sensorType>
     Sensor::sensorTypeNames({
@@ -11,7 +16,7 @@ const Foam::Enum<Sensor::sensorType>
 std::shared_ptr<Sensor>
 Sensor::create(const fvMesh& mesh, const dictionary& dict)
 {
-    const sensorType type = sensorTypeNames.get("type", dict);
+    const sensorType type = sensorTypeNames.get("type", sensorDict(dict));
 
     switch (type)
     {
@@ -34,7 +39,7 @@ Sensor::create(const fvMesh& mesh, const dictionary& dict)
 Sensor::Sensor(const fvMesh &mesh, const dictionary &dict):
     mesh_(mesh),
     fieldName_(dict.getWord("field")),
-    type_(sensorTypeNames.get("type", dict))
+    type_(sensorTypeNames.get("type", sensorDict(dict)))
 {}
 
 word Sensor::fieldName() const
@@ -44,14 +49,13 @@ word Sensor::fieldName() const
 
 void Sensor::write(Ostream &os) const
 {
-    os.writeEntry("field", fieldName_);
     os.writeEntry("type", sensorTypeNames.get(type_));
 }
 
 // * * * * * * * * * * * * PointSensor  * * * * * * * * * * * * //
 PointSensor::PointSensor(const fvMesh &mesh, const dictionary &dict):
     Sensor(mesh, dict),
-    points_(dict.get<pointField>("points"))
+    points_(sensorDict(dict).get<pointField>("points"))
 {}
 
 scalar PointSensor::read() const
@@ -78,7 +82,7 @@ void PointSensor::write(Ostream &os) const
 // * * * * * * * * * * * * PatchSensor  * * * * * * * * * * * * //
 PatchSensor::PatchSensor(const fvMesh &mesh, const dictionary &dict):
     Sensor(mesh, dict),
-    patchName_(dict.getWord("patchName"))
+    patchName_(sensorDict(dict).getWord("patchName"))
 {}
 
 scalar PatchSensor::read() const

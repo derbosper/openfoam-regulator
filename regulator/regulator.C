@@ -4,7 +4,7 @@
 
 Regulator::Regulator(const fvMesh &mesh, const dictionary &dict)
     : mesh_(mesh),
-      sensor_(Sensor::create(mesh, dict.subDict("sensor"))),
+      sensor_(Sensor::create(mesh, dict)),
       controlMethod_(ControlMethod::create(dict)),
       targetValue_(dict.getScalar("targetValue")),
       timeIndex_(mesh.time().timeIndex())
@@ -49,6 +49,8 @@ void Regulator::write(Ostream& os, const word dictName) const
 {
     os.beginBlock(dictName);
     os.writeEntry("targetValue", targetValue_);
+    os.writeEntry("field", sensor_->fieldName());
+
     controlMethod_->write(os);
 
     os.beginBlock("sensor");
