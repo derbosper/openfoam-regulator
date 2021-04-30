@@ -18,21 +18,29 @@ RUNTIME_VARIABLES = [
         name="sensorValue", prefix="Regulator: sensorValue = "
     ),
     RuntimeVariable(name="targetValue", prefix="Regulator: targetValue = "),
-    # RuntimeVariable(name="inletValue", prefix="Regulator: value at inlet = "),
     RuntimeVariable(name="error", prefix="Regulator: error = "),
     RuntimeVariable(name="outputSignal", prefix="Regulator: outputSignal = "),
 ]
 
+INLET_VAR = RuntimeVariable(name="inletValue", prefix="Regulator: value at inlet = ")
+
 
 def dataframe_from_logs(file: str) -> pd.DataFrame:
-    data = {var.name: [] for var in RUNTIME_VARIABLES}
+
     with open(file, "r", encoding="utf-8") as f:
-        for line in f:
-            for var in RUNTIME_VARIABLES:
-                is_updated = var.name != "time" and len(data[var.name]) == len(data["time"])
-                if line.startswith(var.prefix) and not is_updated:
-                        value = var.type(line.removeprefix(var.prefix).strip())
-                        data[var.name].append(value)
+        content = f.read()
+
+    # Add inlet variable if exist in logs
+    if INLET_VAR.prefix in content:
+        RUNTIME_VARIABLES.append(INLET_VAR)
+
+    data = {var.name: [] for var in RUNTIME_VARIABLES}
+    for line in content.splitlines():
+        for var in RUNTIME_VARIABLES:
+            is_updated = var.name != "time" and len(data[var.name]) == len(data["time"])
+            if line.startswith(var.prefix) and not is_updated:
+                    value = var.type(line.removeprefix(var.prefix).strip())
+                    data[var.name].append(value)
 
     df = pd.DataFrame(data, columns=[var.name for var in RUNTIME_VARIABLES])
     return df
@@ -40,26 +48,26 @@ def dataframe_from_logs(file: str) -> pd.DataFrame:
 def plot_results(df: pd.DataFrame) -> None:
     t = df["time"]
 
-    ax1 = plt.subplot(411)
-    # plt.plot(t, df["inletValue"])
-    plt.plot(t, df["sensorValue"])
-    plt.setp(ax1.get_xticklabels(), visible=False)
-    plt.ylabel("inlet T [C]")
+    has_inlet_data = INLET_VAR.name in df.columns
+    nrows = 3 if has_inlet_data else 2
 
-    ax2 = plt.subplot(412, sharex=ax1)
-    plt.plot(t, df["sensorValue"])
-    plt.setp(ax2.get_xticklabels(), visible=False)
-    plt.ylabel("target T [C]")
+    fig, axs = plt.subplots(nrows=nrows, ncols=1, sharex=True)
 
-    ax3 = plt.subplot(413, sharex=ax1)
-    plt.plot(t, df["error"])
-    plt.setp(ax3.get_xticklabels(), visible=False)
-    plt.ylabel("error")
+    if has_inlet_data:
+        axs[0].plot(t, df[INLET_VAR.name])
+        axs[0].set_ylabel("Inlet Value")
+        axs[0].grid(True)
 
-    ax4 = plt.subplot(414, sharex=ax1)
-    plt.plot(t, df["outputSignal"])
-    plt.setp(ax4.get_xticklabels(), visible=True)
-    plt.ylabel("output signal")
+    l1, = axs[-2].plot(t, df["targetValue"], "k--")
+    axs[-2].plot(t, df["sensorValue"])
+    axs[-2].set_ylabel("Process Variable")
+    axs[-2].grid(True)
+    axs[-2].legend((l1, ), ("Set Point", ))
+
+    axs[-1].plot(t, df["outputSignal"])
+    axs[-1].set_ylabel("Controller Output")
+    axs[-1].grid(True)
+    axs[-1].set_ylim(-0.1, 1.1)
 
     plt.xlabel("time [s]")
     plt.show()
