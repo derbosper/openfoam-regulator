@@ -63,7 +63,13 @@ public:
     // Initialize from mesh and default dictionary
     Regulator(const fvMesh &mesh);
 
-    scalar targetValue() const { return targetValue_; }
+    // Initialize as copy
+    Regulator(const Regulator &);
+
+    scalar targetValue() const
+    {
+        return targetValue_->value(mesh_.time().timeOutputValue());
+    }
 
     //- Read output signal from the regulator
     scalar read();
@@ -82,7 +88,7 @@ private:
     std::shared_ptr<ControlMethod> controlMethod_;
 
     // Reference value used by the control loop
-    scalar targetValue_;
+    autoPtr<Function1<scalar>> targetValue_;
 
     // Time index of the last update
     label timeIndex_;
