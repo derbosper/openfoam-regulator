@@ -28,6 +28,7 @@ boundaryField
         regulator
         {
             targetValue 15;
+            field       T;
             mode        PID;
             parameters
             {
@@ -37,7 +38,6 @@ boundaryField
             };
             sensor
             {
-                field       T;
                 type        patch;
                 patchName   outlet;
             }

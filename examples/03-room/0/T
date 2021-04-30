@@ -29,7 +29,6 @@ boundaryField
         {
             sensor
             {
-                field       T;
                 type        points;
                 points
                 (
@@ -38,6 +37,7 @@ boundaryField
                     (4.5 4.5 5.0)
                 );
             }
+            field       T;
             targetValue 293;
             mode        twoStep;
             parameters

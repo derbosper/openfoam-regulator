@@ -44,16 +44,16 @@ boundaryField
     wall
     {
         type            regulatedTemperature;
-        Q               200000;
+        q               200000;
         kappa           10;
         regulator
         {
             sensor
             {
-                field       T;
                 type        patch;
                 patchName   outlet;
             }
+            field       T;
             targetValue 25;
             mode        twoStep;
             parameters

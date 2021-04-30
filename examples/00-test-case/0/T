@@ -45,11 +45,11 @@ boundaryField
         {
             sensor
             {
-                field       T;
                 type        patch;
                 patchName   outlet;
             }
             targetValue 350;
+            field       T;
             mode        twoStep;
         };
     }
