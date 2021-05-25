@@ -73,6 +73,8 @@ PIDControl::PIDControl(const dictionary &dict)
     Td_(parameters(dict).getScalar("Td")),
     outputMax_(parameters(dict).getOrDefault<scalar>("outputMax", 1.)),
     outputMin_(parameters(dict).getOrDefault<scalar>("outputMin", 0.)),
+    errorMax_(parameters(dict).getOrDefault<scalar>("errMax", VGREAT)),
+    integralErrorMax_(parameters(dict).getOrDefault<scalar>("errIntegMax", VGREAT)),
     oldError_(0.),
     errorIntegral_(0.)
 {}
@@ -80,7 +82,9 @@ PIDControl::PIDControl(const dictionary &dict)
 scalar PIDControl::calculate(scalar current, scalar target, scalar deltaT)
 {
     scalar error = target - current;
+    error = max(min(error, errorMax_), -errorMax_);  // Constain error according to specified errorMax
     errorIntegral_ += error * deltaT;
+    errorIntegral_ = max(min(errorIntegral_, integralErrorMax_), -integralErrorMax_);
     const scalar errorDifferential = (error - oldError_) / deltaT;
     oldError_ = error;
 
@@ -101,5 +105,7 @@ void PIDControl::write(Ostream &os) const
     os.writeEntry("Td", Td_);
     os.writeEntryIfDifferent("outputMax", 1., outputMax_);
     os.writeEntryIfDifferent("outputMin", 0., outputMin_);
+    os.writeEntryIfDifferent("errMax", VGREAT, errorMax_);
+    os.writeEntryIfDifferent("errIntegMax", VGREAT, integralErrorMax_);
     os.endBlock();
 }

@@ -69,6 +69,8 @@ private:
     scalar Td_;                     // Differential control term
     scalar outputMax_;              // Max output signal (saturation)
     scalar outputMin_;              // Min output signal
+    scalar errorMax_;               // Constains received absolute error value
+    scalar integralErrorMax_;       // Constains built-up integral error
     scalar oldError_;               // Old error
     scalar errorIntegral_;          // Error integral w.r.t. time
 };
