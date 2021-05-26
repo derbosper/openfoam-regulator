@@ -71,6 +71,12 @@ public:
         return targetValue_->value(mesh_.time().timeOutputValue());
     }
 
+    // Name of the regulated field
+    word fieldName() const
+    {
+        return sensor_->fieldName();
+    }
+
     //- Read output signal from the regulator
     scalar read();
 
