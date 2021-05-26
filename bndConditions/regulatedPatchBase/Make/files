@@ -1,3 +1,4 @@
-regulatedVectorValueFvPatchVectorField.C
+regulatedValueFvPatchVectorField.C
+regulatedGradientFvPatchScalarField.C
 
 LIB = $(FOAM_USER_LIBBIN)/libregulatedPatchBase

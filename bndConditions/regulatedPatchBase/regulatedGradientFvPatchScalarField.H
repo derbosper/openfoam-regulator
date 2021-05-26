@@ -6,7 +6,6 @@
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
     Copyright (C) 2011-2016 OpenFOAM Foundation
-    Copyright (C) 2019 OpenCFD Ltd.
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
@@ -25,49 +24,41 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::regulatedVectorValueFvPatchVectorField
+    Foam::regulatedGradientFvPatchScalarField
 
 Group
-    grpGenericBoundaryConditions grpInletBoundaryConditions
+    grpInletBoundaryConditions grpOutletBoundaryConditions
 
 Description
-    This boundary condition provides a regulated surface-normal vector boundary condition
-    by its magnitude.
+    This boundary condition provides a total temperature condition.
 
 Usage
     \table
-        Property     | Description                          | Required | Default
-        maxValue     | reference value for signal = 1       | yes |
-        minValue     | reference value for signal = 1       | yes  |
+        Property     | Description             | Required    | Default value
+        Q            | Power [W]               | yes         |
     \endtable
 
     Example of the boundary condition specification:
     \verbatim
     <patchName>
     {
-        type            regulatedVectorValue;
-        maxValue        uniform -10;           // 10 INTO the domain
-        minValue        uniform -1;
+        type            regulatedGradient;
+        Q               1000;
     }
     \endverbatim
 
-Note
-    Sign conventions:
-    - the value is positive for outward-pointing vectors
+SourceFiles
+    regulatedGradientFvPatchScalarField.C
 
 See also
     Foam::fixedValueFvPatchField
 
-SourceFiles
-    regulatedVectorValueFvPatchVectorField.C
-
 \*---------------------------------------------------------------------------*/
 
-#ifndef regulatedVectorValueFvPatchVectorField_H
-#define regulatedVectorValueFvPatchVectorField_H
+#ifndef regulatedGradientFvPatchScalarField_H
+#define regulatedGradientFvPatchScalarField_H
 
-#include "fvPatchFields.H"
-#include "fixedValueFvPatchFields.H"
+#include "fixedGradientFvPatchFields.H"
 #include "regulator.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -76,93 +67,83 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-          Class regulatedVectorValueFvPatchVectorField Declaration
+             Class regulatedGradientFvPatchScalarField Declaration
 \*---------------------------------------------------------------------------*/
 
-class regulatedVectorValueFvPatchVectorField
+class regulatedGradientFvPatchScalarField
 :
-    public fixedValueFvPatchVectorField
+    public fixedGradientFvPatchScalarField
 {
-    // Private Data
-
-        scalarField maxValue_;  // Reference value at 100% power
-        scalarField minValue_;  // Minimal value to avoid 0 flow rate
-        Regulator regulator_;
+    Regulator regulator_;
+    scalar minValue_;
+    scalar maxValue_;
 
 public:
 
     //- Runtime type information
-    TypeName("regulatedValue");
+    TypeName("regulatedGradient");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        regulatedVectorValueFvPatchVectorField
+        regulatedGradientFvPatchScalarField
         (
             const fvPatch&,
-            const DimensionedField<vector, volMesh>&
+            const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        regulatedVectorValueFvPatchVectorField
+        regulatedGradientFvPatchScalarField
         (
             const fvPatch&,
-            const DimensionedField<vector, volMesh>&,
+            const DimensionedField<scalar, volMesh>&,
             const dictionary&
         );
 
-        //- Construct by mapping given
-        //  regulatedVectorValueFvPatchVectorField
+        //- Construct by mapping given regulatedGradientFvPatchScalarField
         //  onto a new patch
-        regulatedVectorValueFvPatchVectorField
+        regulatedGradientFvPatchScalarField
         (
-            const regulatedVectorValueFvPatchVectorField&,
+            const regulatedGradientFvPatchScalarField&,
             const fvPatch&,
-            const DimensionedField<vector, volMesh>&,
+            const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Construct as copy
-        regulatedVectorValueFvPatchVectorField
+        regulatedGradientFvPatchScalarField
         (
-            const regulatedVectorValueFvPatchVectorField&
+            const regulatedGradientFvPatchScalarField&
         );
 
         //- Construct and return a clone
-        virtual tmp<fvPatchVectorField> clone() const
+        virtual tmp<fvPatchScalarField> clone() const
         {
-            return tmp<fvPatchVectorField>
+            return tmp<fvPatchScalarField>
             (
-                new regulatedVectorValueFvPatchVectorField(*this)
+                new regulatedGradientFvPatchScalarField(*this)
             );
         }
 
         //- Construct as copy setting internal field reference
-        regulatedVectorValueFvPatchVectorField
+        regulatedGradientFvPatchScalarField
         (
-            const regulatedVectorValueFvPatchVectorField&,
-            const DimensionedField<vector, volMesh>&
+            const regulatedGradientFvPatchScalarField&,
+            const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct and return a clone setting internal field reference
-        virtual tmp<fvPatchVectorField> clone
+        virtual tmp<fvPatchScalarField> clone
         (
-            const DimensionedField<vector, volMesh>& iF
+            const DimensionedField<scalar, volMesh>& iF
         ) const
         {
-            return tmp<fvPatchVectorField>
+            return tmp<fvPatchScalarField>
             (
-                new regulatedVectorValueFvPatchVectorField
-                (
-                    *this,
-                    iF
-                )
+                new regulatedGradientFvPatchScalarField(*this, iF)
             );
         }
-
-
-    // Member functions
 
         // Evaluation functions
 

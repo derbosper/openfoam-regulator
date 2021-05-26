@@ -26,14 +26,14 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "regulatedVectorValueFvPatchVectorField.H"
+#include "regulatedValueFvPatchVectorField.H"
 #include "addToRunTimeSelectionTable.H"
 #include "volFields.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::regulatedVectorValueFvPatchVectorField::
-regulatedVectorValueFvPatchVectorField
+Foam::regulatedValueFvPatchVectorField::
+regulatedValueFvPatchVectorField
 (
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF
@@ -46,8 +46,8 @@ regulatedVectorValueFvPatchVectorField
 {}
 
 
-Foam::regulatedVectorValueFvPatchVectorField::
-regulatedVectorValueFvPatchVectorField
+Foam::regulatedValueFvPatchVectorField::
+regulatedValueFvPatchVectorField
 (
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF,
@@ -64,10 +64,10 @@ regulatedVectorValueFvPatchVectorField
 }
 
 
-Foam::regulatedVectorValueFvPatchVectorField::
-regulatedVectorValueFvPatchVectorField
+Foam::regulatedValueFvPatchVectorField::
+regulatedValueFvPatchVectorField
 (
-    const regulatedVectorValueFvPatchVectorField& ptf,
+    const regulatedValueFvPatchVectorField& ptf,
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF,
     const fvPatchFieldMapper& mapper
@@ -83,10 +83,10 @@ regulatedVectorValueFvPatchVectorField
 }
 
 
-Foam::regulatedVectorValueFvPatchVectorField::
-regulatedVectorValueFvPatchVectorField
+Foam::regulatedValueFvPatchVectorField::
+regulatedValueFvPatchVectorField
 (
-    const regulatedVectorValueFvPatchVectorField& ptf
+    const regulatedValueFvPatchVectorField& ptf
 )
 :
     fixedValueFvPatchVectorField(ptf),
@@ -96,10 +96,10 @@ regulatedVectorValueFvPatchVectorField
 {}
 
 
-Foam::regulatedVectorValueFvPatchVectorField::
-regulatedVectorValueFvPatchVectorField
+Foam::regulatedValueFvPatchVectorField::
+regulatedValueFvPatchVectorField
 (
-    const regulatedVectorValueFvPatchVectorField& ptf,
+    const regulatedValueFvPatchVectorField& ptf,
     const DimensionedField<vector, volMesh>& iF
 )
 :
@@ -112,7 +112,7 @@ regulatedVectorValueFvPatchVectorField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::regulatedVectorValueFvPatchVectorField::updateCoeffs()
+void Foam::regulatedValueFvPatchVectorField::updateCoeffs()
 {
     if (updated())
     {
@@ -126,7 +126,7 @@ void Foam::regulatedVectorValueFvPatchVectorField::updateCoeffs()
 }
 
 
-void Foam::regulatedVectorValueFvPatchVectorField::write(Ostream& os) const
+void Foam::regulatedValueFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchVectorField::write(os);
     maxValue_.writeEntry("maxValue", os);
@@ -142,7 +142,7 @@ namespace Foam
     makePatchTypeField
     (
         fvPatchVectorField,
-        regulatedVectorValueFvPatchVectorField
+        regulatedValueFvPatchVectorField
     );
 }
 
