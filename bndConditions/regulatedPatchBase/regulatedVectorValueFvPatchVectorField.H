@@ -31,14 +31,14 @@ Group
     grpGenericBoundaryConditions grpInletBoundaryConditions
 
 Description
-    This boundary condition provides a surface-normal vector boundary condition
+    This boundary condition provides a regulated surface-normal vector boundary condition
     by its magnitude.
 
 Usage
     \table
         Property     | Description                          | Required | Default
-        maxValue     | reference value                      | yes |
-        ramp         | time-based ramping                   | no  |
+        maxValue     | reference value for signal = 1       | yes |
+        minValue     | reference value for signal = 1       | yes  |
     \endtable
 
     Example of the boundary condition specification:
@@ -47,6 +47,7 @@ Usage
     {
         type            regulatedVectorValue;
         maxValue        uniform -10;           // 10 INTO the domain
+        minValue        uniform -1;
     }
     \endverbatim
 
