@@ -34,6 +34,10 @@ Description
     This boundary condition provides a regulated surface-normal vector boundary condition
     by its magnitude.
 
+    The value is set accoring to formula:
+
+        (maxValue - minValue) * regulator_signal + minValue
+
 Usage
     \table
         Property     | Description                          | Required | Default

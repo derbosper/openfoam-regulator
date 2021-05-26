@@ -26,19 +26,25 @@ Class
 
 Description
     Regulator is a class which allows user to read value of a specified
-    scalar field in some location inside mesh and returns a value between
-    -1.0 and 1.0. Returned value dependent on the regulator settings
-    obtained from "regulatorProperties" inside the "constant" directory.
+    field using Sensor class and returns a value between outputMin and
+    outputMax (default 0 and 1). Returned value is calculated by ControlMethod,
+    where the regulation algorithm implementation is located.
 
-    regulatorProperties dict:
+    When modeling automatic regulation, the acutor is an OpenFOAM boundary
+    condition. Usually a custom boundry condition needs to be implemented,
+    inheriting or refering to any condition from regulatedPatchBase.
+
+    The regulator is set up in the boundary condition as a subdict "regulator"
+    with the following parameters:
+
+    regulator dict:
     \table
-        Property        | Description                 | Required |
-        patchName       | name of measurement patch   | yes      |
-        fieldName       | measured field name         | yes       |
-        targetValue     | desired value               | yes      |
-        Kp              | proportional gain           | yes      |
-        Ti              | integral gain               | yes      |
-        Td              | differential gain           | yes      |
+        Property        | Description                       | Required | Default |
+        targetValue     | desired value                     | yes      |         |
+        field           | regulated field name              | yes      |         |
+        mode            | regulation algorithm              | yes      |         |
+        parameters      | mode-dependent dict with params   | depends  |         |
+        sensor          | sensor dictionary                 | yes      |         |
     \endtable
 
 \*---------------------------------------------------------------------------*/

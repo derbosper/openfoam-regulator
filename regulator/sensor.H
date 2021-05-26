@@ -1,26 +1,12 @@
-/* 
-sensor
-{
-    field       T;
-    type        points;
-    points
-    (
-        (0.02 0.005 0.0)
-        (0.05 0.005 0.0)
-        (0.07 0.005 0.0)
-    );
-}
+/*---------------------------------------------------------------------------*\
+Class
+    Foam::Sensor
 
-or
+Description
+    Part of the Regulator and a class for reading values from specified
+    mesh field.
 
-sensor
-{
-    field       T;
-    type        patch;
-    patchName   outlet;
-}
-
-*/
+\*---------------------------------------------------------------------------*/
 
 #ifndef Sensor_H
 #define Sensor_H
@@ -64,6 +50,16 @@ protected:
     const sensorType type_;
 };
 
+/*
+    E.g.
+    type        points;
+    points
+    (
+        (0.02 0.005 0.0)
+        (0.05 0.005 0.0)
+        (0.07 0.005 0.0)
+    );
+*/
 class PointSensor : public Sensor
 {
 public:

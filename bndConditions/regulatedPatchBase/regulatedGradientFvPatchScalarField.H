@@ -30,12 +30,18 @@ Group
     grpInletBoundaryConditions grpOutletBoundaryConditions
 
 Description
-    This boundary condition provides a total temperature condition.
+    This boundary condition provides a regulated gradient, which is dependend
+    of the Regulator signal in the linear manner.
+
+    The gradient is set accoring to formula:
+
+        (maxValue - minValue) * regulator_signal + minValue
 
 Usage
     \table
-        Property     | Description             | Required    | Default value
-        Q            | Power [W]               | yes         |
+        Property     | Description                          | Required | Default
+        maxValue     | reference gradient for signal = 1    | yes |
+        minValue     | reference gradient for signal = 0    | yes |
     \endtable
 
     Example of the boundary condition specification:
@@ -43,15 +49,10 @@ Usage
     <patchName>
     {
         type            regulatedGradient;
-        Q               1000;
+        maxValue        10;
+        minValue        0;
     }
     \endverbatim
-
-SourceFiles
-    regulatedGradientFvPatchScalarField.C
-
-See also
-    Foam::fixedValueFvPatchField
 
 \*---------------------------------------------------------------------------*/
 

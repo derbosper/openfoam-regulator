@@ -28,41 +28,30 @@ Group
     grpInletBoundaryConditions
 
 Description
-    This boundary condition tries to maintain a specified temperature of
-    a downstream patch by regulating the temperature of itself.
-    The regulation is done by implementing a PID control algorithm.
+    This boundary condition provides a regulated value, which is dependend
+    of the Regulator signal in the linear manner.
 
-    \heading Patch usage
+    The value is set accoring to formula:
 
+        (maxValue - minValue) * regulator_signal + minValue
+
+Usage
     \table
-        Property    | Description                 | Required | Default value
-        downstream  | downstream patch name       | yes      |
-        targetT     | desired temperature         | yes      |
-        value       | initial value of temperature| yes      |
-        T           | temperature field name      | no       | T
-        P           | proportional gain           | yes      |
-        I           | integral gain               | yes      |
-        D           | differential gain           | yes      |
-        outputMin   | lower output signal limit   | yes      |
-        outputMax   | upper output signal limit   | yes      |
+        Property     | Description                          | Required | Default
+        maxValue     | reference value for signal = 1       | yes |
+        minValue     | reference value for signal = 0       | yes |
     \endtable
 
-    Example:
-
+    Example of the boundary condition specification:
     \verbatim
-    wall
+    <patchName>
     {
         type            regulatedValue;
-        value           uniform 350;
-        downstream      outlet;
-        targetT         250;
-        P               5;
-        I               0.2;
-        D               0.1;
-        outputMin       -30;
-        outputMax       30;
+        maxValue        10;
+        minValue        1;
     }
     \endverbatim
+
 
 SeeAlso
     Foam::fixedValueFvPatchField

@@ -1,3 +1,14 @@
+/*---------------------------------------------------------------------------*\
+Class
+    Foam::ControlMethod
+
+Description
+    ControlMethod is a base class for implementing a control algotirhm
+    used by Regulator. The control algorithm is selected by specifying
+    a "mode" in regulator dict and setting "parameters" dict accordingly
+    to control algorithm implementation.
+
+\*---------------------------------------------------------------------------*/
 #ifndef ControlMethod_H
 #define ControlMethod_H
 
@@ -10,6 +21,7 @@ public:
     ControlMethod() = default;
     ControlMethod(const dictionary &);
 
+    //- ControlMethod factory
     static std::shared_ptr<ControlMethod> create(const dictionary &);
 
     enum controlType
